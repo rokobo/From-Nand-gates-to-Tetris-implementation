@@ -114,9 +114,9 @@ In this part, a assembler needed to be built to translate .asm files into .hack 
 + A-instructions - Used for addressing, where `@value` sets the A register to `value` and consequently, the `RAM[value]` register becomes selected. To translate A-instructions, we use a 0 plus the binary form of `value`.
 
     `0000000000010101` = `@21`
-+ C-intructions - Used for calculation. To translate C-instructions, we use a 111, plus a selector bit (to choose between using A or M), plus six computation bits, plus 3 destination bits and 3 jump bits:
++ C-intructions - Used for calculation. To translate C-instructions, we use a 111, plus a selector bit (to choose between using A or M), plus six computation bits, plus 3 destination bits (where to save the computation) and 3 jump bits (go to instruction in the A register if the jump condition is met by the computation):
 
-    `1 1 1 a c1 c2 c3 c4 c5 c6 d1 d2 d3 j1 j2 j3`
+    `1 1 1 a c1 c2 c3 c4 c5 c6 d1 d2 d3 j1 j2 j3` = `destination = computation; jump`
 
 |![ALU truth table](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Computation_bits.png?raw=true)|![ALU truth table](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Destination_bits.png?raw=true) |![ALU truth table](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Jump_bits.png?raw=true)|
 |-|-|-|
