@@ -1,8 +1,3 @@
-// This file is part of www.nand2tetris.org
-// and the book "The Elements of Computing Systems"
-// by Nisan and Schocken, MIT Press.
-// File name: projects/07/StackArithmetic/StackTest/StackTestVME.tst
-
 load StackTest.vm,
 output-file StackTest.out,
 compare-to StackTest.cmp,

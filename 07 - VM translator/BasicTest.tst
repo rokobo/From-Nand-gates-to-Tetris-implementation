@@ -1,8 +1,3 @@
-// This file is part of www.nand2tetris.org
-// and the book "The Elements of Computing Systems"
-// by Nisan and Schocken, MIT Press.
-// File name: projects/07/MemoryAccess/BasicTest/BasicTest.tst
-
 load BasicTest.asm,
 output-file BasicTest.out,
 compare-to BasicTest.cmp,
@@ -16,7 +11,7 @@ set RAM[2] 400,   // base address of the argument segment
 set RAM[3] 3000,  // base address of the this segment
 set RAM[4] 3010,  // base address of the that segment
 
-repeat 600 {      // enough cycles to complete the execution
+repeat 300 {      // enough cycles to complete the execution
   ticktock;
 }
 

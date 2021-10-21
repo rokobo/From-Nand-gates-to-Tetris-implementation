@@ -4,9 +4,9 @@ This project's goal is to implement Tetris on a computer (specifically the Hack 
 
 ## Testing
 
-### Testing .hdl files
+### Testing `.hdl` files
 
-Together with the .hdl files, there is also a .tst and a .cmp file for each logic gate. They are used to test and compare the functionality of the logic gate, respectively. To test a logic gate, simply:
+Together with the `.hdl` files, there is also a .tst and a .cmp file for each logic gate. They are used to test and compare the functionality of the logic gate, respectively. To test a logic gate, simply:
 
 1. Open the Simulation tools folder and open the HardwareSimulator.bat.
 2. Press file > load chip, then select the chip you want to test.
@@ -15,9 +15,9 @@ Together with the .hdl files, there is also a .tst and a .cmp file for each logi
 
 After the script is run, the program will output a .out file that will be compared to the .cmp file. If they are equal, the test will be considered sucessful.
 
-### Testing .asm files
+### Testing `.asm` files
 
-Like .hdl files, .asm files will have a .tst and .cmp file together. However, .asm files are test in the CPU emulator:
+Like `.hdl` files, `.asm` files will have a .tst and .cmp file together. However, `.asm` files are test in the CPU emulator:
 
 1. Open the Simulation tools folder and open the CPUEmulator.bat.
 2. Press file > load program, then select the program you want to test.
@@ -25,22 +25,22 @@ Like .hdl files, .asm files will have a .tst and .cmp file together. However, .a
 4. Press run > run, to run the script (you can adjust the speed in the slow-fast dial).
 5. Press the keyboard icon to link your keyboard to the emulator.
 
-### Testing .hack files
+### Testing `.hack` files
 
-.hack files are programs that can be used to test the `Computer.hdl` file in subproject 5. They do not have to be directly interacted with, since the .tst file will load the appropriate .hack file into the computer's ROM.
+`.hack` files are programs that can be used to test the `Computer.hdl` file in subproject 5. They do not have to be directly interacted with, since the .tst file will load the appropriate `.hack` file into the computer's ROM.
 
 ### Testing the Hack assembler
 
-To test the conversion of .asm files into .hack files in subproject 6, use the Assembler program:
+To test the conversion of `.asm` files into `.hack` files in subproject 6, use the Assembler program:
 
 1. Open the Simulation tools folder and open the Assembler.bat.
-2. Press file > load source file, then select the .asm file you want to test.
-3. Press file > load comparison file, then select the .hack file you got from your assembler.
+2. Press file > load source file, then select the `.asm` file you want to test.
+3. Press file > load comparison file, then select the `.hack` file you got from your assembler.
 4. Press run > fast translation, to run the script.
 
 ## 1 - Elementary logic gates
 
-In this part, Hardware Description Language (HDL) was used to create 15 elementary logic gates: 
+In this part, Hardware Description Language (HDL) was used to create 15 elementary logic gates:
 
 + `Not` - Inverts the input bit.
 + `And` - Outputs 1 if both inputs are 1.
@@ -60,10 +60,9 @@ In this part, Hardware Description Language (HDL) was used to create 15 elementa
 
 These gates were built either from the primitive `Nand` gate or from previously built gates.
 
-
 ## 2 - Arithmetic gates
 
-In this part, logic gates were implemented to create an Arithmetic Logic Unit (ALU), specifically: 
+In this part, logic gates were implemented to create an Arithmetic Logic Unit (ALU), specifically:
 
 + `HalfAdder.hdl` - Sums two input bits and outputs the sum and the carry bit.
 + `FullAdder.hdl` - Sums two input bits and one carry bit and outputs the sum and the carry bit.
@@ -109,7 +108,7 @@ Additionally, the followig programs can be used to test the Hack computer:
 
 ## 6 - Hack assembler
 
-In this part, a assembler needed to be built to translate .asm files into .hack files. All .hack instructions are a single 16-bit integer that can be translated according to:
+In this part, a assembler needed to be built to translate `.asm` files into `.hack` files. All `.hack` instructions are a single 16-bit integer that can be translated according to:
 
 + A-instructions - Used for addressing, where `@value` sets the A register to `value` and consequently, the `RAM[value]` register becomes selected. To translate A-instructions, we use a 0 plus the binary form of `value`.
 
@@ -126,9 +125,44 @@ Additionally, the followig programs can be used to test the assembler:
 + Programs without symbols: `AddL.asm`, `MaxL.asm`, `RectL.asm`.
 + Programs with symbols: `Add.asm`, `Max.asm`, `Rect.asm` and `Pong.asm`.
 
-## 7 -
+## 7 - VM Translator
 
-In progress...
+In this part, a translator needed to be built to translate VM code into Hack assembly. A Python file was create to be operated in a CMI like:
+
+`python VMTranslator.py StackTest.vm`
+
+`.vm` files are translated into `.asm` files and placed in the same directory. At this stage, the translator was supposed to be able to handle 9 arithmetic and logic operations (`y` is the top-most element in the VM Stack):
+
++ `add` - Does `x + y`
++ `sub` - Does `x - y`.
++ `neg` - Does `-y`.
++ `eq` - Does `x == y`.
++ `or` - Does `x | y`.
++ `gt` - Does `x > y`.
++ `lt` - Does `x < y`.
++ `and` - Does `x & y`.
++ `not` - Does `!x`.
+
+As well as `push` and `pop` commands to the VM Stack and to 8 distinct memory segments. The mapping for the VM translator is:
+
++ VM Stack - Base address in `RAM[0]`. Located between `RAM[256]` and `RAM[2047]`.
++ `local` - Base address in `RAM[1]`.
++ `argument` - Base address in `RAM[2]`.
++ `this` - Base address in `RAM[3]`.
++ `that` - Base address in `RAM[4]`.
++ `temp` - Located between `RAM[5]` and `RAM[12]`, used for temporary storage.
++ General purpose registers - Located between `RAM[13]` and `RAM[15]`.
++ `static` - Located between `RAM[16]` and `RAM[255]`. Maps global variables. Each `static i` reference in a `Foo.vm` file is translated to Hack as `@Foo.i`.
++ `pointer` - Used for accessing `this` and `that` (`pointer 0` = `this`).
++ `constant` - Virtual segment for supplying constant values.
+
+To test this project, the Python translator was used in the `.vm` files to translate them to `.asm`, then the CPU emulator was used to check if it was a correct translation. The tests were done in the following order:
+
++ `SimpleAdd.vm` - Tests `push` and `add`.
++ `BasicTest.vm` - Tests the basic virtual memory segments.
++ `StackTest.vm` - Tests Stack arithmetic and logic operations.
++ `PointerTest.vm` - Tests the `pointer`, `this` and `that` memory segments.
++ `StaticTest.vm` - Tests the `static` memory segment.
 
 ## 8 -
 

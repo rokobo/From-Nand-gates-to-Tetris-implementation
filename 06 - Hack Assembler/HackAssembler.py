@@ -1,4 +1,4 @@
-"""Assembler for the Hack assembly language."""
+"""Assembler for translating Hack assembly to Hack binary."""
 
 from sys import argv
 
