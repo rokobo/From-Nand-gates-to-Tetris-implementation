@@ -23,7 +23,7 @@ A = M - 1                      // StoreDTop, used SP++
 M = D
 
 // pop static 8
-@24                            // GoToSegment Static 8
+@24                            // Go to static 8 
 D = A                          // Record segment location in R13
 @R13
 M = D
@@ -36,7 +36,7 @@ A = M
 M = D
 
 // pop static 3
-@19                            // GoToSegment Static 3
+@19                            // Go to static 3 
 D = A                          // Record segment location in R13
 @R13
 M = D
@@ -49,7 +49,7 @@ A = M
 M = D
 
 // pop static 1
-@17                            // GoToSegment Static 1
+@17                            // Go to static 1 
 D = A                          // Record segment location in R13
 @R13
 M = D
@@ -62,7 +62,7 @@ A = M
 M = D
 
 // push static 3
-@19                            // GoToSegment Static 3
+@19                            // Go to static 3 
 D = M
 @0                             // UpdateSP(+)
 M = M + 1
@@ -70,7 +70,7 @@ A = M - 1                      // StoreDTop, used SP++
 M = D
 
 // push static 1
-@17                            // GoToSegment Static 1
+@17                            // Go to static 1 
 D = M
 @0                             // UpdateSP(+)
 M = M + 1
@@ -88,7 +88,7 @@ A = A - 1
 M = D
 
 // push static 8
-@24                            // GoToSegment Static 8
+@24                            // Go to static 8 
 D = M
 @0                             // UpdateSP(+)
 M = M + 1

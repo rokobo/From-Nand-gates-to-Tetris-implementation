@@ -151,20 +151,12 @@ A = M - 1                      // StoreDTop, used SP++
 M = D
 
 // pop temp 6
-@6                             // GoToSegment temp 6
-D = A
-@5
-A = D + M
-D = A                          // Record segment location in R13
-@R13
-M = D
 @0                             // UpdateSP(-)
 M = M - 1
-A = M                          // D = Stack top
-D = M
-@R13                           // Go back to segment, place Stack top
 A = M
-M = D
+D = M                          // Save stack top in D
+@11                            // Go to temp 6 
+M = D                          // Set temp to D
 
 // push local 0
 @0                             // GoToSegment local 0
@@ -258,10 +250,7 @@ A = A - 1
 M = D
 
 // push temp 6
-@6                             // GoToSegment temp 6
-D = A
-@5
-A = D + M
+@11                            // Go to temp 6 
 D = M
 @0                             // UpdateSP(+)
 M = M + 1

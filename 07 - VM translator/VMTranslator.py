@@ -9,16 +9,16 @@ ClauseIndex = 0
 
 def raw_commands(vm_file):
     """Generator function for raw Jack commands."""
-    file = open(vm_file, "r")
+    raw_file = open(vm_file, "r")
 
-    for line in file:
+    for line in raw_file:
         raw = line.rstrip()          # Remove blank lines
         raw = raw.split("//", 1)[0]  # Remove Hack comments
 
         if not raw:                  # Checks if given line is blank space
             continue
         yield raw
-    file.close()
+    raw_file.close()
 
 
 def GoToStackTop():
@@ -34,19 +34,14 @@ def GoToSegment(segment, index):
     global file  # necessary for multi-function interaction
 
     match segment:
-        case "static":
-            file.write("%-30s %s" % ("@{}".format(16 + int(index)),
-                                     "// GoToSegment Static {}\n".format(index)))
+        case "temp" | "static":
+            location = SEGMENTS[segment]
+            file.write("%-30s %s" % ("@{}".format(location + int(index)),
+                                     "// Go to {} {} \n".format(segment, index)))
         case 'pointer':
             location = SEGMENTS["pointer"]
             file.write("%-30s %s" % ("@{}".format(location + int(index)),
                                      "// GoToSegment Pointer {}\n".format(index)))
-            file.write("A = M\n")
-        case["this" | "that"]:
-            location = SEGMENTS[segment]
-            file.write("%-30s %s" % ("@{}".format(location),
-                                     "// GoToSegmenT {} {}\n".format(segment, index)))
-            file.write("A = M\n")
         case _:
             location = SEGMENTS[segment]
             file.write("%-30s %s" % ("@{}".format(index),
@@ -130,15 +125,14 @@ def PushPop(command):
     match command.split():
         # On pop: Stack top will go to segment[index] (if pointer: changes pointer reference)
         # On push: Segment[index] will go to Stack top
-        case["pop", "pointer", index]:
+        case["pop", ("pointer" | "temp") as segment, index]:
             UpdateSP("-")
             file.write("A = M\n")
             file.write("%-30s %s" % ("D = M", "// Save stack top in D\n"))
-            location = SEGMENTS["pointer"]
-            file.write("%-30s %s" % ("@{}".format(location + int(index)),
-                                     "// Go to pointer {} base address\n".format(index)))
+            GoToSegment(segment, index)
+            location = SEGMENTS[segment]
             file.write("%-30s %s" %
-                       ("M = D", "// Set stack top to base address\n"))
+                       ("M = D", "// Set {} to D\n".format(segment)))
         case["pop", segment, index]:
             # Load segment[index] in R13
             GoToSegment(segment, index)
@@ -157,15 +151,14 @@ def PushPop(command):
                        ("@R13", "// Go back to segment, place Stack top\n"))
             file.write("A = M\n")
             file.write("M = D\n")
-        case["push", "constant", number]:
+        case["push", "constant", index]:
             # Load constant in D
-            file.write("@{}\n".format(number))
+            file.write("@{}\n".format(index))
             file.write("D = A\n")
             StoreDTop()
-        case["push", "pointer", number]:
+        case["push", ("pointer" | "temp") as segment, index]:
             # Push the base address of given pointer
-            location = SEGMENTS["pointer"]
-            file.write("@{}\n".format(location + int(number)))
+            GoToSegment(segment, index)
             file.write("D = M\n")
             StoreDTop()
         case["push", segment, index]:
@@ -184,7 +177,6 @@ def PushPop(command):
 def translator(vm_file):
     """Translates each instruction as a comment, then the asm translation."""
     global file  # necessary for multi-function interaction
-
     # Write to file with the same name as the .vm but with the .asm file type
     file = open(vm_file.split(".", 1)[0] + ".asm", "w")
 
@@ -236,11 +228,9 @@ def translator(vm_file):
             case _:
                 raise Exception(line, line.split())
         file.write("\n")
+    file.close
 
 
 if __name__ == "__main__":
-    translator("BasicTest.vm")
-    translator("StackTest.vm")
-    translator("SimpleAdd.vm")
-    translator("PointerTest.vm")
-    translator("StaticTest.vm")
+    for file in argv[1:]:
+        translator(file)

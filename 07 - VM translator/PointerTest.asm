@@ -11,8 +11,8 @@ M = D
 M = M - 1
 A = M
 D = M                          // Save stack top in D
-@3                             // Go to pointer 0 base address
-M = D                          // Set stack top to base address
+@3                             // GoToSegment Pointer 0
+M = D                          // Set pointer to D
 
 // push constant 3040
 @3040
@@ -27,8 +27,8 @@ M = D
 M = M - 1
 A = M
 D = M                          // Save stack top in D
-@4                             // Go to pointer 1 base address
-M = D                          // Set stack top to base address
+@4                             // GoToSegment Pointer 1
+M = D                          // Set pointer to D
 
 // push constant 32
 @32
@@ -79,7 +79,7 @@ A = M
 M = D
 
 // push pointer 0
-@3
+@3                             // GoToSegment Pointer 0
 D = M
 @0                             // UpdateSP(+)
 M = M + 1
@@ -87,7 +87,7 @@ A = M - 1                      // StoreDTop, used SP++
 M = D
 
 // push pointer 1
-@4
+@4                             // GoToSegment Pointer 1
 D = M
 @0                             // UpdateSP(+)
 M = M + 1
