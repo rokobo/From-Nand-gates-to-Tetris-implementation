@@ -1,14 +1,17 @@
 # From Nand gates to Tetris implementation
 
-This project's goal is to implement Tetris on a computer (specifically the Hack computer) implemented from the ground up (starting with an abstraction of Nand gates). This project was done in 13 subprojects, each in their respective folder.
+This project's goal is to go from a `Nand` gates abstraction, all the way to a fully working computer that is capable os playing Tetris. This project was done in 13 subprojects, each in their respective folder. Since this project is focused on Computer Science, the physical hardware part was hidden behind various abstractions and emulation tools. This project is aimed at dealing with the software-side of the computer (including the theoretical hardware design).
 
 ## Testing
+
+<details>
+<summary>Open me to see how testing was done!</summary>
 
 ### Testing `.hdl` files
 
 Together with the `.hdl` files, there is also a .tst and a .cmp file for each logic gate. They are used to test and compare the functionality of the logic gate, respectively. To test a logic gate, simply:
 
-1. Open the Simulation tools folder and open the HardwareSimulator.bat.
+1. Open the Simulation tools folder and open the `HardwareSimulator.bat` file.
 2. Press file > load chip, then select the chip you want to test.
 3. Press file > load script, then select the .tst file for the chip you selected.
 4. Press run > run, to run the script (you can adjust the speed in the slow-fast dial).
@@ -19,7 +22,7 @@ After the script is run, the program will output a .out file that will be compar
 
 Like `.hdl` files, `.asm` files will have a .tst and .cmp file together. However, `.asm` files are test in the CPU emulator:
 
-1. Open the Simulation tools folder and open the CPUEmulator.bat.
+1. Open the Simulation tools folder and open the `CPUEmulator.bat` file.
 2. Press file > load program, then select the program you want to test.
 3. Press file > load script, then select the .tst file for the program you selected.
 4. Press run > run, to run the script (you can adjust the speed in the slow-fast dial).
@@ -33,14 +36,25 @@ Like `.hdl` files, `.asm` files will have a .tst and .cmp file together. However
 
 To test the conversion of `.asm` files into `.hack` files in subproject 6, use the Assembler program:
 
-1. Open the Simulation tools folder and open the Assembler.bat.
+1. Open the Simulation tools folder and open the `Assembler.bat` file.
 2. Press file > load source file, then select the `.asm` file you want to test.
 3. Press file > load comparison file, then select the `.hack` file you got from your assembler.
 4. Press run > fast translation, to run the script.
 
+### Testing the `.vm` file's logic
+
+Sometimes it is useful to see what a `.vm` file should do in order to correctly translate it `.asm`. To see a simulation of the program, use the VMEmulator:
+
+1. Open the Simulation tools folder and open the `VMEmulator.bat` file.
+2. Press file > load script file, then select the `.VME` file you want to test.
+3. Press run > fast translation, to run the script.
+
+</details>
+&nbsp;
+
 ## 1 - Elementary logic gates
 
-In this part, Hardware Description Language (HDL) was used to create 15 elementary logic gates:
+First we begin by creating some basic elementary logic gates that will be the foundation of the Hack computer (this project's computer architecture). The chips were programmed from an abstraction of the `Nand` gate and the Hardware Description Language (HDL) was used to create the following 15 elementary logic gates:
 
 + `Not` - Inverts the input bit.
 + `And` - Outputs 1 if both inputs are 1.
@@ -58,11 +72,11 @@ In this part, Hardware Description Language (HDL) was used to create 15 elementa
 + `DMux4Way` - `DMux` gate with 4 outputs  instead of 2.
 + `DMux8Way` - `DMux` gate with 8 outputs  instead of 2.
 
-These gates were built either from the primitive `Nand` gate or from previously built gates.
+Note that all of these gates were built either from the primitive `Nand` gate or from previously built gates.
 
 ## 2 - Arithmetic gates
 
-In this part, logic gates were implemented to create an Arithmetic Logic Unit (ALU), specifically:
+In this part, logic gates were implemented to create the Hack computer's Arithmetic Logic Unit (ALU):
 
 + `HalfAdder.hdl` - Sums two input bits and outputs the sum and the carry bit.
 + `FullAdder.hdl` - Sums two input bits and one carry bit and outputs the sum and the carry bit.
@@ -74,7 +88,7 @@ In this part, logic gates were implemented to create an Arithmetic Logic Unit (A
 
 ## 3 - Memory chips
 
-In this part, the following memory chips were implemented from the abstraction of the primitive Data Flip-Flop (DFF) gate:
+In this part, from the abstraction of the Data Flip-Flop gate (DFF), the memory chips of the Hack computer were created:
 
 + `Bit.hdl` - 1-bit Register.
 + `Register.hdl` - 16-bit Register.
@@ -87,20 +101,20 @@ In this part, the following memory chips were implemented from the abstraction o
 
 ## 4 - Machine language programs
 
-In this part, we used Assembly to create two programs that will run eventually run on the Hack computer:
+In this part, two programs that will eventually run on the Hack computer were created, in order to start learning the Hack Assembly language:
 
 + `Mult.asm` - Multiplies `RAM[0]` and `RAM[1]` and stores the result in `RAM[2]`.
 + `Fill.asm` - Runs an infinite loop that listens to the keyboard input. When a key is pressed (any key), the program blackens the screen and should remain fully black as long as the key is pressed. When no key is pressed, the program clears the screen. The screen should remain fully clear as long as no key is pressed.
 
 ## 5 - Computer architecture
 
-In this part, the following memory chips were implemented to complete the construction of the Hack computer:
+In this part, the Hack computer architecture is finalized through the following chips:
 
 + `Memory.hdl` - Entire RAM address space for the computer (`RAM16K`, Keyboard and Screen).
 + `CPU.hdl` - The Hack CPU.
 + `Computer.hdl` - The Hack computer platform.
 
-Additionally, the followig programs can be used to test the Hack computer:
+Additionally, the followig programs were used to test the Hack computer:
 
 + `Add.hack` - Adds up the two constants 2 and 3 and writes the result in `RAM[0]`.
 + `Max.hack` - Computes the maximum of `RAM[0]` and `RAM[1]` and writes the result in `RAM[2]`.
@@ -108,7 +122,7 @@ Additionally, the followig programs can be used to test the Hack computer:
 
 ## 6 - Hack assembler
 
-In this part, a assembler needed to be built to translate `.asm` files into `.hack` files. All `.hack` instructions are a single 16-bit integer that can be translated according to:
+In this part, an assembler needed to be built to translate `.asm` files into `.hack` files. All `.hack` instructions are a single 16-bit integer that can be translated according to:
 
 + A-instructions - Used for addressing, where `@value` sets the A register to `value` and consequently, the `RAM[value]` register becomes selected. To translate A-instructions, we use a 0 plus the binary form of `value`.
 
@@ -120,18 +134,18 @@ In this part, a assembler needed to be built to translate `.asm` files into `.ha
 |![ALU truth table](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Computation_bits.png?raw=true)|![ALU truth table](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Destination_bits.png?raw=true) |![ALU truth table](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Jump_bits.png?raw=true)|
 |-|-|-|
 
-Additionally, the followig programs can be used to test the assembler:
+Additionally, the followig programs were used to test the assembler:
 
-+ Programs without symbols: `AddL.asm`, `MaxL.asm`, `RectL.asm`.
-+ Programs with symbols: `Add.asm`, `Max.asm`, `Rect.asm` and `Pong.asm`.
++ Programs without labels and symbols: `AddL.asm`, `MaxL.asm`, `RectL.asm`.
++ Programs with labels and symbols: `Add.asm`, `Max.asm`, `Rect.asm` and `Pong.asm`.
 
-## 7 - VM Translator
+## 7 - VM Translator (partial)
 
-In this part, a translator needed to be built to translate VM code into Hack assembly. A Python file was create to be operated in a CMI like:
+In this part, a translator needed to be built to translate VM code into Hack assembly. A Python file was create to be operated in a CLI like:
 
-`python VMTranslator.py StackTest.vm`
+`python VMTranslator.py StackTest\StackTest.vm`.
 
-`.vm` files are translated into `.asm` files and placed in the same directory. At this stage, the translator was supposed to be able to handle 9 arithmetic and logic operations (`y` is the top-most element in the VM Stack):
+The `.vm` files are translated into `.asm` files and placed in the same directory. At this stage, the translator was supposed to be able to handle a total of 9 arithmetic and logic operations:
 
 + `add` - Does `x + y`
 + `sub` - Does `x - y`.
@@ -143,9 +157,9 @@ In this part, a translator needed to be built to translate VM code into Hack ass
 + `and` - Does `x & y`.
 + `not` - Does `!x`.
 
-As well as `push` and `pop` commands to the VM Stack and to 8 distinct memory segments. The mapping for the VM translator is:
+With `y` being the top-most element in the VM Stack. Additionally, the translator also need to be ale to translate `push` and `pop` commands to the VM Stack and to 8 distinct memory segments. The mapping for the VM translator is:
 
-+ VM Stack - Base address in `RAM[0]`. Located between `RAM[256]` and `RAM[2047]`.
++ VM Stack or `SP` - Base address in `RAM[0]`. Located between `RAM[256]` and `RAM[2047]`.
 + `local` - Base address in `RAM[1]`.
 + `argument` - Base address in `RAM[2]`.
 + `this` - Base address in `RAM[3]`.
@@ -164,11 +178,40 @@ To test this project, the Python translator was used in the `.vm` files to trans
 + `PointerTest.vm` - Tests the `pointer`, `this` and `that` memory segments.
 + `StaticTest.vm` - Tests the `static` memory segment.
 
-## 8 -
+## 8 - VM Translator (complete)
 
-In progress...
+Part 8 complements the VM translator in part 7 by adding the following functionality:
 
-## 9 -
++ Support for `function` and `return` translation.
++ Support for function calling using `call`.
++ Support for `goto` and `if-goto` commands.
++ Directory translation: `python VMTranslator.py NestedCall`, the endfile will be named after the directory and all files in the directory will be translated into this one file.
++ Multi-argument translation: `python VMTranslator.py NestedCall StackTest BasicTest\BasicTest.vm`.
++ Bootstrap code in case there is a `Sys.vm` file in the directory (Resets Stack top and calls `Sys.init`).
+
+Besides the test available in part 7, part 8 offers 6 more test files for the new features:
+
++ `BasicLoop.vm` - Tests a basic branching scenario using `if-goto`.
++ `FibonacciSeries.vm` - Tests a more complex branching scenario using `goto` and `if-goto`.
++ `SimpleFunction.vm` - Tests `function` and `return`.
++ `NestedCall.vm` - Tests a more complex scenario of the function calling protocol and bootstrap code.
++ `FibonacciElement.vm` - Tests function calling, bootstrap code and multi-file directory handling.
++ `StaticsTest.vm` - Tests the per-file nature of the Static memory segment.
+
+The biggest challenge of this part was correctly implementing the global Stack changes of the function protocols, which was essentially:
+
+1. `call` - Saves the working Stack of the callee through: Setting `ARG` to be `SP` - function arguments, pushed return address, pushed `LCL`, pushed `ARG`, pushed `THIS`, pushed `THAT`, set `LCL` to be equal to `SP`, used `goto` + the function's name and finally declared the return address used pushed previously.
+2. `function` - Declared the label to indicate the start of the function (so that `call` can jump the the start of the function) and pushed as many zeros as there were function arguments.
+3. `return` - Saved the return value of the function in `RAM[ARG]`, set `SP` to `ARG` + 1, restored the `LCL`, `ARG`, `THIS` and `THAT` memory segments and used `goto` to go to the return address defined when the function was called.
+
+Additionally, there were 4 special symbols that needed to be properly translated:
+
+1. `fileName.i` - Used for each static variable `i` from a given file `fileName.vm`. Each time a new static variable in that file is found, `i` is incremented by 1.
+2. `fileName.functionName$label` - Used to translate `goto label` and `if-goto label` used inside of a function `funtionName` and file `fileName.vm`.
+3. `functionName.fileName` - Used to translate a function `functionName`'s label when inside file `fileName.vm`.
+4. `functionName$ret.i` - Used to translate the return address for `call functionName` when used inside of a  file `fileName.vm`. Each time a function is called, the variable `i` is incremented by 1 (made for unique return addresses).
+
+## 9 - 
 
 In progress...
 

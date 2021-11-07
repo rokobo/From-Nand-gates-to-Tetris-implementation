@@ -1,6 +1,7 @@
 """Assembler for translating Jack to VM code."""
 
 from sys import argv
+from os import path
 
 SEGMENTS = {"local": 1, "argument": 2, "pointer": 3,
             "this": 3, "that": 4, "temp": 5, "static": 16}
@@ -178,9 +179,11 @@ def translator(vm_file):
     """Translates each instruction as a comment, then the asm translation."""
     global file  # necessary for multi-function interaction
     # Write to file with the same name as the .vm but with the .asm file type
-    file = open(vm_file.split(".", 1)[0] + ".asm", "w")
+    script_directory = path.dirname(__file__)
+    absolute_path = path.join(script_directory, vm_file)
+    file = open(absolute_path.replace(".vm", ".asm"), "w")
 
-    for line in raw_commands(vm_file):
+    for line in raw_commands(absolute_path):
         file.write("// {}\n".format(line))
         match line.split():
             case["pop" | "push", *args]:
@@ -232,5 +235,4 @@ def translator(vm_file):
 
 
 if __name__ == "__main__":
-    for file in argv[1:]:
-        translator(file)
+    translator(argv[1])

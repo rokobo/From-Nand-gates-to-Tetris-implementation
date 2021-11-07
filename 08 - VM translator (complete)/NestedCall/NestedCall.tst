@@ -12,6 +12,7 @@ set RAM[3] -3,
 set RAM[4] -4,
 set RAM[5] -1, // test results
 set RAM[6] -1,
+set RAM[255] -1, // Check if elements under Stack have been accessed
 set RAM[256] 1234, // fake stack frame from call Sys.init
 set RAM[257] -1,
 set RAM[258] -2,
