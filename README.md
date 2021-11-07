@@ -50,7 +50,6 @@ Sometimes it is useful to see what a `.vm` file should do in order to correctly 
 3. Press run > fast translation, to run the script.
 
 </details>
-&nbsp;
 
 ## 1 - Elementary logic gates
 
