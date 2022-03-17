@@ -1,0 +1,356 @@
+// Implements the drawing process of the Deep fryer
+
+ class DeepFryer {
+    field int x;
+    field int y;
+
+    field int row0col0;
+    field int row0col1;
+    field int row0col2;
+    field int row1col0;
+    field int row1col1;
+    field int row1col2;
+    field int row2col0;
+    field int row2col1;
+    field int row2col2;
+
+    field int animation0;
+    field int animation1;
+    field int animation2;
+
+    constructor DeepFryer new(int col, int row) {
+        // Calculated using 16 bit sections:
+        // location = 16384 + x + y*512
+        let x = col;
+        let y = row;
+
+        let row0col0 = 16384 + x + (y * 512);
+        let row0col1 = 16384 + (x + 1) + (y * 512);
+        let row0col2 = 16384 + (x + 2) + (y * 512);
+
+        let row1col0 = 16384 + x + ((y + 1) * 512);
+        let row1col1 = 16384 + (x + 1) + ((y + 1) * 512);
+        let row1col2 = 16384 + (x + 2) + ((y + 1) * 512);
+        
+        let row2col0 = 16384 + x + ((y + 2) * 512);
+        let row2col1 = 16384 + (x + 1) + ((y + 2) * 512);
+        let row2col2 = 16384 + (x + 2) + ((y + 2) * 512);
+
+        // Location found using 16 bit sections and 7 pixels offser
+        let animation0 = 16384 + x + (y * 512) + (7 * 32);
+        let animation1 = 16384 + (x + 1) + (y * 512) + (7 * 32);
+        let animation2 = 16384 + (x + 2) + (y * 512) + (7 * 32);
+        return this;
+    }
+    method void erase() {
+        do Memory.poke(animation0+0, 0);
+        do Memory.poke(animation0+32, 0);
+        do Memory.poke(animation0+64, 0);
+        do Memory.poke(animation0+96, 0);
+        do Memory.poke(animation0+128, 0);
+        do Memory.poke(animation0+160, 0);
+        do Memory.poke(animation0+192, 0);
+        do Memory.poke(animation0+224, 0);
+        do Memory.poke(animation0+256, 0);
+        do Memory.poke(animation0+288, 0);
+        do Memory.poke(animation0+320, 0);
+        do Memory.poke(animation0+352, 0);
+        do Memory.poke(animation0+384, 0);
+        do Memory.poke(animation0+416, 0);
+        do Memory.poke(animation0+448, 0);
+        
+        do Memory.poke(animation1+0, 0);
+        do Memory.poke(animation1+32, 0);
+        do Memory.poke(animation1+64, 0);
+        do Memory.poke(animation1+96, 0);
+        do Memory.poke(animation1+128, 0);
+        do Memory.poke(animation1+160, 0);
+        do Memory.poke(animation1+192, 0);
+        do Memory.poke(animation1+224, 0);
+        do Memory.poke(animation1+256, 0);
+        do Memory.poke(animation1+288, 0);
+        do Memory.poke(animation1+320, 0);
+        do Memory.poke(animation1+352, 0);
+        do Memory.poke(animation1+384, 0);
+        do Memory.poke(animation1+416, 0);
+        do Memory.poke(animation1+448, 0);
+
+        do Memory.poke(animation2+0, 0);
+        do Memory.poke(animation2+32, 0);
+        do Memory.poke(animation2+64, 0);
+        do Memory.poke(animation2+96, 0);
+        do Memory.poke(animation2+128, 0);
+        do Memory.poke(animation2+160, 0);
+        do Memory.poke(animation2+192, 0);
+        do Memory.poke(animation2+224, 0);
+        do Memory.poke(animation2+256, 0);
+        do Memory.poke(animation2+288, 0);
+        do Memory.poke(animation2+320, 0);
+        do Memory.poke(animation2+352, 0);
+        do Memory.poke(animation2+384, 0);
+        do Memory.poke(animation2+416, 0);
+        do Memory.poke(animation2+448, 0);
+        return;
+    }
+    method void draw0() {
+        // First row
+        do Memory.poke(row0col0+0, -1);
+        do Memory.poke(row0col0+32, 1);
+        do Memory.poke(row0col0+64, -3831);
+        do Memory.poke(row0col0+96, 4757);
+        do Memory.poke(row0col0+128, -3831);
+        do Memory.poke(row0col0+160, 1);
+        do Memory.poke(row0col0+192, -1);
+        
+        do Memory.poke(row0col1+0, -1);
+        do Memory.poke(row0col1+32, 384);
+        do Memory.poke(row0col1+64, 2495);
+        do Memory.poke(row0col1+96, -27232);
+        do Memory.poke(row0col1+128, 2495);
+        do Memory.poke(row0col1+160, 384);
+        do Memory.poke(row0col1+192, -1);
+
+        do Screen.drawPixel(95, (y * 16) + 1);
+        do Memory.poke(row0col2+0, -1);
+        do Screen.drawPixel(95, (y * 16) + 5);
+        do Memory.poke(row0col2+64, -16399);
+        do Memory.poke(row0col2+96, -24558);
+        do Memory.poke(row0col2+128, -16399);
+        do Memory.poke(row0col2+192, -1);
+
+        // Second row
+        do Memory.poke(row1col0+192, -1);
+        do Memory.poke(row1col0+224, 3);
+        do Memory.poke(row1col0+256, -17507);
+        do Memory.poke(row1col0+288, -30555);
+        do Memory.poke(row1col0+320, -26203);
+        do Memory.poke(row1col0+352, -30555);
+        do Memory.poke(row1col0+384, -17507);
+        do Memory.poke(row1col0+416, 3);
+        do Memory.poke(row1col0+448, -1);
+        do Memory.poke(row1col0+480, 7);
+
+        do Memory.poke(row1col1+192, -1);
+        do Memory.poke(row1col1+256, 15235);
+        do Memory.poke(row1col1+288, 18564);
+        do Memory.poke(row1col1+320, 18867);
+        do Memory.poke(row1col1+352, 14464);
+        do Memory.poke(row1col1+384, 18560);
+        do Memory.poke(row1col1+448, -1);
+        do Memory.poke(row1col1+480, 384);
+
+        do Memory.poke(row1col2+192, -1);
+        do Memory.poke(row1col2+224, -16384);
+        do Memory.poke(row1col2+256, -25135);
+        do Memory.poke(row1col2+288, -23478);
+        do Memory.poke(row1col2+320, -23356);
+        do Memory.poke(row1col2+352, -25532);
+        do Memory.poke(row1col2+384, -23100);
+        do Memory.poke(row1col2+416, -16384);
+        do Memory.poke(row1col2+448, -1);
+        do Memory.poke(row1col2+480, -8192);
+
+        // Third row
+        do Memory.poke(row2col0+0, 3);
+        do Memory.poke(row2col0+32, -7);
+        do Memory.poke(row2col0+64, 9);
+        do Memory.poke(row2col0+96, 41);
+        do Memory.poke(row2col0+128, 41);
+        do Memory.poke(row2col0+160, 41);
+        do Memory.poke(row2col0+192, 9);
+        do Memory.poke(row2col0+224, 41);
+        do Memory.poke(row2col0+256, 9);
+        do Memory.poke(row2col0+288, 9);
+        do Memory.poke(row2col0+320, 9);
+        do Memory.poke(row2col0+352, -7);
+        do Memory.poke(row2col0+384, 3);
+        do Memory.poke(row2col0+416, 7);
+        do Memory.poke(row2col0+448, -1);
+        do Memory.poke(row2col0+480, 28);
+
+        do Memory.poke(row2col1+0, 384);
+        do Memory.poke(row2col1+32, -1633);
+        do Memory.poke(row2col1+64, 3472);
+        do Memory.poke(row2col1+96, 11671);
+        do Memory.poke(row2col1+128, 10644);
+        do Memory.poke(row2col1+160, 10640);
+        do Memory.poke(row2col1+192, 2448);
+        do Memory.poke(row2col1+224, 10640);
+        do Memory.poke(row2col1+256, 2448);
+        do Memory.poke(row2col1+288, 3472);
+        do Memory.poke(row2col1+320, 3472);
+        do Memory.poke(row2col1+352, -1633);
+        do Memory.poke(row2col1+384, 384);
+        do Memory.poke(row2col1+416, 384);
+        do Memory.poke(row2col1+448, -1);
+        do Memory.poke(row2col1+480, 7224);
+
+        do Memory.poke(row2col2+0, -16384);
+        do Memory.poke(row2col2+32, -24577);
+        do Memory.poke(row2col2+64, -28672);
+        do Memory.poke(row2col2+96, -26880);
+        do Memory.poke(row2col2+128, -27648);
+        do Memory.poke(row2col2+160, -28672);
+        do Memory.poke(row2col2+192, -28672);
+        do Memory.poke(row2col2+224, -28672);
+        do Memory.poke(row2col2+256, -28672);
+        do Memory.poke(row2col2+288, -28672);
+        do Memory.poke(row2col2+320, -28672);
+        do Memory.poke(row2col2+352, -24577);
+        do Memory.poke(row2col2+384, -16384);
+        do Memory.poke(row2col2+416, -8192);
+        do Memory.poke(row2col2+448, -1);
+        do Memory.poke(row2col2+480, 14336);
+        return;
+    }
+    method void draw1() {
+        do Memory.poke(animation0+0, 1);
+        do Memory.poke(animation0+32, 1);
+        do Memory.poke(animation0+64, 1);
+        do Memory.poke(animation0+96, 131);
+        do Memory.poke(animation0+128, 17);
+        do Memory.poke(animation0+160, 5);
+        do Memory.poke(animation0+192, 65);
+        do Memory.poke(animation0+224, 1);
+        do Memory.poke(animation0+256, 14345);
+        do Memory.poke(animation0+288, 17475);
+        do Memory.poke(animation0+320, 17409);
+        do Memory.poke(animation0+352, 17409);
+        do Memory.poke(animation0+384, 14337);
+        do Memory.poke(animation0+416, 1);
+        do Memory.poke(animation0+448, 1);
+
+        do Memory.poke(animation1+0, 384);
+        do Memory.poke(animation1+32, 2432);
+        do Memory.poke(animation1+64, 392);
+        do Memory.poke(animation1+96, 5012);
+        do Memory.poke(animation1+128, 16776);
+        do Memory.poke(animation1+160, 384);
+        do Memory.poke(animation1+192, 1408);
+        do Memory.poke(animation1+224, 8576);
+        do Memory.poke(animation1+256, 384);
+        do Memory.poke(animation1+288, 16768);
+        do Memory.poke(animation1+320, 4992);
+        do Memory.poke(animation1+352, 384);
+        do Memory.poke(animation1+384, 384);
+        do Memory.poke(animation1+416, 384);
+        do Memory.poke(animation1+448, 384);
+
+        do Memory.poke(animation2+0, -32320);
+        do Memory.poke(animation2+32, -32224);
+        do Memory.poke(animation2+64, -32224);
+        do Memory.poke(animation2+96, -32223);
+        do Memory.poke(animation2+128, -32320);
+        do Screen.drawPixel(95, (y * 16) + 12);
+        do Memory.poke(animation2+192, -32767);
+        do Screen.drawPixel(95, (y * 16) + 14);
+        do Screen.drawPixel(95, (y * 16) + 15);
+        do Memory.poke(animation2+288, -30720);
+        do Memory.poke(animation2+320, -27648);
+        do Memory.poke(animation2+352, -30720);
+        do Screen.drawPixel(95, (y * 16) + 19);
+        do Screen.drawPixel(95, (y * 16) + 20);
+        do Screen.drawPixel(95, (y * 16) + 21);
+        return;
+    }
+    method void draw2() {
+        do Memory.poke(animation0+0, 1);
+        do Memory.poke(animation0+32, 1);
+        do Memory.poke(animation0+64, 1);
+        do Memory.poke(animation0+96, 1);
+        do Memory.poke(animation0+128, 1);
+        do Memory.poke(animation0+160, 17);
+        do Memory.poke(animation0+192, -30679);
+        do Memory.poke(animation0+224, 17);
+        do Memory.poke(animation0+256, 4609);
+        do Memory.poke(animation0+288, 1);
+        do Memory.poke(animation0+320, 1281);
+        do Memory.poke(animation0+352, 16513);
+        do Memory.poke(animation0+384, 2049);
+        do Memory.poke(animation0+416, 16897);
+        do Memory.poke(animation0+448, 1);
+
+        do Memory.poke(animation1+0, 384);
+        do Memory.poke(animation1+32, 412);
+        do Memory.poke(animation1+64, 418);
+        do Memory.poke(animation1+96, 418);
+        do Memory.poke(animation1+128, 4514);
+        do Memory.poke(animation1+160, 10652);
+        do Memory.poke(animation1+192, 4480);
+        do Memory.poke(animation1+224, 384);
+        do Memory.poke(animation1+256, 384);
+        do Memory.poke(animation1+288, 384);
+        do Memory.poke(animation1+320, 384);
+        do Memory.poke(animation1+352, 384);
+        do Memory.poke(animation1+384, 384);
+        do Memory.poke(animation1+416, 384);
+        do Memory.poke(animation1+448, 384);
+
+        do Memory.poke(animation2+0, -30652);
+        do Memory.poke(animation2+32, -32256);
+        do Memory.poke(animation2+64, -30720);
+        do Memory.poke(animation2+96, -32736);
+        do Memory.poke(animation2+128, -31616);
+        do Memory.poke(animation2+160, -28656);
+        do Screen.drawPixel(95, (y * 16) + 13);
+        do Memory.poke(animation2+224, -32704);
+        do Memory.poke(animation2+256, -25600);
+        do Memory.poke(animation2+288, -24064);
+        do Memory.poke(animation2+320, -24064);
+        do Memory.poke(animation2+352, -24064);
+        do Memory.poke(animation2+384, -25600);
+        do Screen.drawPixel(95, (y * 16) + 20);
+        do Screen.drawPixel(95, (y * 16) + 21);
+        return;
+    }
+    method void draw3() {
+        do Memory.poke(animation0+0, 1);
+        do Memory.poke(animation0+32, 1);
+        do Memory.poke(animation0+64, 1);
+        do Memory.poke(animation0+96, 1);
+        do Memory.poke(animation0+128, 57);
+        do Memory.poke(animation0+160, 69);
+        do Memory.poke(animation0+192, 69);
+        do Memory.poke(animation0+224, 69);
+        do Memory.poke(animation0+256, 57);
+        do Memory.poke(animation0+288, 4097);
+        do Memory.poke(animation0+320, 10241);
+        do Memory.poke(animation0+352, 4097);
+        do Memory.poke(animation0+384, 1);
+        do Memory.poke(animation0+416, 1);
+        do Memory.poke(animation0+448, 1);
+
+        do Memory.poke(animation1+0, 448);
+        do Memory.poke(animation1+32, 393);
+        do Memory.poke(animation1+64, 416);
+        do Memory.poke(animation1+96, 14720);
+        do Memory.poke(animation1+128, 17810);
+        do Memory.poke(animation1+160, 17792);
+        do Memory.poke(animation1+192, 17826);
+        do Memory.poke(animation1+224, 14728);
+        do Memory.poke(animation1+256, 384);
+        do Memory.poke(animation1+288, 384);
+        do Memory.poke(animation1+320, 384);
+        do Memory.poke(animation1+352, 384);
+        do Memory.poke(animation1+384, 384);
+        do Memory.poke(animation1+416, 384);
+        do Memory.poke(animation1+448, 384);
+
+        do Screen.drawPixel(95, (y * 16) + 7);
+        do Memory.poke(animation2+32, -32640);
+        do Memory.poke(animation2+64, -32448);
+        do Memory.poke(animation2+96, -32640);
+        do Screen.drawPixel(95, (y * 16) + 11);
+        do Screen.drawPixel(95, (y * 16) + 12);
+        do Memory.poke(animation2+192, -30720);
+        do Memory.poke(animation2+224, -24320);
+        do Memory.poke(animation2+256, -31744);
+        do Memory.poke(animation2+288, -32512);
+        do Memory.poke(animation2+320, -24576);
+        do Memory.poke(animation2+352, -32256);
+        do Memory.poke(animation2+384, -30592);
+        do Memory.poke(animation2+416, -24576);
+        do Memory.poke(animation2+448, -32256);
+        return;
+    }
+}

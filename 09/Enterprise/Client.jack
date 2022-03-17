@@ -1,0 +1,296 @@
+// Implements the drawing process of the Player stand
+
+class Client {
+    static Random random;
+    static boolean onZero; 
+    static boolean isDone;
+    static boolean order_chance;
+    static int respawnChance;
+    static array clients;
+    static int lastY;
+    static int clientQuantity;
+    static array order;
+
+    constructor Client new(int ran) {
+        var int i;
+        let onZero = false;
+        let isDone = false;
+        let respawnChance = 1;
+        let clientQuantity = 10;
+        let order_chance = 20;
+        let order = Array.new(7);
+        let order[0] = false;
+        
+        let random = Random.new(ran);
+
+        let clients = Array.new(clientQuantity+clientQuantity);
+        let i = 0;
+        while (i < clientQuantity) {
+            let clients[i+i] = random.randRange(30);
+            let clients[i+i+1] = random.randRange(2) + 2;
+            let i = i + 1;
+            if (i = clientQuantity) {let lastY = clients[i+i+1] - 2;}
+        }
+
+        return this;
+    }
+
+    method array update() {
+        // Regenerates clients and moves the current ones
+        var int i;
+        var int x;
+        var int y;
+        var int chance;
+        var int tempY;
+        var boolean check;
+        let i = 0;
+        
+        while (i < clientQuantity) {
+            let x = clients[i+i];
+            let y = clients[i+i+1];
+
+            // If at the end of screen, erase and indicate that by y=32
+            if (x = 31) {
+                do erase(x, y); 
+                let clients[i+i] = 32;
+            }
+            else {
+                // Being erased, check random chance for respawning
+                if (x = 32) {
+                    // Avoid two simultaneous respawns
+                    if (~ (onZero)) {
+                        if (random.randRange(respawnChance) = 0) {  
+                            let check = true;
+                            // Prevent respawn in the same y as last client
+                            while (check) {
+                                let tempY = random.randRange(2);
+                                if (~ (tempY = lastY)) {let check = false;}
+                            }
+                            let clients[i+i] = 0; 
+                            let clients[i+i+1] = tempY + 2;
+                            let lastY = tempY;
+                            let onZero = true;
+                            do draw(0, clients[i+i+1]);
+                        }
+                    }
+                }
+                // Not being erased, move the client
+                else {
+                    // Check if client is alredy in order lane
+                    if (y = 5) {
+                        // Check if client is at cashier
+                        if (x = 2) {
+                            // Check if order has been completed
+                            if (order[0] = false) {
+                                do erase(x, y);
+                                let clients[i+i] = x - 1;
+                                do draw(x-1, y);
+                            }
+                        }
+                        else {
+                            // If at end of order lane, erase
+                            if (x = 0) {
+                                do erase(x, y);
+                            }
+                            // Move left in order lane otherwise
+                            else {
+                                do erase(x, y);
+                                let clients[i+i] = x - 1;
+                                do draw(x-1, y);
+                            }
+                        }
+                    }
+                    else {
+                        // Check chance for client going to order
+                        if (y = 4) {
+                            if (x = 2) {
+                                if (order[0] = false) {
+                                    if (random.randRange(respawnChance) = 1) {
+                                        do make_order();
+                                        let clients[i+i+1] = 5;
+                                        do erase(x, y);
+                                        do draw(x, 5);
+                                    }
+                                }
+                                else {do move_normal(x, y, i);}
+                            }
+                            else {do move_normal(x, y, i);}
+                        }
+                        else {do move_normal(x, y, i);}
+                    }
+                }
+            }
+            let i = i + 1;
+        }
+        return order;
+    }
+
+    method void move_normal(int x, int y, int i) {
+        if (x = 0) {let onZero = false;}
+        do erase(x, y);
+        let clients[i+i] = x + 1;
+        do draw(x+1, y);
+        return;
+    }
+
+    method void make_order() {
+        var int i;
+        var boolean emptyOrder;
+        let order[0] = true;
+        let i = 1;
+        let emptyOrder = true;
+
+        while (i < 7) {
+            if (random.randRange(100) > 60) {
+                let order[i] = true; 
+                let emptyOrder = false;
+            }
+            let i = i + 1;
+
+            // Prevent empty order
+            if (emptyOrder) {let order[5] = true;}
+        }
+        do draw_order();
+        return;
+    }
+
+    method void draw_order() {
+        if (order[1]) {do draw_indicator(24073, true);}        
+        if (order[2]) {do draw_indicator(24079, true);}    
+        if (order[3]) {do draw_indicator(24075, true);}    
+        if (order[4]) {do draw_indicator(24081, true);}    
+        if (order[5]) {do draw_indicator(18957, false);}        
+        if (order[6]) {do draw_indicator(24077, true);}  
+        return;
+    }
+
+    method void erase_order() {
+        do erase_indicator(24073, true);        
+        do erase_indicator(24079, true);    
+        do erase_indicator(24075, true);    
+        do erase_indicator(24081, true);    
+        do erase_indicator(18957, false);        
+        do erase_indicator(24077, true);  
+        return;
+    }
+
+    method void draw_indicator(int location, boolean switch) {
+        if (switch) {
+            do Memory.poke(location+32, 4096);
+            do Memory.poke(location+64, 6144);
+            do Memory.poke(location+96, 5120);
+            do Memory.poke(location+128, 4608);
+            do Memory.poke(location+160, 13308);
+            do Memory.poke(location+192, 16386);
+            do Memory.poke(location+224, -32383);
+            do Memory.poke(location+256, -32383);
+            do Memory.poke(location+288, -32383);
+            do Memory.poke(location+320, -32383);
+            do Memory.poke(location+352, -32767);
+            do Memory.poke(location+384, -32383);
+            do Memory.poke(location+416, -32383);
+            do Memory.poke(location+448, 16386);
+            do Memory.poke(location+480, 16380);
+        }
+        else {
+            do Memory.poke(location+0, 16380);
+            do Memory.poke(location+32, 16386);
+            do Memory.poke(location+64, -32383);
+            do Memory.poke(location+96, -32383);
+            do Memory.poke(location+128, -32383);
+            do Memory.poke(location+160, -32383);
+            do Memory.poke(location+192, -32767);
+            do Memory.poke(location+224, -32383);
+            do Memory.poke(location+256, -32383);
+            do Memory.poke(location+288, 16386);
+            do Memory.poke(location+320, 16332);
+            do Memory.poke(location+352, 72);
+            do Memory.poke(location+384, 40);
+            do Memory.poke(location+416, 24);
+            do Memory.poke(location+448, 8);
+        }
+        return;
+    }
+
+    method void erase_indicator(int location, boolean switch) {
+        if (switch) {
+            do Memory.poke(location+32, 0);
+            do Memory.poke(location+64, 0);
+            do Memory.poke(location+96, 0);
+            do Memory.poke(location+128, 0);
+            do Memory.poke(location+160, 0);
+            do Memory.poke(location+192, 0);
+            do Memory.poke(location+224, 0);
+            do Memory.poke(location+256, 0);
+            do Memory.poke(location+288, 0);
+            do Memory.poke(location+320, 0);
+            do Memory.poke(location+352, 0);
+            do Memory.poke(location+384, 0);
+            do Memory.poke(location+416, 0);
+            do Memory.poke(location+448, 0);
+            do Memory.poke(location+480, 0);
+        }
+        else {
+            do Memory.poke(location+0, 0);
+            do Memory.poke(location+32, 0);
+            do Memory.poke(location+64, 0);
+            do Memory.poke(location+96, 0);
+            do Memory.poke(location+128, 0);
+            do Memory.poke(location+160, 0);
+            do Memory.poke(location+192, 0);
+            do Memory.poke(location+224, 0);
+            do Memory.poke(location+256, 0);
+            do Memory.poke(location+288, 0);
+            do Memory.poke(location+320, 0);
+            do Memory.poke(location+352, 0);
+            do Memory.poke(location+384, 0);
+            do Memory.poke(location+416, 0);
+            do Memory.poke(location+448, 0);
+        }
+        return;
+    }
+
+    method void draw(int x, int y) {
+        var int memAddress;
+        let memAddress = 16384 + x + (y * 512);
+        do Memory.poke(memAddress+0, 2016);
+        do Memory.poke(memAddress+32, 2064);
+        do Memory.poke(memAddress+64, 4680);
+        do Memory.poke(memAddress+96, 4680);
+        do Memory.poke(memAddress+128, 4104);
+        do Memory.poke(memAddress+160, 2064);
+        do Memory.poke(memAddress+192, 14316);
+        do Memory.poke(memAddress+224, 16386);
+        do Memory.poke(memAddress+256, 16386);
+        do Memory.poke(memAddress+288, -28663);
+        do Memory.poke(memAddress+320, -28663);
+        do Memory.poke(memAddress+352, 28662);
+        do Memory.poke(memAddress+384, 8196);
+        do Memory.poke(memAddress+416, 8580);
+        do Memory.poke(memAddress+448, 8580);
+        do Memory.poke(memAddress+480, 7800);
+        return;
+    }
+
+    method void erase(int x, int y) {
+        var int memAddress;
+        let memAddress = 16384 + x + (y * 512);
+        do Memory.poke(memAddress+0, 0);
+        do Memory.poke(memAddress+32, 0);
+        do Memory.poke(memAddress+64, 0);
+        do Memory.poke(memAddress+96, 0);
+        do Memory.poke(memAddress+128, 0);
+        do Memory.poke(memAddress+160, 0);
+        do Memory.poke(memAddress+192, 0);
+        do Memory.poke(memAddress+224, 0);
+        do Memory.poke(memAddress+256, 0);
+        do Memory.poke(memAddress+288, 0);
+        do Memory.poke(memAddress+320, 0);
+        do Memory.poke(memAddress+352, 0);
+        do Memory.poke(memAddress+384, 0);
+        do Memory.poke(memAddress+416, 0);
+        do Memory.poke(memAddress+448, 0);
+        do Memory.poke(memAddress+480, 0);
+        return;
+    }
+}

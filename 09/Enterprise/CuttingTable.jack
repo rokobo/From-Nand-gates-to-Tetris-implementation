@@ -1,0 +1,359 @@
+// Implements the drawing process of the Cutting board
+
+class CuttingTable {
+    field int x;
+    field int y;
+
+    field int row0col0;
+    field int row0col1;
+    field int row0col2;
+    field int row1col0;
+    field int row1col1;
+    field int row1col2;
+    field int row2col0;
+    field int row2col1;
+    field int row2col2;
+
+    constructor CuttingTable new(int col, int row) {
+        // Calculated using 16 bit sections:
+        // location = 16384 + x + y*512
+        let x = col;
+        let y = row;
+
+        let row0col0 = 16384 + x + (y * 512);
+        let row0col1 = 16384 + (x + 1) + (y * 512);
+        let row0col2 = 16384 + (x + 2) + (y * 512);
+
+        let row1col0 = 16384 + x + ((y + 1) * 512);
+        let row1col1 = 16384 + (x + 1) + ((y + 1) * 512);
+        let row1col2 = 16384 + (x + 2) + ((y + 1) * 512);
+        
+        let row2col0 = 16384 + x + ((y + 2) * 512);
+        let row2col1 = 16384 + (x + 1) + ((y + 2) * 512);
+        let row2col2 = 16384 + (x + 2) + ((y + 2) * 512);
+        return this;
+    }
+    method void erase() {
+        // First row
+        do Memory.poke(row0col0+0, 0);
+        do Memory.poke(row0col0+32, 0);
+        do Memory.poke(row0col0+64, 0);
+        do Memory.poke(row0col0+96, 0);
+        do Memory.poke(row0col0+128, 0);
+        do Memory.poke(row0col0+160, 0);
+        do Memory.poke(row0col0+192, 0);
+        do Memory.poke(row0col0+224, 0);
+        do Memory.poke(row0col0+256, 0);
+        do Memory.poke(row0col0+288, 0);
+        do Memory.poke(row0col0+320, 0);
+        do Memory.poke(row0col0+352, 0);
+        do Memory.poke(row0col0+384, 0);
+        do Memory.poke(row0col0+416, 0);
+        do Memory.poke(row0col0+448, 0);
+        do Memory.poke(row0col0+480, 0);
+    
+        do Memory.poke(row0col1+0, 0);
+        do Memory.poke(row0col1+32, 0);
+        do Memory.poke(row0col1+64, 0);
+        do Memory.poke(row0col1+96, 0);
+        do Memory.poke(row0col1+128, 0);
+        do Memory.poke(row0col1+160, 0);
+        do Memory.poke(row0col1+192, 0);
+        do Memory.poke(row0col1+224, 0);
+        do Memory.poke(row0col1+256, 0);
+        do Memory.poke(row0col1+288, 0);
+        do Memory.poke(row0col1+320, 0);
+        do Memory.poke(row0col1+352, 0);
+        do Memory.poke(row0col1+384, 0);
+        do Memory.poke(row0col1+416, 0);
+        do Memory.poke(row0col1+448, 0);
+        do Memory.poke(row0col1+480, 0);
+
+        // Second row
+        do Memory.poke(row1col1+0, 0);
+        do Memory.poke(row1col1+32, 0);
+        do Memory.poke(row1col1+64, 0);
+        do Memory.poke(row1col1+128, 0);
+        do Memory.poke(row1col1+160, 0);
+        do Memory.poke(row1col1+192, 0);
+        do Memory.poke(row1col1+224, 0);
+        do Memory.poke(row1col1+256, 0);
+        do Memory.poke(row1col1+288, 0);
+        do Memory.poke(row1col1+320, 0);
+        do Memory.poke(row1col1+352, 0);
+        do Memory.poke(row1col1+384, 0);
+        do Memory.poke(row1col1+416, 0);
+        do Memory.poke(row1col1+448, 0);
+        do Memory.poke(row1col1+480, 0);
+        return;
+    }
+    method void draw0() {
+        // First row
+        do Memory.poke(row0col2+0, -1);
+        do Memory.poke(row0col2+32, -32513);
+        do Memory.poke(row0col2+64, -18304);
+        do Memory.poke(row0col2+96, -17984);
+        do Memory.poke(row0col2+128, -32096);
+        do Memory.poke(row0col2+160, -32001);
+        do Memory.poke(row0col2+192, -28000);
+        do Memory.poke(row0col2+224, -21888);
+        do Memory.poke(row0col2+256, -28032);
+        do Memory.poke(row0col2+288, -32128);
+        do Memory.poke(row0col2+320, -28544);
+        do Memory.poke(row0col2+352, -22400);
+        do Memory.poke(row0col2+384, -28544);
+        do Memory.poke(row0col2+416, -32513);
+        do Memory.poke(row0col2+448, -29696);
+        do Memory.poke(row0col2+480, -28160);
+
+        // Second row
+        do Memory.poke(row1col0+0, 9);
+        do Memory.poke(row1col0+32, 9);
+        do Memory.poke(row1col0+64, -7);
+        do Memory.poke(row1col0+96, 1);
+        do Memory.poke(row1col0+128, 497);
+        do Memory.poke(row1col0+160, 521);
+        do Memory.poke(row1col0+192, 1253);
+        do Memory.poke(row1col0+224, 1253);
+        do Memory.poke(row1col0+256, 1549);
+        do Memory.poke(row1col0+288, 1525);
+        do Memory.poke(row1col0+320, 1549);
+        do Memory.poke(row1col0+352, 1525);
+        do Memory.poke(row1col0+384, 1549);
+        do Memory.poke(row1col0+416, 1525);
+        do Memory.poke(row1col0+448, 521);
+        do Memory.poke(row1col0+480, 497);
+
+        do Memory.poke(row1col2+0, -24992);
+        do Memory.poke(row1col2+32, -24944);
+        do Memory.poke(row1col2+64, -24848);
+        do Memory.poke(row1col2+96, -24944);
+        do Memory.poke(row1col2+128, -29552);
+        do Memory.poke(row1col2+160, -32624);
+        do Memory.poke(row1col2+192, -32672);
+        do Memory.poke(row1col2+224, -32256);
+        do Memory.poke(row1col2+256, -30976);
+        do Memory.poke(row1col2+288, -32256);
+        do Memory.poke(row1col2+320, -26112);
+        do Memory.poke(row1col2+352, -23040);
+        do Memory.poke(row1col2+384, -26880);
+        do Memory.poke(row1col2+416, -28800);
+        do Memory.poke(row1col2+448, -28800);
+        do Memory.poke(row1col2+480, -28800);
+
+        // Third row
+        do Memory.poke(row2col0+0, -1);
+        do Memory.poke(row2col0+32, 3);
+        do Memory.poke(row2col0+64, 29881);
+        do Memory.poke(row2col0+96, 9349);
+        do Memory.poke(row2col0+128, 9349);
+        do Memory.poke(row2col0+160, 9349);
+        do Memory.poke(row2col0+192, 9017);
+        do Memory.poke(row2col0+224, 1);
+        do Memory.poke(row2col0+256, 14337);
+        do Memory.poke(row2col0+288, -28671);
+        do Memory.poke(row2col0+320, -28671);
+        do Memory.poke(row2col0+352, -28671);
+        do Memory.poke(row2col0+384, -28671);
+        do Memory.poke(row2col0+416, 3);
+        do Memory.poke(row2col0+448, -1);
+        do Memory.poke(row2col0+480, -16356);
+
+        do Memory.poke(row2col1+0, -1);
+        do Memory.poke(row2col1+64, 29271);
+        do Memory.poke(row2col1+96, 2754);
+        do Memory.poke(row2col1+128, 27474);
+        do Memory.poke(row2col1+160, 19026);
+        do Memory.poke(row2col1+192, 29266);
+        do Memory.poke(row2col1+256, 28985);
+        do Memory.poke(row2col1+288, 4426);
+        do Memory.poke(row2col1+320, 12603);
+        do Memory.poke(row2col1+352, 4426);
+        do Memory.poke(row2col1+384, 30522);
+        do Memory.poke(row2col1+448, -1);
+        do Memory.poke(row2col1+480, -32767);
+
+        do Memory.poke(row2col2+0, -1);
+        do Memory.poke(row2col2+32, -16384);
+        do Memory.poke(row2col2+64, -31136);
+        do Memory.poke(row2col2+96, -30128);
+        do Memory.poke(row2col2+128, -30128);
+        do Memory.poke(row2col2+160, -30136);
+        do Memory.poke(row2col2+192, -30136);
+        do Memory.poke(row2col2+224, -30136);
+        do Memory.poke(row2col2+256, -29112);
+        do Memory.poke(row2col2+288, -28040);
+        do Memory.poke(row2col2+320, -26032);
+        do Memory.poke(row2col2+352, -30128);
+        do Memory.poke(row2col2+384, -31712);
+        do Memory.poke(row2col2+416, -16384);
+        do Memory.poke(row2col2+448, -1);
+        do Memory.poke(row2col2+480, 14339);
+        return;
+    }
+    method void draw1() {
+        // First row
+        do Memory.poke(row0col0+0, -1);
+        do Memory.poke(row0col0+32, 1);
+        do Memory.poke(row0col0+64, 1);
+        do Memory.poke(row0col0+96, -7);
+        do Memory.poke(row0col0+128, 9);
+        do Memory.poke(row0col0+160, 9);
+        do Memory.poke(row0col0+192, -32759);
+        do Memory.poke(row0col0+224, 16393);
+        do Memory.poke(row0col0+256, -16375);
+        do Memory.poke(row0col0+288, 16393);
+        do Memory.poke(row0col0+320, -16375);
+        do Memory.poke(row0col0+352, -55);
+        do Memory.poke(row0col0+384, 41);
+        do Memory.poke(row0col0+416, 41);
+        do Memory.poke(row0col0+448, -55);
+        do Memory.poke(row0col0+480, 9);
+
+        do Memory.poke(row0col1+0, -1);
+        do Memory.poke(row0col1+32, -16272);
+        do Memory.poke(row0col1+64, 16440);
+        do Memory.poke(row0col1+96, 20479);
+        do Memory.poke(row0col1+128, 18458);
+        do Memory.poke(row0col1+160, -14315);
+        do Memory.poke(row0col1+192, 18446);
+        do Memory.poke(row0col1+224, 18437);
+        do Memory.poke(row0col1+256, 18435);
+        do Memory.poke(row0col1+288, 18433);
+        do Memory.poke(row0col1+320, 18432);
+        do Memory.poke(row0col1+352, 18439);
+        do Memory.poke(row0col1+384, 18436);
+        do Memory.poke(row0col1+416, -14334);
+        do Memory.poke(row0col1+448, 2049);
+        do Memory.poke(row0col1+480, 2048);
+
+        // Second row
+        do Memory.poke(row1col1+0, 2048);
+        do Memory.poke(row1col1+32, 2048);
+        do Memory.poke(row1col1+64, 4095);
+        do Memory.poke(row1col1+96, 0);
+        do Memory.poke(row1col1+128, 32);
+        do Memory.poke(row1col1+160, 4096);
+        do Memory.poke(row1col1+192, 0);
+        do Memory.poke(row1col1+224, 260);
+        do Memory.poke(row1col1+256, 16384);
+        do Memory.poke(row1col1+288, 2016);
+        do Memory.poke(row1col1+320, 2066);
+        do Memory.poke(row1col1+352, 4104);
+        do Memory.poke(row1col1+384, 6168);
+        do Memory.poke(row1col1+416, 6120);
+        do Memory.poke(row1col1+448, 4104);
+        do Memory.poke(row1col1+480, 4080);
+        return;
+    }
+    method void draw2() {
+        // First row
+        do Memory.poke(row0col0+0, -1);
+        do Memory.poke(row0col0+32, 1);
+        do Memory.poke(row0col0+64, 1);
+        do Memory.poke(row0col0+96, -7);
+        do Memory.poke(row0col0+128, 9);
+        do Memory.poke(row0col0+160, 16393);
+        do Memory.poke(row0col0+192, 16393);
+        do Memory.poke(row0col0+224, 20489);
+        do Memory.poke(row0col0+256, 4105);
+        do Memory.poke(row0col0+288, -28663);
+        do Memory.poke(row0col0+320, 16393);
+        do Memory.poke(row0col0+352, -16439);
+        do Memory.poke(row0col0+384, 20521);
+        do Memory.poke(row0col0+416, -4055);
+        do Memory.poke(row0col0+448, 24521);
+        do Memory.poke(row0col0+480, 12297);
+
+        do Memory.poke(row0col1+0, -1);
+        do Memory.poke(row0col1+32, -16384);
+        do Memory.poke(row0col1+64, 16384);
+        do Memory.poke(row0col1+96, 20479);
+        do Memory.poke(row0col1+128, 18481);
+        do Memory.poke(row0col1+160, -14279);
+        do Memory.poke(row0col1+192, 18460);
+        do Memory.poke(row0col1+224, 18446);
+        do Memory.poke(row0col1+256, 18437);
+        do Memory.poke(row0col1+288, 18438);
+        do Memory.poke(row0col1+320, 18437);
+        do Memory.poke(row0col1+352, 18547);
+        do Memory.poke(row0col1+384, 18505);
+        do Memory.poke(row0col1+416, -14300);
+        do Memory.poke(row0col1+448, 2076);
+        do Memory.poke(row0col1+480, 2048);
+
+        // Second row
+        do Memory.poke(row1col1+0, 2048);
+        do Memory.poke(row1col1+32, 2048);
+        do Memory.poke(row1col1+64, 4095);
+        do Memory.poke(row1col1+96, 0);
+        do Memory.poke(row1col1+128, 0);
+        do Memory.poke(row1col1+160, 0);
+        do Memory.poke(row1col1+192, 0);
+        do Memory.poke(row1col1+224, 0);
+        do Memory.poke(row1col1+256, 0);
+        do Memory.poke(row1col1+288, 1008);
+        do Memory.poke(row1col1+320, 1032);
+        do Memory.poke(row1col1+352, 2052);
+        do Memory.poke(row1col1+384, 3084);
+        do Memory.poke(row1col1+416, 3060);
+        do Memory.poke(row1col1+448, 2052);
+        do Memory.poke(row1col1+480, 2040);
+        return;
+    }
+    method void draw3() {
+        // First row
+        do Memory.poke(row0col0+0, -1);
+        do Memory.poke(row0col0+32, 1);
+        do Memory.poke(row0col0+64, 1);
+        do Memory.poke(row0col0+96, -7);
+        do Memory.poke(row0col0+128, 9);
+        do Memory.poke(row0col0+160, 9);
+        do Memory.poke(row0col0+192, 9);
+        do Memory.poke(row0col0+224, 9);
+        do Memory.poke(row0col0+256, 9);
+        do Memory.poke(row0col0+288, -32759);
+        do Memory.poke(row0col0+320, 16393);
+        do Memory.poke(row0col0+352, -16439);
+        do Memory.poke(row0col0+384, 20521);
+        do Memory.poke(row0col0+416, -4055);
+        do Memory.poke(row0col0+448, 24521);
+        do Memory.poke(row0col0+480, 12297);
+
+        do Memory.poke(row0col1+0, -1);
+        do Memory.poke(row0col1+32, -16384);
+        do Memory.poke(row0col1+64, 16384);
+        do Memory.poke(row0col1+96, 20479);
+        do Memory.poke(row0col1+128, 18480);
+        do Memory.poke(row0col1+160, -14280);
+        do Memory.poke(row0col1+192, 18460);
+        do Memory.poke(row0col1+224, 18446);
+        do Memory.poke(row0col1+256, 18437);
+        do Memory.poke(row0col1+288, 18438);
+        do Memory.poke(row0col1+320, 18437);
+        do Memory.poke(row0col1+352, 18435);
+        do Memory.poke(row0col1+384, 18433);
+        do Memory.poke(row0col1+416, -14336);
+        do Memory.poke(row0col1+448, 2048);
+        do Memory.poke(row0col1+480, 2048);
+
+        // Second row
+        do Memory.poke(row1col1+0, 2048);
+        do Memory.poke(row1col1+32, 2048);
+        do Memory.poke(row1col1+64, 4095);
+        do Memory.poke(row1col1+96, 0);
+        do Memory.poke(row1col1+128, 448);
+        do Memory.poke(row1col1+160, 288);
+        do Memory.poke(row1col1+192, 144);
+        do Memory.poke(row1col1+224, 112);
+        do Memory.poke(row1col1+256, 0);
+        do Memory.poke(row1col1+288, 1008);
+        do Memory.poke(row1col1+320, 1032);
+        do Memory.poke(row1col1+352, 2052);
+        do Memory.poke(row1col1+384, 3084);
+        do Memory.poke(row1col1+416, 3060);
+        do Memory.poke(row1col1+448, 2052);
+        do Memory.poke(row1col1+480, 2040);
+        return;
+    }
+}

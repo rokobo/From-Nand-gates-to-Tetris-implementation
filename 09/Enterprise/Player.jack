@@ -1,0 +1,1223 @@
+// Implements the drawing process of the Player stand
+
+class Player {
+    static int x;
+    static int y;
+    static int memAddress;
+    static int key;
+    static int timer;
+    static int inventory;
+    // Inventory items:
+    // 0-Empty, 1-Hamburguer, 2-Fries, 3-Cut buns, 4-Cut potato
+    // 5-Cut meat, 6-Bread, 7-Tomato, 8-Meat, 9-Potato, 10-Lettuce
+    // 11-Clean tomato, 12-Clean lettuce, 13-Soda
+
+    // These follow the inventory items above
+    static int grill;
+    static int fryer;
+    static int cutting;
+    static int sink;
+    static int money;
+    static int counter_money;
+
+    static int grill_timer;
+    static int fryer_timer;
+    static int cutting_timer;
+    static int sink_timer;
+
+    static Client client;
+    static int client_update;
+    
+    // Order: 0-Buns, 1-Fries, 2-Tomato, 3-Lettuce, 4-Soda, 5-Burguer    
+    // Orderx are the client values and sellx are the player values
+    static array order;
+    static array sell;    
+
+    constructor Player new() {
+        var int i;
+        // location = 16384 + x/16 + y*32
+        let x = 5;
+        let y = 9;
+
+        let timer = 50;
+
+        let client = Client.new(25554);
+        let order = client.update();
+
+        let inventory = 0;
+        let grill = 0;
+        let fryer = 0;
+        let cutting = 0;
+        let sink = 0;
+        let money = 0;
+        let counter_money = 0;
+        let grill_timer = 0;
+        let fryer_timer = 0;
+        let cutting_timer = 0;
+        let sink_timer = 0; 
+
+        let sell = Array.new(6);
+        let i = 0;
+        while (i < 6) {
+            let sell[i] = false;
+            let i = i + 1;
+        }
+
+        do draw_background();
+        do draw_titles();
+        return this;
+    }
+
+    method void draw_background() {
+        var int iterator;
+        var int memAddress;
+        var int offset;
+
+        // variables for determining table position
+        var boolean atCol1;
+        var boolean atRow1;
+        var boolean working;
+        // switch determines whether to use mirrored drawing
+        // for a simple variety of the design
+        var boolean switch;
+        
+        do Screen.drawLine(0, 13, 511, 13); // Under main text
+
+        let iterator = 0;
+        let memAddress = 16384 + 512;// location = 16384 + x/16 + y*32
+
+        // Top horizontal bushes
+        while (iterator < 32) {
+            do Memory.poke(iterator+memAddress+0, 816);
+            do Memory.poke(iterator+memAddress+32, 25806);
+            do Memory.poke(iterator+memAddress+64, 22546);
+            do Memory.poke(iterator+memAddress+96, 18022);
+            do Memory.poke(iterator+memAddress+128, -32759);
+            do Memory.poke(iterator+memAddress+160, -15599);
+            do Memory.poke(iterator+memAddress+192, 25746);
+            do Memory.poke(iterator+memAddress+224, 16898);
+            do Memory.poke(iterator+memAddress+256, 16402);
+            do Memory.poke(iterator+memAddress+288, 24618);
+            do Memory.poke(iterator+memAddress+320, -28670);
+            do Memory.poke(iterator+memAddress+352, -30271);
+            do Memory.poke(iterator+memAddress+384, 25122);
+            do Memory.poke(iterator+memAddress+416, 16454);
+            do Memory.poke(iterator+memAddress+448, 18690);
+            do Memory.poke(iterator+memAddress+480, 32766);
+            let iterator = iterator + 1;
+        }
+
+        // Second horizontal fences
+        let memAddress = 16384 + (6 * 512);
+        let iterator = 23;
+        while (iterator < 31) {
+            do Memory.poke(memAddress+iterator+0, 6168);
+            do Memory.poke(memAddress+iterator+32, 9252);
+            do Memory.poke(memAddress+iterator+64, 16962);
+            do Memory.poke(memAddress+iterator+96, 21066);
+            do Memory.poke(memAddress+iterator+128, 19018);
+            do Memory.poke(memAddress+iterator+160, -15421);
+            do Memory.poke(memAddress+iterator+192, -13357);
+            do Memory.poke(memAddress+iterator+224, 21058);
+            do Memory.poke(memAddress+iterator+256, 21066);
+            do Memory.poke(memAddress+iterator+288, 16962);
+            do Memory.poke(memAddress+iterator+320, 19034);
+            do Memory.poke(memAddress+iterator+352, 21074);
+            do Memory.poke(memAddress+iterator+384, -9261);
+            do Memory.poke(memAddress+iterator+416, -15421);
+            do Memory.poke(memAddress+iterator+448, 19018);
+            do Memory.poke(memAddress+iterator+480, 21058);
+            let iterator = iterator + 1;
+        }
+
+        // Third horizontal bushes
+        let memAddress = 16384 + (15 * 512);
+        let iterator = 19;
+        while (iterator < 22) {
+            do Memory.poke(iterator+memAddress+0, 816);
+            do Memory.poke(iterator+memAddress+32, 25806);
+            do Memory.poke(iterator+memAddress+64, 22546);
+            do Memory.poke(iterator+memAddress+96, 18022);
+            do Memory.poke(iterator+memAddress+128, -32759);
+            do Memory.poke(iterator+memAddress+160, -15599);
+            do Memory.poke(iterator+memAddress+192, 25746);
+            do Memory.poke(iterator+memAddress+224, 16898);
+            do Memory.poke(iterator+memAddress+256, 16402);
+            do Memory.poke(iterator+memAddress+288, 24618);
+            do Memory.poke(iterator+memAddress+320, -28670);
+            do Memory.poke(iterator+memAddress+352, -30271);
+            do Memory.poke(iterator+memAddress+384, 25122);
+            do Memory.poke(iterator+memAddress+416, 16454);
+            do Memory.poke(iterator+memAddress+448, 18690);
+            do Memory.poke(iterator+memAddress+480, 32766);
+            let iterator = iterator + 1;
+        }
+
+        // Fourth horizontal fences
+        let memAddress = 16384 + (15 * 512);
+        let iterator = 22;
+        while (iterator < 31) {
+            do Memory.poke(memAddress+iterator+0, 6168);
+            do Memory.poke(memAddress+iterator+32, 9252);
+            do Memory.poke(memAddress+iterator+64, 16962);
+            do Memory.poke(memAddress+iterator+96, 21066);
+            do Memory.poke(memAddress+iterator+128, 19018);
+            do Memory.poke(memAddress+iterator+160, -15421);
+            do Memory.poke(memAddress+iterator+192, -13357);
+            do Memory.poke(memAddress+iterator+224, 21058);
+            do Memory.poke(memAddress+iterator+256, 21066);
+            do Memory.poke(memAddress+iterator+288, 16962);
+            do Memory.poke(memAddress+iterator+320, 19034);
+            do Memory.poke(memAddress+iterator+352, 21074);
+            do Memory.poke(memAddress+iterator+384, -9261);
+            do Memory.poke(memAddress+iterator+416, -15421);
+            do Memory.poke(memAddress+iterator+448, 19018);
+            do Memory.poke(memAddress+iterator+480, 21058);
+            let iterator = iterator + 1;
+        }
+
+        // Left-most verical bushes
+        let memAddress = 16384 + 21;
+        let iterator = 6;
+        while (iterator < 15) {
+            do Memory.poke((iterator*512)+memAddress+0, 816);
+            do Memory.poke((iterator*512)+memAddress+32, 25806);
+            do Memory.poke((iterator*512)+memAddress+64, 22546);
+            do Memory.poke((iterator*512)+memAddress+96, 18022);
+            do Memory.poke((iterator*512)+memAddress+128, -32759);
+            do Memory.poke((iterator*512)+memAddress+160, -15599);
+            do Memory.poke((iterator*512)+memAddress+192, 25746);
+            do Memory.poke((iterator*512)+memAddress+224, 16898);
+            do Memory.poke((iterator*512)+memAddress+256, 16402);
+            do Memory.poke((iterator*512)+memAddress+288, 24618);
+            do Memory.poke((iterator*512)+memAddress+320, -28670);
+            do Memory.poke((iterator*512)+memAddress+352, -30271);
+            do Memory.poke((iterator*512)+memAddress+384, 25122);
+            do Memory.poke((iterator*512)+memAddress+416, 16454);
+            do Memory.poke((iterator*512)+memAddress+448, 18690);
+            do Memory.poke((iterator*512)+memAddress+480, 32766);
+            let iterator = iterator + 1;
+        }
+
+        // Right-most vertical bushes
+        let memAddress = 16384 + 31;
+        let iterator = 6;
+        while (iterator < 16) {
+            do Memory.poke((iterator*512)+memAddress+0, 816);
+            do Memory.poke((iterator*512)+memAddress+32, 25806);
+            do Memory.poke((iterator*512)+memAddress+64, 22546);
+            do Memory.poke((iterator*512)+memAddress+96, 18022);
+            do Memory.poke((iterator*512)+memAddress+128, -32759);
+            do Memory.poke((iterator*512)+memAddress+160, -15599);
+            do Memory.poke((iterator*512)+memAddress+192, 25746);
+            do Memory.poke((iterator*512)+memAddress+224, 16898);
+            do Memory.poke((iterator*512)+memAddress+256, 16402);
+            do Memory.poke((iterator*512)+memAddress+288, 24618);
+            do Memory.poke((iterator*512)+memAddress+320, -28670);
+            do Memory.poke((iterator*512)+memAddress+352, -30271);
+            do Memory.poke((iterator*512)+memAddress+384, 25122);
+            do Memory.poke((iterator*512)+memAddress+416, 16454);
+            do Memory.poke((iterator*512)+memAddress+448, 18690);
+            do Memory.poke((iterator*512)+memAddress+480, 32766);
+            let iterator = iterator + 1;
+        }
+
+        // Tables
+        let memAddress = 16384 + 23 + (8*512);
+        let atCol1 = true;
+        let atRow1 = true;
+        let working = true;
+
+        while (working) {
+            // First row
+            do Memory.poke(memAddress+128, -16384);
+            do Memory.poke(memAddress+160, -8192);
+            do Memory.poke(memAddress+192, 14336);
+            do Memory.poke(memAddress+224, 3584);
+            do Memory.poke(memAddress+256, 896);
+            do Memory.poke(memAddress+288, -32544);
+            do Memory.poke(memAddress+320, -16328);
+            do Memory.poke(memAddress+352, 24590);
+            do Memory.poke(memAddress+384, 12291);
+            do Memory.poke(memAddress+416, 6145);
+            do Memory.poke(memAddress+448, 3087);
+            do Memory.poke(memAddress+480, 2046);
+
+            do Memory.poke(memAddress+1+0, 384);
+            do Memory.poke(memAddress+1+32, 2016);
+            do Memory.poke(memAddress+1+64, 8184);
+            do Memory.poke(memAddress+1+96, 30702);
+            do Memory.poke(memAddress+1+128, -13261);
+            do Memory.poke(memAddress+1+160, 6168);
+            do Memory.poke(memAddress+1+192, 12300);
+            do Memory.poke(memAddress+1+224, 24582);
+            do Memory.poke(memAddress+1+256, -16381);
+            do Memory.poke(memAddress+1+288, -32767);
+
+            do Memory.poke(memAddress+2+128, 3);
+            do Memory.poke(memAddress+2+160, 7);
+            do Memory.poke(memAddress+2+192, 28);
+            do Memory.poke(memAddress+2+224, 112);
+            do Memory.poke(memAddress+2+256, 448);
+            do Memory.poke(memAddress+2+288, 1793);
+            do Memory.poke(memAddress+2+320, 7171);
+            do Memory.poke(memAddress+2+352, 28678);
+            do Memory.poke(memAddress+2+384, -16372);
+            do Memory.poke(memAddress+2+416, -32744);
+            do Memory.poke(memAddress+2+448, -4048);
+            do Memory.poke(memAddress+2+480, 32736);
+
+            // Second row
+            if (switch) {
+                do Memory.poke(memAddress+512+0, -16);
+                do Memory.poke(memAddress+512+32, -2048);
+                do Memory.poke(memAddress+512+64, 8192);
+                do Memory.poke(memAddress+512+96, -28672);
+                do Memory.poke(memAddress+512+128, -28672);
+                do Memory.poke(memAddress+512+160, 24576);
+                do Memory.poke(memAddress+512+192, 16384);
+                do Memory.poke(memAddress+512+224, 16384);
+                do Memory.poke(memAddress+512+256, 17376);
+                do Memory.poke(memAddress+512+288, -31728);
+                do Memory.poke(memAddress+512+320, 2376);
+                do Memory.poke(memAddress+512+352, 2376);
+                do Memory.poke(memAddress+512+384, 2056);
+                do Memory.poke(memAddress+512+416, 1040);
+                do Memory.poke(memAddress+512+448, 7148);
+                do Memory.poke(memAddress+512+480, 8194);
+            }
+            else {
+                do Memory.poke(memAddress+514+0, 4095);
+                do Memory.poke(memAddress+514+32, 31);
+                do Memory.poke(memAddress+514+64, 4);
+                do Memory.poke(memAddress+514+96, 9);
+                do Memory.poke(memAddress+514+128, 9);
+                do Memory.poke(memAddress+514+160, 6);
+                do Memory.poke(memAddress+514+192, 2);
+                do Memory.poke(memAddress+514+224, 2);
+                do Memory.poke(memAddress+514+256, 1986);
+                do Memory.poke(memAddress+514+288, 2081);
+                do Memory.poke(memAddress+514+320, 4752);
+                do Memory.poke(memAddress+514+352, 4752);
+                do Memory.poke(memAddress+514+384, 4112);
+                do Memory.poke(memAddress+514+416, 2080);
+                do Memory.poke(memAddress+514+448, 14296);
+                do Memory.poke(memAddress+514+480, 16388);
+            }
+            if (switch) {
+                do Memory.poke(memAddress+513+0, -1);
+                do Memory.poke(memAddress+513+32, -1);
+                do Memory.poke(memAddress+513+64, 384);
+                do Memory.poke(memAddress+513+96, 384);
+                do Memory.poke(memAddress+513+128, 384);
+                do Memory.poke(memAddress+513+160, 511);
+                do Memory.poke(memAddress+513+192, 384);
+                do Memory.poke(memAddress+513+224, 392);
+                do Memory.poke(memAddress+513+256, 392);
+                do Memory.poke(memAddress+513+288, 503);
+                do Memory.poke(memAddress+513+320, 4080);
+                do Memory.poke(memAddress+513+352, 12684);
+                do Memory.poke(memAddress+513+384, 16770);
+                do Memory.poke(memAddress+513+416, -26215);
+                do Memory.poke(memAddress+513+448, -23131);
+                do Memory.poke(memAddress+513+480, -23107);
+            }
+            else {
+                do Memory.poke(memAddress+513+0, -1);
+                do Memory.poke(memAddress+513+32, -1);
+            	do Memory.poke(memAddress+513+64, 384);
+                do Memory.poke(memAddress+513+96, 384);
+                do Memory.poke(memAddress+513+128, 384);
+                do Memory.poke(memAddress+513+160, -128);
+                do Memory.poke(memAddress+513+192, 384);
+                do Memory.poke(memAddress+513+224, 4480);
+                do Memory.poke(memAddress+513+256, 4480);
+                do Memory.poke(memAddress+513+288, -4224);
+                do Memory.poke(memAddress+513+320, 4080);
+                do Memory.poke(memAddress+513+352, 12684);
+                do Memory.poke(memAddress+513+384, 16770);
+                do Memory.poke(memAddress+513+416, -26215);
+                do Memory.poke(memAddress+513+448, -23131);
+                do Memory.poke(memAddress+513+480, -16987);
+            }
+            if (switch) {
+                do Memory.poke(memAddress+514+0, 4095);
+                do Memory.poke(memAddress+514+32, 31);
+                do Memory.poke(memAddress+514+96, 1984);
+                do Memory.poke(memAddress+514+128, 2080);
+                do Memory.poke(memAddress+514+160, 4752);
+                do Memory.poke(memAddress+514+192, 4752);
+                do Memory.poke(memAddress+514+224, 4112);
+                do Memory.poke(memAddress+514+256, 2080);
+                do Memory.poke(memAddress+514+288, 14296);
+                do Memory.poke(memAddress+514+320, 16388);
+                do Memory.poke(memAddress+514+352, 16388);
+                do Memory.poke(memAddress+514+384, -28654);
+                do Memory.poke(memAddress+514+416, -28654);
+                do Memory.poke(memAddress+514+448, 28652);
+                do Memory.poke(memAddress+514+480, 8316);
+            }
+            else {
+                do Memory.poke(memAddress+512+0, -16);
+                do Memory.poke(memAddress+512+32, -2048);
+                do Memory.poke(memAddress+512+96, 992);
+                do Memory.poke(memAddress+512+128, 1040);
+                do Memory.poke(memAddress+512+160, 2376);
+                do Memory.poke(memAddress+512+192, 2376);
+                do Memory.poke(memAddress+512+224, 2056);
+                do Memory.poke(memAddress+512+256, 1040);
+                do Memory.poke(memAddress+512+288, 7148);
+                do Memory.poke(memAddress+512+320, 8194);
+                do Memory.poke(memAddress+512+352, 8194);
+                do Memory.poke(memAddress+512+384, 18441);
+                do Memory.poke(memAddress+512+416, 18441);
+                do Memory.poke(memAddress+512+448, 14326);
+                do Memory.poke(memAddress+512+480, 15876);
+            }
+
+            // Third row
+            if (switch) {
+                do Memory.poke(memAddress+1024+0, 8194);
+                do Memory.poke(memAddress+1024+32, 18441);
+                do Memory.poke(memAddress+1024+64, 18441);
+                do Memory.poke(memAddress+1024+96, 14326);
+                do Memory.poke(memAddress+1024+128, 4100);
+                do Memory.poke(memAddress+1024+160, 4228);
+                do Memory.poke(memAddress+1024+192, 4228);
+                do Memory.poke(memAddress+1024+224, 3960);
+            }
+            else {
+                do Memory.poke(memAddress+1026+0, 16388);
+                do Memory.poke(memAddress+1026+32, -28654);
+                do Memory.poke(memAddress+1026+64, -28654);
+                do Memory.poke(memAddress+1026+96, 28652);
+                do Memory.poke(memAddress+1026+128, 8200);
+                do Memory.poke(memAddress+1026+160, 8456);
+                do Memory.poke(memAddress+1026+192, 8456);
+                do Memory.poke(memAddress+1026+224, 7920);
+            }
+            if (switch) {
+                do Memory.poke(memAddress+1025+0, -17347);
+                do Memory.poke(memAddress+1025+32, 31746);
+                do Memory.poke(memAddress+1025+64, 12300);
+                do Memory.poke(memAddress+1025+96, 4080);
+                do Memory.poke(memAddress+1025+128, 384);
+                do Memory.poke(memAddress+1025+160, -32384);
+                do Memory.poke(memAddress+1025+192, 16768);
+                do Memory.poke(memAddress+1025+224, 16768);
+                do Memory.poke(memAddress+1025+256, 8576);
+                do Memory.poke(memAddress+1025+288, 10208);
+                do Memory.poke(memAddress+1025+320, -8200);
+                do Memory.poke(memAddress+1025+352, -16388);
+                do Memory.poke(memAddress+1025+384, -16388);
+                do Memory.poke(memAddress+1025+416, -16388);
+                do Memory.poke(memAddress+1025+448, 8184);
+                do Memory.poke(memAddress+1025+480, 2016);
+            }
+            else {
+                do Memory.poke(memAddress+1025+0, -17347);
+                do Memory.poke(memAddress+1025+32, 16446);
+                do Memory.poke(memAddress+1025+64, 12300);
+                do Memory.poke(memAddress+1025+96, 4080);
+                do Memory.poke(memAddress+1025+128, 384);
+                do Memory.poke(memAddress+1025+160, 385);
+                do Memory.poke(memAddress+1025+192, 386);
+                do Memory.poke(memAddress+1025+224, 386);
+                do Memory.poke(memAddress+1025+256, 388);
+                do Memory.poke(memAddress+1025+288, 2020);
+                do Memory.poke(memAddress+1025+320, 8187);
+                do Memory.poke(memAddress+1025+352, 16381);
+                do Memory.poke(memAddress+1025+384, 16381);
+                do Memory.poke(memAddress+1025+416, 16381);
+                do Memory.poke(memAddress+1025+448, 8184);
+                do Memory.poke(memAddress+1025+480, 2016);
+            }
+            if (switch) {
+                do Memory.poke(memAddress+1026+0, 8578);
+                do Memory.poke(memAddress+1026+32, 8489);
+                do Memory.poke(memAddress+1026+64, 7977);
+                do Memory.poke(memAddress+1026+96, 257);
+                do Memory.poke(memAddress+1026+128, 130);
+                do Memory.poke(memAddress+1026+160, 893);
+                do Memory.poke(memAddress+1026+192, 1024);
+                do Memory.poke(memAddress+1026+224, 1024);
+                do Memory.poke(memAddress+1026+256, 2305);
+                do Memory.poke(memAddress+1026+288, 2305);
+                do Memory.poke(memAddress+1026+320, 1790);
+                do Memory.poke(memAddress+1026+352, 512);
+                do Memory.poke(memAddress+1026+384, 528);
+                do Memory.poke(memAddress+1026+416, 528);
+                do Memory.poke(memAddress+1026+448, 495);
+            }
+            else {
+                do Memory.poke(memAddress+1024+0, 16772);
+                do Memory.poke(memAddress+1024+32, -27516);
+                do Memory.poke(memAddress+1024+64, -27400);
+                do Memory.poke(memAddress+1024+96, -32640);
+                do Memory.poke(memAddress+1024+128, 16640);
+                do Memory.poke(memAddress+1024+160, -16704);
+                do Memory.poke(memAddress+1024+192, 32);
+                do Memory.poke(memAddress+1024+224, 32);
+                do Memory.poke(memAddress+1024+256, -32624);
+                do Memory.poke(memAddress+1024+288, -32624);
+                do Memory.poke(memAddress+1024+320, 32608);
+                do Memory.poke(memAddress+1024+352, 64);
+                do Memory.poke(memAddress+1024+384, 2112);
+                do Memory.poke(memAddress+1024+416, 2112);
+                do Memory.poke(memAddress+1024+448, -2176);
+            }
+
+
+            // logic for drawing the 4 tables
+            if (atCol1) {
+                let memAddress = memAddress + 4;
+                let atCol1 = false;
+                if (atRow1) {let switch = true;}
+                else {let switch = false;}
+            }
+            else {
+                if (atRow1) {
+                    let memAddress = memAddress + (4*512) - 4;
+                    let atCol1 = true;
+                    let atRow1 = false;
+                    let switch = true;
+                }
+                else {let working = false;}
+            }     
+        }
+        return;
+    }
+
+    method void draw_titles() {
+        var string inventory_text;
+        var string money_text;
+        var string title;
+
+        let title = "Rokobo's Kitchen";
+        do Output.moveCursor(0, 0);
+        do Output.printString(title);
+
+        let inventory_text = "Inventory: Empty Hand";
+        do Output.moveCursor(0, 22);
+        do Output.printString(inventory_text);
+
+        let money_text = "Money: 0";
+        do Output.moveCursor(0, 48);
+        do Output.printString(money_text);
+        return;
+    }
+
+    method void erase() {
+        var int memAddress;
+        let memAddress = 16384 + x + (y * 512);
+        do Memory.poke(memAddress+0, 0);
+        do Memory.poke(memAddress+32, 0);
+        do Memory.poke(memAddress+64, 0);
+        do Memory.poke(memAddress+96, 0);
+        do Memory.poke(memAddress+128, 0);
+        do Memory.poke(memAddress+160, 0);
+        do Memory.poke(memAddress+192, 0);
+        do Memory.poke(memAddress+224, 0);
+        do Memory.poke(memAddress+256, 0);
+        do Memory.poke(memAddress+288, 0);
+        do Memory.poke(memAddress+320, 0);
+        do Memory.poke(memAddress+352, 0);
+        do Memory.poke(memAddress+384, 0);
+        do Memory.poke(memAddress+416, 0);
+        do Memory.poke(memAddress+448, 0);
+        do Memory.poke(memAddress+480, 0);
+        return;
+    }
+
+    method void update() {
+        let key = Keyboard.keyPressed();
+        do erase();
+        if (key = 87) {if (y > 9) {let y = y - 1;}}    // W      
+        if (key = 83) {if (y < 11) {let y = y + 1;}}   // S
+        if (key = 65) {if (x > 0) {let x = x - 1;}}    // A     
+        if (key = 68) {if (x < 18) {let x = x + 1;}}   // D
+        if (key = 69) {                                // E
+            do pick(); 
+            do current_item_display();
+        }
+        if (key = 81) {                                // Q 
+            do drop(); 
+            do current_item_display();
+        }
+        if (key = 82) {                                // R
+            if (x < 3) {if (y = 9) {
+                do sell();
+            }}
+        }
+        do draw();
+        do update_equipment();
+        if (client_update = 5) {
+            let order = client.update(); 
+            let client_update = 0;
+        }
+        else {
+            let client_update = client_update + 1;
+        }
+        return;
+    }
+
+    method void current_item_display() {
+        // Writes current inventory item in top left
+        var String current;
+        do Output.moveCursor(0, 33);
+
+        if (inventory = 0) { // Empty
+            let current = "Empty hand   "; 
+            do Output.printString(current);
+            return;
+        }    
+        if (inventory = 1) { // Burguer
+            let current = "Cooked Burguer"; 
+            do Output.printString(current);
+            return;
+        }
+        if (inventory = 2) { // Fries
+            let current = "Fries      "; 
+            do Output.printString(current);
+            return;
+        }
+        if (inventory = 3) { // Cut buns
+            let current = "Bread Buns "; 
+            do Output.printString(current);
+            return;
+        }
+        if (inventory = 4) { // Cut potato
+            let current = "Potato Slices"; 
+            do Output.printString(current);
+            return;
+        }
+        if (inventory = 5) { // Cut meat
+            let current = "Meat patty "; 
+            do Output.printString(current);
+            return;
+        }
+        if (inventory = 6) { // Bread
+            let current = "Bread Loaf "; 
+            do Output.printString(current);
+            return;
+        }
+        if (inventory = 7) { // Tomato
+            let current = "Dirty Tomato"; 
+            do Output.printString(current);
+            return;
+        }
+        if (inventory = 8) { // Meat
+            let current = "Beef cut   "; 
+            do Output.printString(current);
+            return;
+        }
+        if (inventory = 9) { // Potato
+            let current = "Raw Potato "; 
+            do Output.printString(current);
+            return;
+        }
+        if (inventory = 10) { // Lettuce
+            let current = "Dirty Lettuce"; 
+            do Output.printString(current);
+            return;
+        }
+        if (inventory = 11) { // Clean Tomato
+            let current = "Clean Tomato"; 
+            do Output.printString(current);
+            return;
+        }
+        if (inventory = 12) { // Clean lettuce
+            let current = "Clean Lettuce"; 
+            do Output.printString(current);
+            return;
+        }
+        if (inventory = 13) { // Soda
+            let current = "Soda Can   "; 
+            do Output.printString(current);
+            return;
+        }
+        return;
+    }
+
+    method void money_display() {
+        do Output.moveCursor(0, 55);
+        do Output.printInt(money);
+        return;
+    }
+
+    method void pick() {
+        // First row
+        if (x = 18) {if (y = 9) {do pickup_sink(); return;}} // Pickup from sink
+        if (x = 17) {if (y = 9) {do pickup_sink(); return;}} 
+        if (x = 16) {if (y = 9) {do pickup_sink(); return;}} 
+        if (x = 14) {if (y = 9) {let inventory = 13; return;}} // Pickup soda
+        if (x = 13) {if (y = 9) {let inventory = 13; return;}} 
+        if (x = 12) {if (y = 9) {let inventory = 13; return;}} 
+        if (x = 1) {if (y = 9) {do pickup_money(); return;}} // Pickup money
+        if (x = 0) {if (y = 9) {do pickup_money(); return;}} 
+
+        // Second row
+        if (x = 18) {if (y = 11) {let inventory = 10; return;}} // Pickup lettuce
+        if (x = 17) {if (y = 11) {let inventory = 10; return;}}
+        if (x = 16) {if (y = 11) {let inventory = 9; return;}}  // Pickup potato
+        if (x = 15) {if (y = 11) {let inventory = 9; return;}}
+        if (x = 14) {if (y = 11) {let inventory = 8; return;}}  // Pickup meat
+        if (x = 13) {if (y = 11) {let inventory = 8; return;}}
+        if (x = 12) {if (y = 11) {let inventory = 7; return;}}  // Pickup tomato
+        if (x = 11) {if (y = 11) {let inventory = 7; return;}}
+        if (x = 10) {if (y = 11) {let inventory = 6; return;}}  // Pickup bread
+        if (x = 9)  {if (y = 11) {let inventory = 6; return;}}
+
+        if (x = 8)  {if (y = 11) {do pickup_cutting(); return;}}  // Pickup from cutting table
+        if (x = 7)  {if (y = 11) {do pickup_cutting(); return;}}
+        if (x = 6)  {if (y = 11) {do pickup_cutting(); return;}}
+        if (x = 5)  {if (y = 11) {do pickup_fryer(); return;}}    // Pickup from deep fryer
+        if (x = 4)  {if (y = 11) {do pickup_fryer(); return;}}
+        if (x = 3)  {if (y = 11) {do pickup_fryer(); return;}}
+        if (x = 2)  {if (y = 11) {do pickup_grill(); return;}}    // Pickup from grill
+        if (x = 1)  {if (y = 11) {do pickup_grill(); return;}}
+        if (x = 0)  {if (y = 11) {do pickup_grill(); return;}}
+        return;
+    }
+    
+    method void pickup_sink() {
+        if (~ (sink = 0)) {
+            if (sink_timer = timer) {
+                let inventory = sink; 
+                let sink = 0; 
+                let sink_timer = 0;
+            }
+        }
+        return;
+    }
+
+    method void pickup_grill() {
+        if (~ (grill = 0)) {
+            if (grill_timer = timer) {
+                let inventory = grill; 
+                let grill = 0;
+                let grill_timer = 0;
+            }
+        }
+        return;
+    }
+
+    method void pickup_fryer() {
+        if (~ (fryer = 0)) {
+            if (fryer_timer = timer) {
+                let inventory = fryer; 
+                let fryer = 0;
+                let fryer_timer = 0;
+            }
+        }
+        return;
+    }
+
+    method void pickup_cutting() {
+        if (~ (cutting = 0)) {
+            if (cutting_timer = timer) {
+                let inventory = cutting; 
+                let cutting = 0;
+                let cutting_timer = 0;
+            }
+        }
+        return;
+    }
+
+    method void pickup_money() {
+        if (~ (counter_money = 0)) {
+            do erase_counter(0);
+            let money = money + counter_money;
+            let counter_money = 0;
+            do money_display();
+        }
+        return;
+    }
+
+    method void drop() {
+        // First row
+        if (x = 18) {if (y = 9) {do drop_sink(); return;}} // Drop in sink
+        if (x = 17) {if (y = 9) {do drop_sink(); return;}} 
+        if (x = 16) {if (y = 9) {do drop_sink(); return;}} 
+        if (x < 12) {if (y = 9) {do drop_counter(); return;}} // Drop in counter
+        
+        // Second row
+        if (x = 8)  {if (y = 11) {do drop_cutting(); return;}}  // Drop in cutting table
+        if (x = 7)  {if (y = 11) {do drop_cutting(); return;}}
+        if (x = 6)  {if (y = 11) {do drop_cutting(); return;}}
+        if (x = 5)  {if (y = 11) {do drop_fryer(); return;}}    // Drop in deep fryer
+        if (x = 4)  {if (y = 11) {do drop_fryer(); return;}}
+        if (x = 3)  {if (y = 11) {do drop_fryer(); return;}}
+        if (x = 2)  {if (y = 11) {do drop_grill(); return;}}    // Drop in grill
+        if (x = 1)  {if (y = 11) {do drop_grill(); return;}}
+        if (x = 0)  {if (y = 11) {do drop_grill(); return;}}
+        
+        let inventory = 0;
+        do Output.moveCursor(0, 0);
+        do Output.printInt(inventory);
+        return;
+    }
+
+    method void drop_sink() {
+        if (sink = 0) {
+            if (inventory = 7) {let sink = inventory; let inventory = 0;}
+            else {if (inventory = 10) {let sink = inventory; let inventory = 0;}}
+        }
+        return;
+    }
+
+    method void drop_grill() {
+        if (grill = 0) {
+            if (inventory = 5) {let grill = inventory; let inventory = 0;}
+        }
+        return;
+    }
+
+    method void drop_fryer() {
+        if (fryer = 0) {
+            if (inventory = 4) {let fryer = inventory; let inventory = 0;}
+        }
+        return;
+    }
+
+    method void drop_cutting() {
+        if (cutting = 0) {
+            if (inventory = 6) {let cutting = inventory; let inventory = 0;}
+            else {
+                if (inventory = 8) {let cutting = inventory; let inventory = 0;}
+                else {if (inventory = 9) {let cutting = inventory; let inventory = 0;}}
+            }
+        }
+        return;
+    }
+
+    method void drop_counter() {
+        if (inventory = 1) {
+            let inventory = 0; 
+            do draw_counter(1); 
+            return;
+        }    
+        if (inventory = 2) {
+            let inventory = 0; 
+            do draw_counter(2); 
+            return;
+        }
+        if (inventory = 3) {
+            let inventory = 0; 
+            do draw_counter(3); 
+            return;
+        }
+        if (inventory = 11) {
+            let inventory = 0; 
+            do draw_counter(11); 
+            return;
+        }
+        if (inventory = 12) {
+            let inventory = 0; 
+            do draw_counter(12); 
+            return;
+        }
+        if (inventory = 13) {
+            let inventory = 0; 
+            do draw_counter(13); 
+            return;
+        }
+        return;
+    }
+
+    method void draw_counter(int selector) {
+        var int memAddress;
+        var int burguer_height;
+        let burguer_height = 3168;
+
+        if (selector = 1) { // Hamburguer
+            let memAddress = 16384 + 5 + burguer_height;
+            do Memory.poke(memAddress+224, 16380);
+            do Memory.poke(memAddress+256, 16386);
+            do Memory.poke(memAddress+288, 16386);
+            do Memory.poke(memAddress+320, 16380);
+            let sell[5] = true;}        
+        if (selector = 2) { // Fries
+            let memAddress = 16384 + 3 + 3328;
+            do Memory.poke(memAddress+0, 64);
+            do Memory.poke(memAddress+32, 2724);
+            do Memory.poke(memAddress+64, 13786);
+            do Memory.poke(memAddress+96, 21962);
+            do Memory.poke(memAddress+128, 22218);
+            do Memory.poke(memAddress+160, 22218);
+            do Memory.poke(memAddress+192, 22218);
+            do Memory.poke(memAddress+224, 30414);
+            do Memory.poke(memAddress+256, 20466);
+            do Memory.poke(memAddress+288, 16386);
+            do Memory.poke(memAddress+320, 17346);
+            do Memory.poke(memAddress+352, 9252);
+            do Memory.poke(memAddress+384, 9252);
+            do Memory.poke(memAddress+416, 5064);
+            do Memory.poke(memAddress+448, 4104);
+            do Memory.poke(memAddress+480, 4080);
+            let sell[1] = true;}
+        if (selector = 3) { // Buns
+            let memAddress = 16384 + 5 + burguer_height;
+            do Memory.poke(memAddress+0, 8184);
+            do Memory.poke(memAddress+32, 8196);
+            do Memory.poke(memAddress+64, 16386);
+            do Memory.poke(memAddress+96, -32767);
+            do Memory.poke(memAddress+128, -32767);
+            do Memory.poke(memAddress+160, -1);
+
+            do Memory.poke(memAddress+736, -1);
+            do Memory.poke(memAddress+768, -32767);
+            do Memory.poke(memAddress+800, -32767);
+            do Memory.poke(memAddress+832, 32766);
+            let sell[0] = true;}
+        if (selector = 11) { // Tomato
+            let memAddress = 16384 + 5 + burguer_height;
+            do Memory.poke(memAddress+576, 7228);
+            do Memory.poke(memAddress+608, 8770);
+            do Memory.poke(memAddress+640, 8482);
+            do Memory.poke(memAddress+672, 7708);
+            let sell[2] = true;}
+        if (selector = 12) { // Lettuce
+            let memAddress = 16384 + 5 + burguer_height;
+            do Memory.poke(memAddress+384, 6220);
+            do Memory.poke(memAddress+416, 10162);
+            do Memory.poke(memAddress+448, 4100);
+            do Memory.poke(memAddress+480, 4098);
+            do Memory.poke(memAddress+512, 9930);
+            do Memory.poke(memAddress+544, 6452);
+            let sell[3] = true;}       
+        if (selector = 13) { // Soda
+            let memAddress = 16384 + 7 + 3328;
+            do Memory.poke(memAddress+0, 2016);
+            do Memory.poke(memAddress+32, 2128);
+            do Memory.poke(memAddress+64, 4264);
+            do Memory.poke(memAddress+96, 4680);
+            do Memory.poke(memAddress+128, 7448);
+            do Memory.poke(memAddress+160, 6120);
+            do Memory.poke(memAddress+192, 4104);
+            do Memory.poke(memAddress+224, 4104);
+            do Memory.poke(memAddress+256, 4104);
+            do Memory.poke(memAddress+288, 4104);
+            do Memory.poke(memAddress+320, 4104);
+            do Memory.poke(memAddress+352, 4104);
+            do Memory.poke(memAddress+384, 2064);
+            do Memory.poke(memAddress+416, 2064);
+            do Memory.poke(memAddress+448, 1056);
+            do Memory.poke(memAddress+480, 960);
+            let sell[4] = true;}
+        if (selector = 0) { // Money
+            let memAddress = 16834 + 1 + 2816;
+            do Memory.poke(memAddress+128, -1);
+            do Memory.poke(memAddress+160, -32767);
+            do Memory.poke(memAddress+192, -20067);
+            do Memory.poke(memAddress+224, -32191);
+            do Memory.poke(memAddress+256, -23999);
+            do Memory.poke(memAddress+288, -18027);
+            do Memory.poke(memAddress+320, -32767);
+            do Memory.poke(memAddress+352, -1);}
+        return;
+    }
+
+    method void erase_counter(int selector) {
+        var int memAddress;
+        var int burguer_height;
+        let burguer_height = 3168;
+
+        if (selector = 1) { // Hamburguer
+            let memAddress = 16384 + 5 + burguer_height;
+            do Memory.poke(memAddress+224, 0);
+            do Memory.poke(memAddress+256, 0);
+            do Memory.poke(memAddress+288, 0);
+            do Memory.poke(memAddress+320, 0);
+            }        
+        if (selector = 2) { // Fries
+            let memAddress = 16384 + 3 + 3328;
+            do Memory.poke(memAddress+0, 0);
+            do Memory.poke(memAddress+32, 0);
+            do Memory.poke(memAddress+64, 0);
+            do Memory.poke(memAddress+96, 0);
+            do Memory.poke(memAddress+128, 0);
+            do Memory.poke(memAddress+160, 0);
+            do Memory.poke(memAddress+192, 0);
+            do Memory.poke(memAddress+224, 0);
+            do Memory.poke(memAddress+256, 0);
+            do Memory.poke(memAddress+288, 0);
+            do Memory.poke(memAddress+320, 0);
+            do Memory.poke(memAddress+352, 0);
+            do Memory.poke(memAddress+384, 0);
+            do Memory.poke(memAddress+416, 0);
+            do Memory.poke(memAddress+448, 0);
+            do Memory.poke(memAddress+480, 0);
+            }
+        if (selector = 3) { // Buns
+            let memAddress = 16384 + 5 + burguer_height;
+            do Memory.poke(memAddress+0, 0);
+            do Memory.poke(memAddress+32, 0);
+            do Memory.poke(memAddress+64, 0);
+            do Memory.poke(memAddress+96, 0);
+            do Memory.poke(memAddress+128, 0);
+            do Memory.poke(memAddress+160, 0);
+
+            do Memory.poke(memAddress+736, 0);
+            do Memory.poke(memAddress+768, 0);
+            do Memory.poke(memAddress+800, 0);
+            do Memory.poke(memAddress+832, 0);
+            }
+        if (selector = 11) { // Tomato
+            let memAddress = 16384 + 5 + burguer_height;
+            do Memory.poke(memAddress+576, 0);
+            do Memory.poke(memAddress+608, 0);
+            do Memory.poke(memAddress+640, 0);
+            do Memory.poke(memAddress+672, 0);
+            }
+        if (selector = 12) { // Lettuce
+            let memAddress = 16384 + 5 + burguer_height;
+            do Memory.poke(memAddress+384, 0);
+            do Memory.poke(memAddress+416, 0);
+            do Memory.poke(memAddress+448, 0);
+            do Memory.poke(memAddress+480, 0);
+            do Memory.poke(memAddress+512, 0);
+            do Memory.poke(memAddress+544, 0);
+            }       
+        if (selector = 13) { // Soda
+            let memAddress = 16384 + 7 + 3328;
+            do Memory.poke(memAddress+0, 0);
+            do Memory.poke(memAddress+32, 0);
+            do Memory.poke(memAddress+64, 0);
+            do Memory.poke(memAddress+96, 0);
+            do Memory.poke(memAddress+128, 0);
+            do Memory.poke(memAddress+160, 0);
+            do Memory.poke(memAddress+192, 0);
+            do Memory.poke(memAddress+224, 0);
+            do Memory.poke(memAddress+256, 0);
+            do Memory.poke(memAddress+288, 0);
+            do Memory.poke(memAddress+320, 0);
+            do Memory.poke(memAddress+352, 0);
+            do Memory.poke(memAddress+384, 0);
+            do Memory.poke(memAddress+416, 0);
+            do Memory.poke(memAddress+448, 0);
+            do Memory.poke(memAddress+480, 0);
+            }
+        if (selector = 0) { // Money
+            let memAddress = 16834 + 1 + 2816;
+            do Memory.poke(memAddress+128, 0);
+            do Memory.poke(memAddress+160, 0);
+            do Memory.poke(memAddress+192, 0);
+            do Memory.poke(memAddress+224, 0);
+            do Memory.poke(memAddress+256, 0);
+            do Memory.poke(memAddress+288, 0);
+            do Memory.poke(memAddress+320, 0);
+            do Memory.poke(memAddress+352, 0);}
+        return;
+    }
+
+    method int bool_to_num(boolean value) {
+        if (value) {return 1;}
+        else {return 0;}
+    }
+
+    method void sell() {
+        
+        do erase_counter(1);
+        do erase_counter(2);
+        do erase_counter(3);
+        do erase_counter(11);
+        do erase_counter(12);
+        do erase_counter(13);
+
+        // Order: 1-Buns, 2-Fries, 3-Tomato, 4-Lettuce, 5-Soda, 6-Burguer
+        if (order[0]) {
+            if (~ (order[1] = sell[0])) {return;}
+            if (~ (order[2] = sell[1])) {return;}
+            if (~ (order[3] = sell[2])) {return;}
+            if (~ (order[4] = sell[3])) {return;}
+            if (~ (order[5] = sell[4])) {return;}
+            if (~ (order[6] = sell[5])) {return;}
+
+            do draw_counter(0);
+
+            let sell[0] = false;    
+            let sell[1] = false;    
+            let sell[2] = false;    
+            let sell[3] = false;
+            let sell[4] = false;
+            let sell[5] = false;
+            let order[0] = false;
+
+            
+            let counter_money = counter_money + 
+                (bool_to_num(order[1]) * 2) + 
+                (bool_to_num(order[2]) * 7) + 
+                (bool_to_num(order[3]) * 5) + 
+                (bool_to_num(order[4]) * 4) + 
+                (bool_to_num(order[5]) * 3) + 
+                (bool_to_num(order[6]) * 8);
+            
+            do client.erase_order();
+        }
+
+        return;
+    }
+
+    method void update_equipment() {
+        if (~ (sink = 0)) {
+            do draw_timer(sink_timer, 16384 + 17 + (5 * 512), false);
+            if (~ (sink_timer = timer)) {let sink_timer = sink_timer + 1;}
+            else {
+                if (sink = 10) {let sink = 12;}
+                else {if (sink = 7) {let sink = 11;}}
+            }
+        }
+        else {let sink_timer = 0; do erase_timer(16384 + 17 + (5 * 512));}
+
+        if (~ (grill = 0)) {
+            do draw_timer(grill_timer, 16384 + 1 + (15 * 512), true);
+            if (~ (grill_timer = timer)) {let grill_timer = grill_timer + 1;}
+            else {if (grill = 5) {let grill = 1;}}
+        }
+        else {let grill_timer = 0; do erase_timer(16384 + 1 + (15 * 512));}
+
+        if (~ (fryer = 0)) {
+            do draw_timer(fryer_timer, 16384 + 4 + (15 * 512), true);
+            if (~ (fryer_timer = timer)) {let fryer_timer = fryer_timer + 1;}
+            else {if (fryer = 4) {let fryer = 2;}}
+        }
+        else {let fryer_timer = 0; do erase_timer(16384 + 4 + (15 * 512));}
+
+        if (~ (cutting = 0)) {
+            do draw_timer(cutting_timer, 16384 + 7 + (15 * 512), true);
+            if (~ (cutting_timer = timer)) {let cutting_timer = cutting_timer + 1;}
+            else {
+                if (cutting = 9) {let cutting = 4;}
+                else {
+                    if (cutting = 6) {let cutting = 3;}
+                    else {if (cutting = 8) {let cutting = 5;}}
+                }
+            }
+        }
+        else {let cutting_timer = 0; do erase_timer(16384 + 7 + (15 * 512));}
+        
+        return;
+    }
+
+    method void draw_timer(int cycle, int location, boolean selector) {
+        do erase_timer(location);
+        if (cycle = 0) {return;}
+        if (cycle = timer) {
+            if (selector){
+                do Memory.poke(location+32, 4096);
+                do Memory.poke(location+64, 6144);
+                do Memory.poke(location+96, 5120);
+                do Memory.poke(location+128, 4608);
+                do Memory.poke(location+160, 13308);
+                do Memory.poke(location+192, 16386);
+                do Memory.poke(location+224, -32383);
+                do Memory.poke(location+256, -32383);
+                do Memory.poke(location+288, -32383);
+                do Memory.poke(location+320, -32383);
+                do Memory.poke(location+352, -32767);
+                do Memory.poke(location+384, -32383);
+                do Memory.poke(location+416, -32383);
+                do Memory.poke(location+448, 16386);
+                do Memory.poke(location+480, 16380);
+            }
+            else {
+                do Memory.poke(location+0, 16380);
+                do Memory.poke(location+32, 16386);
+                do Memory.poke(location+64, -32383);
+                do Memory.poke(location+96, -32383);
+                do Memory.poke(location+128, -32383);
+                do Memory.poke(location+160, -32383);
+                do Memory.poke(location+192, -32767);
+                do Memory.poke(location+224, -32383);
+                do Memory.poke(location+256, -32383);
+                do Memory.poke(location+288, 16386);
+                do Memory.poke(location+320, 16332);
+                do Memory.poke(location+352, 72);
+                do Memory.poke(location+384, 40);
+                do Memory.poke(location+416, 24);
+                do Memory.poke(location+448, 8);
+            }
+            return;
+        }
+        else {
+            if (selector) {
+                do Memory.poke(location+32, 4096);
+                do Memory.poke(location+64, 6144);
+                do Memory.poke(location+96, 5120);
+                do Memory.poke(location+128, 4608);
+                do Memory.poke(location+160, 13308);
+                do Memory.poke(location+192, 16386);
+                do Memory.poke(location+224, -30751);
+                do Memory.poke(location+256, -30703);
+                do Memory.poke(location+288, -30575);
+                do Memory.poke(location+320, -29935);
+                do Memory.poke(location+352, -30703);
+                do Memory.poke(location+384, -30703);
+                do Memory.poke(location+416, -30751);
+                do Memory.poke(location+448, 16386);
+                do Memory.poke(location+480, 16380);
+            }
+            else {
+                do Memory.poke(location+0, 16380);
+                do Memory.poke(location+32, 16386);
+                do Memory.poke(location+64, -30751);
+                do Memory.poke(location+96, -30703);
+                do Memory.poke(location+128, -30575);
+                do Memory.poke(location+160, -29935);
+                do Memory.poke(location+192, -30703);
+                do Memory.poke(location+224, -30703);
+                do Memory.poke(location+256, -30751);
+                do Memory.poke(location+288, 16386);
+                do Memory.poke(location+320, 16332);
+                do Memory.poke(location+352, 72);
+                do Memory.poke(location+384, 40);
+                do Memory.poke(location+416, 24);
+                do Memory.poke(location+448, 8);
+            }
+        }
+        return;
+    }
+
+    method void erase_timer(int location) {
+        do Memory.poke(location+0, 0);
+        do Memory.poke(location+32, 0);
+        do Memory.poke(location+64, 0);
+        do Memory.poke(location+96, 0);
+        do Memory.poke(location+128, 0);
+        do Memory.poke(location+160, 0);
+        do Memory.poke(location+192, 0);
+        do Memory.poke(location+224, 0);
+        do Memory.poke(location+256, 0);
+        do Memory.poke(location+288, 0);
+        do Memory.poke(location+320, 0);
+        do Memory.poke(location+352, 0);
+        do Memory.poke(location+384, 0);
+        do Memory.poke(location+416, 0);
+        do Memory.poke(location+448, 0);
+        do Memory.poke(location+480, 0);
+        return;
+    }
+
+    method void draw() {
+        var int memAddress;
+        let memAddress = 16384 + x + (y * 512);
+        do Memory.poke(memAddress+0, 2016);
+        do Memory.poke(memAddress+32, 2064);
+        do Memory.poke(memAddress+64, 4680);
+        do Memory.poke(memAddress+96, 4680);
+        do Memory.poke(memAddress+128, 4104);
+        do Memory.poke(memAddress+160, 2064);
+        do Memory.poke(memAddress+192, 14316);
+        do Memory.poke(memAddress+224, 16386);
+        do Memory.poke(memAddress+256, 16386);
+        do Memory.poke(memAddress+288, -28663);
+        do Memory.poke(memAddress+320, -28663);
+        do Memory.poke(memAddress+352, 28662);
+        do Memory.poke(memAddress+384, 8196);
+        do Memory.poke(memAddress+416, 8580);
+        do Memory.poke(memAddress+448, 8580);
+        do Memory.poke(memAddress+480, 7800);
+        return;
+    }
+}

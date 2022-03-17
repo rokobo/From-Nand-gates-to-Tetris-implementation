@@ -1,0 +1,376 @@
+// Implements the drawing process of the Food stand
+
+class Counter {
+    field int x;
+    field int y;
+
+    field int row0col0;
+    field int row0col1;
+    field int row0col2;
+    field int row0col3;
+    field int row0col4;
+    field int row0col5;
+    field int row0col6;
+    field int row0col7;
+    field int row0col8;
+    field int row0col9;
+    field int row0col10;
+    field int row0col11;
+    field int row0col12;
+    field int row0col13;
+    field int row0col14;
+    field int row0col15;
+    field int row0col16;
+    field int row0col17;
+    field int row0col18;
+    field int row1col0;
+    field int row1col1;
+    field int row1col2;
+    field int row1col3;
+    field int row1col4;
+    field int row1col5;
+    field int row1col6;
+    field int row1col7;
+    field int row1col8;
+    field int row1col9;
+    field int row1col10;
+    field int row1col11;
+    field int row1col12;
+    field int row1col13;
+    field int row1col14;
+    field int row1col15;
+    field int row1col16;
+    field int row1col17;
+    field int row1col18;
+    field int row2col0;
+
+    constructor Counter new(int col, int row) {
+        // Calculated using 16 bit sections:
+        // location = 16384 + x + y*512
+        let x = col;
+        let y = row;
+
+        let row0col0 = 16384 + x + (y * 512);
+        let row0col1 = 16384 + (x + 1) + (y * 512);
+        let row0col2 = 16384 + (x + 2) + (y * 512);
+        let row0col3 = 16384 + (x + 3) + (y * 512);
+        let row0col4 = 16384 + (x + 4) + (y * 512);
+        let row0col5 = 16384 + (x + 5) + (y * 512);
+        let row0col6 = 16384 + (x + 6) + (y * 512);
+        let row0col7 = 16384 + (x + 7) + (y * 512);
+        let row0col8 = 16384 + (x + 8) + (y * 512);
+        let row0col9 = 16384 + (x + 9) + (y * 512);
+        let row0col10 = 16384 + (x + 10) + (y * 512);
+        let row0col11 = 16384 + (x + 11) + (y * 512);
+        let row0col12 = 16384 + (x + 12) + (y * 512);
+        let row0col13 = 16384 + (x + 13) + (y * 512);
+        let row0col14 = 16384 + (x + 14) + (y * 512);
+        let row0col15 = 16384 + (x + 15) + (y * 512);
+        let row0col16 = 16384 + (x + 16) + (y * 512);
+        let row0col17 = 16384 + (x + 17) + (y * 512);
+        let row0col18 = 16384 + (x + 18) + (y * 512);
+
+        let row1col0 = 16384 + x + ((y + 1) * 512);
+        let row1col1 = 16384 + (x + 1) + ((y + 1) * 512);
+        let row1col2 = 16384 + (x + 2) + ((y + 1) * 512);
+        let row1col3 = 16384 + (x + 3) + ((y + 1) * 512);
+        let row1col4 = 16384 + (x + 4) + ((y + 1) * 512);
+        let row1col5 = 16384 + (x + 5) + ((y + 1) * 512);
+        let row1col6 = 16384 + (x + 6) + ((y + 1) * 512);
+        let row1col7 = 16384 + (x + 7) + ((y + 1) * 512);
+        let row1col8 = 16384 + (x + 8) + ((y + 1) * 512);
+        let row1col9 = 16384 + (x + 9) + ((y + 1) * 512);
+        let row1col10 = 16384 + (x + 10) + ((y + 1) * 512);
+        let row1col11 = 16384 + (x + 11) + ((y + 1) * 512);
+        let row1col12 = 16384 + (x + 12) + ((y + 1) * 512);
+        let row1col13 = 16384 + (x + 13) + ((y + 1) * 512);
+        let row1col14 = 16384 + (x + 14) + ((y + 1) * 512);
+        let row1col15 = 16384 + (x + 15) + ((y + 1) * 512);
+        let row1col16 = 16384 + (x + 16) + ((y + 1) * 512);
+        let row1col17 = 16384 + (x + 17) + ((y + 1) * 512);
+        let row1col18 = 16384 + (x + 18) + ((y + 1) * 512);
+        
+        let row2col0 = 16384 + x + ((y + 2) * 512);
+        return this;
+    }
+
+    method void draw0() {
+        var int iterator;
+        var int y1;
+        var int y2;
+        var int y3;
+
+        let iterator = 0;
+        // draw front counter col 2
+        while (iterator < 19) {
+            do Memory.poke(row2col0+iterator+0, -1);
+            do Memory.poke(row2col0+iterator+32, -32767);
+            do Memory.poke(row2col0+iterator+64, -18431);
+            do Memory.poke(row2col0+iterator+96, -24575);
+            do Memory.poke(row2col0+iterator+128, -32767);
+            do Memory.poke(row2col0+iterator+160, -32767);
+            do Memory.poke(row2col0+iterator+192, -32767);
+            do Memory.poke(row2col0+iterator+224, -32767);
+            do Memory.poke(row2col0+iterator+256, -32767);
+            do Memory.poke(row2col0+iterator+288, -32767);
+            do Memory.poke(row2col0+iterator+320, -32767);
+            do Memory.poke(row2col0+iterator+352, -32767);
+            do Memory.poke(row2col0+iterator+384, -32767);
+            do Memory.poke(row2col0+iterator+416, -1);
+            do Memory.poke(row2col0+iterator+448, -1);
+            do Memory.poke(row2col0+iterator+480, -1);
+            let iterator = iterator + 1;
+        }
+
+        // draw front counter frame
+        let y1 = y * 16;
+        let y2 = ((y + 2) * 16) - 1;
+
+        do Screen.drawLine(303, y1, 0, y1);    
+        do Screen.drawLine(303, y2, 0, y2);    
+        do Screen.drawLine(303, y1, 303, y2);    
+        do Screen.drawLine(0, y1, 0, y2);  
+
+        // draw side counter 
+        let y3 = ((y + 9) * 16) - 1;
+
+        do Screen.drawLine(304, y1, 336, y1);    
+        do Screen.drawLine(304, y3, 336, y3);    
+        do Screen.drawLine(304, y1, 304, y3);    
+        do Screen.drawLine(336, y1, 336, y3);        
+
+        // Cash register
+        do Memory.poke(row0col0+32, 1);
+        do Memory.poke(row0col0+64, 32641);
+        do Memory.poke(row0col0+96, 16513);
+        do Memory.poke(row0col0+128, 23169);
+        do Memory.poke(row0col0+160, 16513);
+        do Memory.poke(row0col0+192, 24193);
+        do Memory.poke(row0col0+224, 16513);
+        do Memory.poke(row0col0+256, 22145);
+        do Memory.poke(row0col0+288, -16135);
+        do Memory.poke(row0col0+320, 23177);
+        do Memory.poke(row0col0+352, 16553);
+        do Memory.poke(row0col0+384, 32681);
+        do Memory.poke(row0col0+416, 41);
+        do Memory.poke(row0col0+448, -23);
+        do Memory.poke(row0col0+480, 9);
+
+        do Memory.poke(row1col0+0, -23);
+        do Memory.poke(row1col0+32, 9);
+        do Memory.poke(row1col0+64, -9367);
+        do Memory.poke(row1col0+96, 9);
+        do Memory.poke(row1col0+128, 28073);
+        do Memory.poke(row1col0+160, 9);
+        do Memory.poke(row1col0+192, -8343);
+        do Memory.poke(row1col0+224, 9);
+        do Memory.poke(row1col0+256, -3);
+        do Memory.poke(row1col0+288, 5);
+        do Memory.poke(row1col0+320, 5);
+        do Memory.poke(row1col0+352, -11);
+        do Memory.poke(row1col0+384, 5);
+        do Memory.poke(row1col0+416, -3);
+        do Memory.poke(row1col0+448, 1);
+
+        do Memory.poke(row0col1+96, 32766);
+        do Memory.poke(row0col1+128, 16386);
+        do Memory.poke(row0col1+160, 16386);
+        do Memory.poke(row0col1+192, 32766);
+        do Memory.poke(row0col1+224, 384);
+        do Memory.poke(row0col1+256, 384);
+        do Memory.poke(row0col1+288, 16383);
+        do Memory.poke(row0col1+320, 8192);
+        do Memory.poke(row0col1+352, 12281);
+        do Memory.poke(row0col1+384, 10249);
+        do Memory.poke(row0col1+416, 10249);
+        do Memory.poke(row0col1+448, 12281);
+        do Memory.poke(row0col1+480, 10248);
+
+        do Memory.poke(row1col1+0, 10921);
+        do Memory.poke(row1col1+32, 10248);
+        do Memory.poke(row1col1+64, 10921);
+        do Memory.poke(row1col1+96, 10248);
+        do Memory.poke(row1col1+128, 10921);
+        do Memory.poke(row1col1+160, 10248);
+        do Memory.poke(row1col1+192, 11241);
+        do Memory.poke(row1col1+224, 10248);
+        do Memory.poke(row1col1+256, 32767);
+        do Memory.poke(row1col1+288, 16384);
+        do Memory.poke(row1col1+320, 16384);
+        do Memory.poke(row1col1+352, 24575);
+        do Memory.poke(row1col1+384, 16384);
+        do Memory.poke(row1col1+416, 32767);
+
+        // Soda machine
+        do Memory.poke(row0col12+64, -4);
+        do Memory.poke(row0col12+96, 2);
+        do Memory.poke(row0col12+128, 1);
+        do Memory.poke(row0col12+160, -1);
+        do Memory.poke(row0col12+192, 3);
+        do Memory.poke(row0col12+224, 7681);
+        do Memory.poke(row0col12+256, 257);
+        do Memory.poke(row0col12+288, 257);
+        do Memory.poke(row0col12+320, 3585);
+        do Memory.poke(row0col12+352, 4097);
+        do Memory.poke(row0col12+384, 4097);
+        do Memory.poke(row0col12+416, 3841);
+        do Memory.poke(row0col12+448, 3);
+        do Memory.poke(row0col12+480, -1);
+
+        do Memory.poke(row0col13+64, -1);
+        do Memory.poke(row0col13+128, 0);
+        do Memory.poke(row0col13+160, -1);
+        do Memory.poke(row0col13+224, 7196);
+        do Memory.poke(row0col13+256, 9250);
+        do Memory.poke(row0col13+288, 17442);
+        do Memory.poke(row0col13+320, 17442);
+        do Memory.poke(row0col13+352, 17442);
+        do Memory.poke(row0col13+384, 9250);
+        do Memory.poke(row0col13+416, 7196);
+        do Memory.poke(row0col13+480, -1);
+
+        do Memory.poke(row0col14+64, 16383);
+        do Memory.poke(row0col14+96, 16384);
+        do Memory.poke(row0col14+128, -16384);
+        do Memory.poke(row0col14+160, -1);
+        do Memory.poke(row0col14+192, -16384);
+        do Memory.poke(row0col14+224, -32736);
+        do Memory.poke(row0col14+256, -32688);
+        do Memory.poke(row0col14+288, -32632);
+        do Memory.poke(row0col14+320, -32632);
+        do Memory.poke(row0col14+352, -32520);
+        do Memory.poke(row0col14+384, -32632);
+        do Memory.poke(row0col14+416, -32632);
+        do Memory.poke(row0col14+448, -16384);
+        do Memory.poke(row0col14+480, -1);
+        
+        do Memory.poke(row1col12+0, 8336);
+        do Memory.poke(row1col12+32, 8336);
+        do Memory.poke(row1col12+64, 16272);
+        do Memory.poke(row1col12+96, 2576);
+        do Memory.poke(row1col12+128, 6928);
+        do Memory.poke(row1col12+160, 4368);
+        do Memory.poke(row1col12+192, 7952);
+        do Memory.poke(row1col12+224, 16);
+        do Memory.poke(row1col12+256, -4);
+        do Memory.poke(row1col12+288, 1026);
+        do Memory.poke(row1col12+320, 1025);
+        do Memory.poke(row1col12+352, -1);
+        do Memory.poke(row1col12+384, 1);
+        do Memory.poke(row1col12+416, -1);
+
+        do Memory.poke(row1col13+0, -32191);
+        do Memory.poke(row1col13+32, -32191);
+        do Memory.poke(row1col13+64, -385);
+        do Memory.poke(row1col13+96, 10260);
+        do Memory.poke(row1col13+128, 27702);
+        do Memory.poke(row1col13+160, 17442);
+        do Memory.poke(row1col13+192, 31806);
+        do Memory.poke(row1col13+256, -1);
+        do Memory.poke(row1col13+288, 4104);
+        do Memory.poke(row1col13+320, 4104);
+        do Memory.poke(row1col13+352, -1);
+        do Memory.poke(row1col13+416, -1);
+
+        do Memory.poke(row1col14+0, 2308);
+        do Memory.poke(row1col14+32, 2308);
+        do Memory.poke(row1col14+64, 2556);
+        do Memory.poke(row1col14+96, 2128);
+        do Memory.poke(row1col14+128, 2264);
+        do Memory.poke(row1col14+160, 2184);
+        do Memory.poke(row1col14+192, 2296);
+        do Memory.poke(row1col14+224, 2048);
+        do Memory.poke(row1col14+256, 16383);
+        do Memory.poke(row1col14+288, 16416);
+        do Memory.poke(row1col14+320, -32736);
+        do Memory.poke(row1col14+352, -1);
+        do Memory.poke(row1col14+384, -16384);
+        do Memory.poke(row1col14+416, -1);
+
+        // Sink and plates
+        do Memory.poke(row0col16+96, -2);
+        do Memory.poke(row0col16+128, 2);
+        do Memory.poke(row0col16+160, 16386);
+        do Memory.poke(row0col16+192, -20486);
+        do Memory.poke(row0col16+224, 18442);
+        do Memory.poke(row0col16+256, 2058);
+        do Memory.poke(row0col16+288, 2058);
+        do Memory.poke(row0col16+320, -2038);
+        do Memory.poke(row0col16+352, 4090);
+        do Memory.poke(row0col16+384, 2058);
+        do Memory.poke(row0col16+416, 2506);
+        do Memory.poke(row0col16+448, 2602);
+        do Memory.poke(row0col16+480, -1590);
+
+        do Memory.poke(row1col16+0, 10);
+        do Memory.poke(row1col16+32, 10);
+        do Memory.poke(row1col16+64, 10);
+        do Memory.poke(row1col16+96, 10);
+        do Memory.poke(row1col16+128, 10);
+        do Memory.poke(row1col16+160, 10);
+        do Memory.poke(row1col16+192, 10);
+        do Memory.poke(row1col16+224, 10);
+        do Memory.poke(row1col16+256, -6);
+        do Memory.poke(row1col16+288, 2);
+        do Memory.poke(row1col16+320, -2);
+
+        do Memory.poke(row0col17+64, 96);
+        do Memory.poke(row0col17+96, -1);
+        do Memory.poke(row0col17+128, 144);
+        do Memory.poke(row0col17+160, 8600);
+        do Memory.poke(row0col17+192, 21140);
+        do Memory.poke(row0col17+224, 8852);
+        do Memory.poke(row0col17+256, 408);
+        do Memory.poke(row0col17+288, 144);
+        do Memory.poke(row0col17+320, 16383);
+        do Memory.poke(row0col17+352, 8288);
+        do Memory.poke(row0col17+384, 8192);
+        do Memory.poke(row0col17+416, 8192);
+        do Memory.poke(row0col17+448, 8192);
+        do Memory.poke(row0col17+480, 16383);
+
+        do Memory.poke(row1col17+0, 8192);
+        do Memory.poke(row1col17+32, 8192);
+        do Memory.poke(row1col17+64, 8192);
+        do Memory.poke(row1col17+96, 8192);
+        do Memory.poke(row1col17+128, 8192);
+        do Memory.poke(row1col17+160, 8192);
+        do Memory.poke(row1col17+192, 8192);
+        do Memory.poke(row1col17+224, 8192);
+        do Memory.poke(row1col17+256, 16383);
+        do Memory.poke(row1col17+320, -1);
+
+        do Memory.poke(row0col18+64, 1920);
+        do Memory.poke(row0col18+96, 2113);
+        do Memory.poke(row0col18+128, 4129);
+        do Memory.poke(row0col18+160, 8977);
+        do Memory.poke(row0col18+192, 9361);
+        do Memory.poke(row0col18+224, 9361);
+        do Memory.poke(row0col18+256, 8977);
+        do Memory.poke(row0col18+288, 12337);
+        do Memory.poke(row0col18+320, 10321);
+        do Memory.poke(row0col18+352, 14257);
+        do Memory.poke(row0col18+384, 10321);
+        do Memory.poke(row0col18+416, 14257);
+        do Memory.poke(row0col18+448, 10321);
+        do Memory.poke(row0col18+480, 14257);
+
+        do Memory.poke(row1col18+0, 10321);
+        do Memory.poke(row1col18+32, 6049);
+        do Memory.poke(row1col18+64, 2113);
+        do Memory.poke(row1col18+96, 1921);
+        do Memory.poke(row1col18+128, 1);
+        do Memory.poke(row1col18+160, 1);
+        do Memory.poke(row1col18+192, 241);
+        do Memory.poke(row1col18+224, 777);
+        do Memory.poke(row1col18+256, 1433);
+        do Memory.poke(row1col18+288, 1385);
+        do Memory.poke(row1col18+320, 781);
+        do Memory.poke(row1col18+352, 1290);
+        do Memory.poke(row1col18+384, 1266);
+        do Memory.poke(row1col18+416, 1026);
+        do Memory.poke(row1col18+448, 1020);
+        return;
+    }
+
+}

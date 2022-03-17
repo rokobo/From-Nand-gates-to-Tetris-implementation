@@ -1,0 +1,56 @@
+/**
+ * Implements the drawing process of the kitchen, 
+ * which will be a grid based on 16x16 sprites (first index is 0).
+ * There will be kitchen elements comprised of individual or grouped cells,
+ * the cells themselves can have any number of animation steps.
+ */
+
+class Kitchen {
+    field Grill grill;
+    field DeepFryer deepfryer;
+    field CuttingTable cuttingtable;
+    field FoodStand foodstand;
+    field Counter counter;
+
+    constructor Kitchen new() {
+        let grill = Grill.new(0, 12);
+        let deepfryer = DeepFryer.new(3, 12);
+        let cuttingtable = CuttingTable.new(6, 12);
+        let foodstand = FoodStand.new(9, 12);
+        let counter = Counter.new(0, 6);
+        return this;
+    }
+    method void erase() { // Erases all drawings
+        do grill.erase();
+        do deepfryer.erase();
+        do cuttingtable.erase();
+        do foodstand.erase();
+        return;
+    }
+    method void draw0() { // Draws static stage of animation
+        do grill.draw0();
+        do deepfryer.draw0();
+        do cuttingtable.draw0();
+        do foodstand.draw0();
+        do counter.draw0();
+        return;
+    }
+    method void draw1() { // Draws first stage of animation
+        do grill.draw1();
+        do deepfryer.draw1();
+        do cuttingtable.draw1();
+        return;
+    }
+    method void draw2() { // Draws second stage of animation
+        do grill.draw2();
+        do deepfryer.draw2();
+        do cuttingtable.draw2();
+        return;
+    }
+    method void draw3() { // Draws third stage of animation
+        do grill.draw3();
+        do deepfryer.draw3();
+        do cuttingtable.draw3();
+        return;
+    }
+}

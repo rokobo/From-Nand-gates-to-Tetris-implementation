@@ -49,6 +49,16 @@ Sometimes it is useful to see what a `.vm` file should do in order to correctly 
 2. Press file > load script file, then select the `.VME` file you want to test.
 3. Press run > fast translation, to run the script.
 
+### Testing `.jack` files
+
+To test how a Jack file runs:
+
+1. Open the directory a Jack program's folder is in.
+2. Drag the folder onto the `JackCompiler.bat` in the tools folder (or to a shortcut, like the one in project 9) to translate it. Note that the translated files will be placed inside the input folder.
+3. Test the resulting VM files in the `VMEmulator.bat` by seleting the project folder.
+
+To have better control of problems, consider using the Jack compiler in a CLI. Simply navigate to the Simulation Tools folder and use the compiler as `JackCompiler {FileLocation}` or use the link in the project 9 folder as `JackCompiler.bat.lnk {FileLocation}`.
+
 </details>
 
 ## 1 - Elementary logic gates
@@ -136,7 +146,6 @@ In this part, an assembler needed to be built to translate `.asm` files into `.h
 
 ![ALU truth table](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Jump_bits.png?raw=true)
 
-
 Additionally, the followig programs were used to test the assembler:
 
 + Programs without labels and symbols: `AddL.asm`, `MaxL.asm`, `RectL.asm`.
@@ -214,9 +223,14 @@ Additionally, there were 4 special symbols that needed to be properly translated
 3. `functionName.fileName` - Used to translate a function `functionName`'s label when inside file `fileName.vm`.
 4. `functionName$ret.i` - Used to translate the return address for `call functionName` when used inside of a  file `fileName.vm`. Each time a function is called, the variable `i` is incremented by 1 (made for unique return addresses).
 
-## 9 - 
+## 9 - Jack program
 
-In progress...
+Part 9 intoduces the Jack language, a simple Java-like OOP language. The goal of this part is to get used to the language before implementing a Jack compiler in parts 10 and 11. To do that, a creative and well designed Jack program must me made. To create the program, the following features were used:
+
++ A bitmap editor - The `BitmapEditor.html` file is a useful tool to quickly convert sprite bitmaps into Jack code.
++ The Jack language's OS - Offers a few built in functions to facilitite the coding process:
+    |![Jack OS API](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Jack_OS_API_1.png?raw=true)|![Jack OS API](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Jack_OS_API_2.png?raw=true)|![Jack OS API](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Jack_OS_API_3.png?raw=true)|
+    |-|-|-|
 
 ## 10 -
 
