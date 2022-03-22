@@ -1,0 +1,97 @@
+// Creates the initial screen with rules
+
+class Initialize {
+   static int x1;
+   static int y1;
+   static int x2;
+   static int y2;
+   static int x3;
+   static int y3;
+
+   constructor Initialize new() {
+      let x1 = 2;
+      let y1 = 4;
+      let x2 = 18;
+      let y2 = 4;
+      let x3 = 37;
+      let y3 = 4;
+      return this;
+   }
+
+   method void draw() {
+      do Output.println();
+      do Output.printString(
+         "       Welcome to Rokobo's Kitchen, here are the rules"
+      );
+
+      // First column
+      do move1();
+      do Output.printString("A - Move left");
+      do move1();
+      do Output.printString("W - Move up");
+      do move1();
+      do Output.printString("S - Move down");
+      do move1();
+      do Output.printString("D - Move right");
+      do move1();
+      do Output.printString("E - Pick item");
+      do move1();
+      do Output.printString("Q - Drop item");
+      do move1();
+      do Output.printString("R - Sell order");
+
+      do Screen.drawLine(133, 42, 133, 188);
+
+      // Second column
+      do move2();
+      do Output.printString("Ingredients need:");
+      do move2();
+      do Output.printString("Meat - Cut, Grill");
+      do move2();
+      do Output.printString("Potato - Cut, Fry");
+      do move2();
+      do Output.printString("Lettuce - Wash");
+      do move2();
+      do Output.printString("Tomato - Wash");
+      do move2();
+      do Output.printString("Soda - Nothing");
+      do move2();
+      do Output.printString("Bread - Cut");
+
+      do Screen.drawLine(287, 42, 287, 188);
+
+      // Third column
+      do move3();
+      do Output.printString("Press space to continue");
+      do move3();
+      do Output.printString("Press P to quit the game");
+
+      // Final row
+      do Screen.drawLine(10, 194, 501, 194);
+      do move1();
+      do Output.printString("The clients order will be indicated by ! on the ingredients");
+      do move1();
+      do Output.printString("Finished ingredients will be marked by ! on the ingredients");
+      do move1();
+      do Output.printString("Pick money at register, wrong orders will not yield money");
+      return;
+   }
+
+   method void move1() {
+      do Output.moveCursor(y1, x1);
+      let y1 = y1 + 2;
+      return;
+   }
+
+   method void move2() {
+      do Output.moveCursor(y2, x2);
+      let y2 = y2 + 2;
+      return;
+   }
+
+   method void move3() {
+      do Output.moveCursor(y3, x3);
+      let y3 = y3 + 2;
+      return;
+   }
+}

@@ -1,0 +1,43 @@
+// Inputs some numbers and computes their average
+class Main {
+   function void main() {
+      var Kitchen kitchen;
+      var Player player;
+      var Initialize initialize;
+      var End end;
+      var int loop;         // Loop for animations
+      var int random_value;
+      var int money;
+
+      let initialize = Initialize.new();
+      do initialize.draw();
+      let random_value = 0;
+
+      // Create random value by counting the time waited by user
+      while (~ (Keyboard.keyPressed() = 32)) {//space
+         if (random_value = 32767) {let random_value = 1;}
+         else {let random_value = random_value + 1;}
+      }
+
+      do Screen.clearScreen();
+
+      let kitchen = Kitchen.new();
+      let player = Player.new(random_value);
+      let loop = 0;
+
+      do kitchen.draw0();
+      
+      while (~ (Keyboard.keyPressed() = 80)) {// P
+         if (loop = 5) {do kitchen.draw1();}
+         if (loop = 10) {do kitchen.draw2();}
+         if (loop = 15) {do kitchen.draw3(); let loop = 0;}
+         let money = player.update();
+         let loop = loop + 1;
+         do Sys.wait(10);
+      }
+
+      let end = End.new();
+      do end.draw(money);
+      return;
+   }
+}

@@ -482,7 +482,7 @@ if-goto WHILE_END0
 push static 0
 push constant 100
 call Random.randRange 2
-push constant 75
+push constant 60
 gt
 if-goto IF_TRUE0
 goto IF_FALSE0

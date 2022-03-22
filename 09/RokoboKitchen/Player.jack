@@ -33,7 +33,7 @@ class Player {
     static array order;
     static array sell;    
 
-    constructor Player new() {
+    constructor Player new(int random_value) {
         var int i;
         // location = 16384 + x/16 + y*32
         let x = 5;
@@ -41,7 +41,7 @@ class Player {
 
         let timer = 50;
 
-        let client = Client.new(25554);
+        let client = Client.new(random_value);
         let order = client.update();
 
         let inventory = 0;
@@ -529,27 +529,10 @@ class Player {
         return;
     }
 
-    method void update() {
+    method int update() {
         let key = Keyboard.keyPressed();
         do erase();
-        if (key = 87) {if (y > 9) {let y = y - 1;}}    // W      
-        if (key = 83) {if (y < 11) {let y = y + 1;}}   // S
-        if (key = 65) {if (x > 0) {let x = x - 1;}}    // A     
-        if (key = 68) {if (x < 18) {let x = x + 1;}}   // D
-        if (key = 69) {                                // E
-            do pick(); 
-            do current_item_display();
-        }
-        if (key = 81) {                                // Q 
-            do drop(); 
-            do current_item_display();
-        }
-        if (key = 82) {                                // R
-            if (x < 3) {if (y = 9) {
-                do sell();
-            }}
-        }
-        do draw();
+        
         do update_equipment();
         if (client_update = 5) {
             let order = client.update(); 
@@ -558,7 +541,34 @@ class Player {
         else {
             let client_update = client_update + 1;
         }
-        return;
+
+        if (key = 87) {if (y > 9) {let y = y - 1; do draw(); return money;}}    // W      
+        if (key = 83) {if (y < 11) {let y = y + 1; do draw(); return money;}}   // S
+        if (key = 65) {if (x > 0) {let x = x - 1; do draw(); return money;}}    // A     
+        if (key = 68) {if (x < 18) {let x = x + 1; do draw(); return money;}}   // D
+        if (key = 69) {                                // E
+            do pick(); 
+            do current_item_display();
+            do draw();
+            return money;
+        }
+        if (key = 81) {                                // Q 
+            do drop(); 
+            do current_item_display();
+            do draw();
+            return money;
+        }
+        if (key = 82) {                                // R
+            if (x < 3) {
+                if (y = 9) {
+                    do sell();
+                    do draw();
+                    return money;
+                }
+            }
+        }
+        do draw();
+        return money;
     }
 
     method void current_item_display() {
@@ -567,72 +577,72 @@ class Player {
         do Output.moveCursor(0, 33);
 
         if (inventory = 0) { // Empty
-            let current = "Empty hand   "; 
+            let current = "Empty hand     "; 
             do Output.printString(current);
             return;
         }    
         if (inventory = 1) { // Burguer
-            let current = "Cooked Burguer"; 
+            let current = "Cooked Burguer "; 
             do Output.printString(current);
             return;
         }
         if (inventory = 2) { // Fries
-            let current = "Fries      "; 
+            let current = "Fries        "; 
             do Output.printString(current);
             return;
         }
         if (inventory = 3) { // Cut buns
-            let current = "Bread Buns "; 
+            let current = "Bread Buns     "; 
             do Output.printString(current);
             return;
         }
         if (inventory = 4) { // Cut potato
-            let current = "Potato Slices"; 
+            let current = "Potato Slices  "; 
             do Output.printString(current);
             return;
         }
         if (inventory = 5) { // Cut meat
-            let current = "Meat patty "; 
+            let current = "Meat patty     "; 
             do Output.printString(current);
             return;
         }
         if (inventory = 6) { // Bread
-            let current = "Bread Loaf "; 
+            let current = "Bread Loaf     "; 
             do Output.printString(current);
             return;
         }
         if (inventory = 7) { // Tomato
-            let current = "Dirty Tomato"; 
+            let current = "Dirty Tomato   "; 
             do Output.printString(current);
             return;
         }
         if (inventory = 8) { // Meat
-            let current = "Beef cut   "; 
+            let current = "Beef cut       "; 
             do Output.printString(current);
             return;
         }
         if (inventory = 9) { // Potato
-            let current = "Raw Potato "; 
+            let current = "Raw Potato     "; 
             do Output.printString(current);
             return;
         }
         if (inventory = 10) { // Lettuce
-            let current = "Dirty Lettuce"; 
+            let current = "Dirty Lettuce  "; 
             do Output.printString(current);
             return;
         }
         if (inventory = 11) { // Clean Tomato
-            let current = "Clean Tomato"; 
+            let current = "Clean Tomato   "; 
             do Output.printString(current);
             return;
         }
         if (inventory = 12) { // Clean lettuce
-            let current = "Clean Lettuce"; 
+            let current = "Clean Lettuce  "; 
             do Output.printString(current);
             return;
         }
         if (inventory = 13) { // Soda
-            let current = "Soda Can   "; 
+            let current = "Soda Can       "; 
             do Output.printString(current);
             return;
         }
@@ -653,7 +663,9 @@ class Player {
         if (x = 14) {if (y = 9) {let inventory = 13; return;}} // Pickup soda
         if (x = 13) {if (y = 9) {let inventory = 13; return;}} 
         if (x = 12) {if (y = 9) {let inventory = 13; return;}} 
-        if (x = 1) {if (y = 9) {do pickup_money(); return;}} // Pickup money
+        if (x = 3) {if (y = 9) {do pickup_money(); return;}} // Pickup money
+        if (x = 2) {if (y = 9) {do pickup_money(); return;}} 
+        if (x = 1) {if (y = 9) {do pickup_money(); return;}} 
         if (x = 0) {if (y = 9) {do pickup_money(); return;}} 
 
         // Second row
@@ -1017,45 +1029,48 @@ class Player {
     }
 
     method void sell() {
-        
-        do erase_counter(1);
-        do erase_counter(2);
-        do erase_counter(3);
-        do erase_counter(11);
-        do erase_counter(12);
-        do erase_counter(13);
-
         // Order: 1-Buns, 2-Fries, 3-Tomato, 4-Lettuce, 5-Soda, 6-Burguer
         if (order[0]) {
-            if (~ (order[1] = sell[0])) {return;}
-            if (~ (order[2] = sell[1])) {return;}
-            if (~ (order[3] = sell[2])) {return;}
-            if (~ (order[4] = sell[3])) {return;}
-            if (~ (order[5] = sell[4])) {return;}
-            if (~ (order[6] = sell[5])) {return;}
+            do erase_counter(1);
+            do erase_counter(2);
+            do erase_counter(3);
+            do erase_counter(11);
+            do erase_counter(12);
+            do erase_counter(13);
+            do client.erase_order();
 
-            do draw_counter(0);
-
-            let sell[0] = false;    
-            let sell[1] = false;    
-            let sell[2] = false;    
-            let sell[3] = false;
-            let sell[4] = false;
-            let sell[5] = false;
-            let order[0] = false;
-
+            if (~ (order[1] = sell[0])) {do clear_order(); return;}
+            if (~ (order[2] = sell[1])) {do clear_order(); return;}
+            if (~ (order[3] = sell[2])) {do clear_order(); return;}
+            if (~ (order[4] = sell[3])) {do clear_order(); return;}
+            if (~ (order[5] = sell[4])) {do clear_order(); return;}
+            if (~ (order[6] = sell[5])) {do clear_order(); return;}
             
             let counter_money = counter_money + 
-                (bool_to_num(order[1]) * 2) + 
-                (bool_to_num(order[2]) * 7) + 
-                (bool_to_num(order[3]) * 5) + 
-                (bool_to_num(order[4]) * 4) + 
-                (bool_to_num(order[5]) * 3) + 
-                (bool_to_num(order[6]) * 8);
+            (bool_to_num(order[1]) * 2) + 
+            (bool_to_num(order[2]) * 7) + 
+            (bool_to_num(order[3]) * 5) + 
+            (bool_to_num(order[4]) * 4) + 
+            (bool_to_num(order[5]) * 3) + 
+            (bool_to_num(order[6]) * 8);
             
-            do client.erase_order();
+            do draw_counter(0);
+            do clear_order();
         }
+        return;
+    }
 
+    method void clear_order() {
+        var int i;
+        let i = 0;
+
+        while (i < 6) {
+            let sell[i] = false;
+            let order[i] = false;
+            let i = i + 1;
+        }
+        
+        let order[6] = false;
         return;
     }
 

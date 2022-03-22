@@ -1,0 +1,103 @@
+function Main.main 7
+call Initialize.new 0
+pop local 2
+push local 2
+call Initialize.draw 1
+pop temp 0
+push constant 0
+pop local 5
+label WHILE_EXP0
+call Keyboard.keyPressed 0
+push constant 32
+eq
+not
+not
+if-goto WHILE_END0
+push local 5
+push constant 32767
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 1
+pop local 5
+goto IF_END0
+label IF_FALSE0
+push local 5
+push constant 1
+add
+pop local 5
+label IF_END0
+goto WHILE_EXP0
+label WHILE_END0
+call Screen.clearScreen 0
+pop temp 0
+call Kitchen.new 0
+pop local 0
+push local 5
+call Player.new 1
+pop local 1
+push constant 0
+pop local 4
+push local 0
+call Kitchen.draw0 1
+pop temp 0
+label WHILE_EXP1
+call Keyboard.keyPressed 0
+push constant 80
+eq
+not
+not
+if-goto WHILE_END1
+push local 4
+push constant 5
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push local 0
+call Kitchen.draw1 1
+pop temp 0
+label IF_FALSE1
+push local 4
+push constant 10
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push local 0
+call Kitchen.draw2 1
+pop temp 0
+label IF_FALSE2
+push local 4
+push constant 15
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push local 0
+call Kitchen.draw3 1
+pop temp 0
+push constant 0
+pop local 4
+label IF_FALSE3
+push local 1
+call Player.update 1
+pop local 6
+push local 4
+push constant 1
+add
+pop local 4
+push constant 10
+call Sys.wait 1
+pop temp 0
+goto WHILE_EXP1
+label WHILE_END1
+call End.new 0
+pop local 3
+push local 3
+push local 6
+call End.draw 2
+pop temp 0
+push constant 0
+return
