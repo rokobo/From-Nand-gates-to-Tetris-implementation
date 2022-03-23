@@ -8,12 +8,6 @@ push constant 9
 pop static 1
 push constant 50
 pop static 4
-push argument 0
-call Client.new 1
-pop static 16
-push static 16
-call Client.update 1
-pop static 18
 push constant 0
 pop static 5
 push constant 0
@@ -36,6 +30,18 @@ push constant 0
 pop static 14
 push constant 0
 pop static 15
+push pointer 0
+call Player.draw_background 1
+pop temp 0
+push pointer 0
+call Player.draw_titles 1
+pop temp 0
+push argument 0
+call Client.new 1
+pop static 16
+push static 16
+call Client.update 1
+pop static 18
 push constant 6
 call Array.new 1
 pop static 19
@@ -61,12 +67,6 @@ add
 pop local 0
 goto WHILE_EXP0
 label WHILE_END0
-push pointer 0
-call Player.draw_background 1
-pop temp 0
-push pointer 0
-call Player.draw_titles 1
-pop temp 0
 push pointer 0
 return
 function Player.draw_background 7
@@ -5126,7 +5126,7 @@ if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
 push constant 16384
-push constant 3
+push constant 9
 add
 push constant 3328
 add
@@ -5667,7 +5667,7 @@ if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
 push constant 16384
-push constant 3
+push constant 9
 add
 push constant 3328
 add

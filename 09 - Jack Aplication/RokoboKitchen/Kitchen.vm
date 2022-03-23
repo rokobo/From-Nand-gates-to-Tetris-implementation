@@ -36,9 +36,6 @@ pop temp 0
 push this 2
 call CuttingTable.erase 1
 pop temp 0
-push this 3
-call FoodStand.erase 1
-pop temp 0
 push constant 0
 return
 function Kitchen.draw0 0
@@ -58,6 +55,9 @@ call FoodStand.draw0 1
 pop temp 0
 push this 4
 call Counter.draw0 1
+pop temp 0
+push this 3
+call FoodStand.dispose 1
 pop temp 0
 push constant 0
 return
@@ -100,6 +100,14 @@ call DeepFryer.draw3 1
 pop temp 0
 push this 2
 call CuttingTable.draw3 1
+pop temp 0
+push constant 0
+return
+function Kitchen.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Memory.deAlloc 1
 pop temp 0
 push constant 0
 return

@@ -24,7 +24,6 @@ class Kitchen {
         do grill.erase();
         do deepfryer.erase();
         do cuttingtable.erase();
-        do foodstand.erase();
         return;
     }
     method void draw0() { // Draws static stage of animation
@@ -33,6 +32,7 @@ class Kitchen {
         do cuttingtable.draw0();
         do foodstand.draw0();
         do counter.draw0();
+        do foodstand.dispose();
         return;
     }
     method void draw1() { // Draws first stage of animation
@@ -51,6 +51,10 @@ class Kitchen {
         do grill.draw3();
         do deepfryer.draw3();
         do cuttingtable.draw3();
+        return;
+    }
+    method void dispose(){
+        do Memory.deAlloc(this);
         return;
     }
 }

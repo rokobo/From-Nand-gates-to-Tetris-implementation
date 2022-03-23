@@ -75,9 +75,6 @@ class FoodStand {
         let row2col9 = 16384 + (x + 9) + ((y + 2) * 512);
         return this;
     }
-    method void erase() {
-        return;
-    }
     method void draw0() {
         // First col
         do Memory.poke(row0col0+0, -1);
@@ -599,6 +596,10 @@ class FoodStand {
         do Memory.poke(row2col9+448, 30720);
         do Memory.poke(row2col9+480, 30720);
 
+        return;
+    }
+    method void dispose(){
+        do Memory.deAlloc(this);
         return;
     }
 }

@@ -62,9 +62,19 @@ class Initialize {
 
       // Third column
       do move3();
-      do Output.printString("Press space to continue");
+      do Output.printString("Press Space to continue");
       do move3();
       do Output.printString("Press P to quit the game");
+      do move3();
+      do Output.printString("The game ends when you quit");
+      do move3(); 
+      do move3();
+      do Output.printString("The random module seed is");
+      do move3();
+      do Output.printString("based on how much time you");
+      do move3();
+      do Output.printString("wait on this initial screen");
+     
 
       // Final row
       do Screen.drawLine(10, 194, 501, 194);
@@ -78,20 +88,28 @@ class Initialize {
    }
 
    method void move1() {
+      do Sys.wait(100);
       do Output.moveCursor(y1, x1);
       let y1 = y1 + 2;
       return;
    }
 
    method void move2() {
+      do Sys.wait(100);
       do Output.moveCursor(y2, x2);
       let y2 = y2 + 2;
       return;
    }
 
    method void move3() {
+      do Sys.wait(100);
       do Output.moveCursor(y3, x3);
       let y3 = y3 + 2;
+      return;
+   }
+
+   method void dispose(){
+      do Memory.deAlloc(this);
       return;
    }
 }

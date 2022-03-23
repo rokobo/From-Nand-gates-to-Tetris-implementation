@@ -1,31 +1,35 @@
 // Creates the end screen with points
 
 class End {
-    constructor End new() {
-        return this;
-    }
- 
-    method void draw(int money) {
+    function void draw(int money) {
         do Screen.clearScreen();
         do Output.moveCursor(1, 22);
         do Output.printString("Congratulations!");
+        do Sys.wait(200);
         do Output.moveCursor(5, 2);
         do Output.printString("You made a total profit of: $");
+        do Sys.wait(200);
         do Output.moveCursor(5, 31);
         do Output.printInt(money);
+        do Sys.wait(200);
 
         do Output.moveCursor(9, 2);
         do Output.printString("Thanks for playing Rokobo's Kitchen");
+        do Sys.wait(200);
         do Output.moveCursor(11, 2);
         do Output.printString("Consider checking out my Github profile");
+        do Sys.wait(200);
         do Output.moveCursor(13, 2);
         do Output.printString("https://github.com/rokobo (with the code to the game)");
-
+        do Sys.wait(200);
+        
         do Output.moveCursor(17, 2);
         do Output.printString("Thank you again for playing! I hope you found it interesting");
+        do Sys.wait(200);
 
         do Output.moveCursor(21, 55);
         do Output.printString("Rokobo");
+        do Sys.wait(3000);
         return;
     }
 }

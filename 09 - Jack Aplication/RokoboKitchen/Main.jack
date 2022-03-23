@@ -4,13 +4,13 @@ class Main {
       var Kitchen kitchen;
       var Player player;
       var Initialize initialize;
-      var End end;
       var int loop;         // Loop for animations
       var int random_value;
       var int money;
 
       let initialize = Initialize.new();
       do initialize.draw();
+      do initialize.dispose();
       let random_value = 0;
 
       // Create random value by counting the time waited by user
@@ -33,11 +33,12 @@ class Main {
          if (loop = 15) {do kitchen.draw3(); let loop = 0;}
          let money = player.update();
          let loop = loop + 1;
-         do Sys.wait(10);
+         do Sys.wait(65);
       }
 
-      let end = End.new();
-      do end.draw(money);
+      do kitchen.dispose();
+
+      do End.draw(money);
       return;
    }
 }

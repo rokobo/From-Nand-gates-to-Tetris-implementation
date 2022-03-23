@@ -232,6 +232,15 @@ Part 9 intoduces the Jack language, a simple Java-like OOP language. The goal of
     |![Jack OS API](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Jack_OS_API_1.png?raw=true)|![Jack OS API](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Jack_OS_API_2.png?raw=true)|![Jack OS API](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Jack_OS_API_3.png?raw=true)|
     |-|-|-|
 
+The theme for this project was a simple restaurant. The challenges of this project included:
+
+1. Learning a new programming language.
+2. Correctly manipulating screen elements with the primitive libraries available to the language.
+3. Handling the overall lack of high-level features that programmers are often used to.
+
+Here is a picture of how the game turned out:
+![Aplication preview](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/RokoboKitchenPreview.png?raw=true)
+
 ## 10 -
 
 In progress...
