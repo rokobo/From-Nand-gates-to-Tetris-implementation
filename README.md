@@ -93,7 +93,9 @@ In this part, logic gates were implemented to create the Hack computer's Arithme
 + `Inc16.hdl` - Adds 1 to 16-bit integers.
 + `ALU.hdl` - Arithmetic Logic Unit, used to compute various operations, according to the following table:
 
-![ALU truth table](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/ALU_truth_table.png?raw=true)
+<p align="center">
+  <img src="https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/ALU_truth_table.png?raw=true"/>
+</p>
 
 ## 3 - Memory chips
 
@@ -140,11 +142,8 @@ In this part, an assembler needed to be built to translate `.asm` files into `.h
 
     `1 1 1 a c1 c2 c3 c4 c5 c6 d1 d2 d3 j1 j2 j3` = `destination = computation; jump`
 
-![ALU truth table](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Computation_bits.png?raw=true)
-
-![ALU truth table](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Destination_bits.png?raw=true)
-
-![ALU truth table](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Jump_bits.png?raw=true)
+|![ALU truth table](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Computation_bits.png?raw=true)|![ALU truth table](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Destination_bits.png?raw=true)|![ALU truth table](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Jump_bits.png?raw=true)|
+|-|-|-|
 
 Additionally, the followig programs were used to test the assembler:
 
@@ -239,7 +238,9 @@ The theme for this project was a simple restaurant. The challenges of this proje
 3. Handling the overall lack of high-level features that programmers are often used to.
 
 Here is a picture of how the game turned out:
-![Aplication preview](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/RokoboKitchenPreview.png?raw=true)
+<p align="center">
+  <img src="https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/RokoboKitchenPreview.png?raw=true"/>
+</p>
 
 ## 10 -
 
