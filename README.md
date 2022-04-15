@@ -244,9 +244,9 @@ Here is a picture of how the game turned out:
   <img src="https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/RokoboKitchenPreview.png?raw=true"/>
 </p>
 
-## 10 -
+## 10 - Jack Tokenizer
 
-Part 9 is the first part of a Jack to VM compiler. In this part, the program `JackTokenizer.py` translates Jack code into a XML parse tree. Challenges for this project included:
+Part 10 is the first of two parts of a Jack to VM compiler. In this part, the program `JackTokenizer.py` translates Jack code into a XML parse tree. Challenges for this project included:
 
 1. Tokenizing a Jack file.
 2. Understanding the Jack grammar rules.
