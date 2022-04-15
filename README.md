@@ -65,21 +65,21 @@ To have better control of problems, consider using the Jack compiler in a CLI. S
 
 First we begin by creating some basic elementary logic gates that will be the foundation of the Hack computer (this project's computer architecture). The chips were programmed from an abstraction of the `Nand` gate and the Hardware Description Language (HDL) was used to create the following 15 elementary logic gates:
 
-+ `Not` - Inverts the input bit.
-+ `And` - Outputs 1 if both inputs are 1.
-+ `Or` - Outputs 1 if either input is 1.
-+ `Xor` - Outputs 1 if only one input is 1.
-+ `Mux` - Has two inputs, one selector bit and one output. The selector bit chooses which input to output.
-+ `DMux` - Has one input, one selector bit and two outputs. The selector bit chooses which output the input will go through. In case it chooses the `a` output, the `b` output will be 0.
-+ `Not16` - `Not` gate for 16-bit integer.
-+ `And16` - `And` gate for 16-bit integer.
-+ `Or16` - `Or` gate for 16-bit integer.
-+ `Mux16` - `Mux` gate for 16-bit integer.
-+ `Or8Way` - `Or` gate for 8-bit integer.
-+ `Mux4Way16` - `Mux` gate for 16-bit integer with 4 inputs instead of 2.
-+ `Mux8Way16` - `Mux` gate for 16-bit integer with 8 inputs instead of 2.
-+ `DMux4Way` - `DMux` gate with 4 outputs  instead of 2.
-+ `DMux8Way` - `DMux` gate with 8 outputs  instead of 2.
+- `Not` - Inverts the input bit.
+- `And` - Outputs 1 if both inputs are 1.
+- `Or` - Outputs 1 if either input is 1.
+- `Xor` - Outputs 1 if only one input is 1.
+- `Mux` - Has two inputs, one selector bit and one output. The selector bit chooses which input to output.
+- `DMux` - Has one input, one selector bit and two outputs. The selector bit chooses which output the input will go through. In case it chooses the `a` output, the `b` output will be 0.
+- `Not16` - `Not` gate for 16-bit integer.
+- `And16` - `And` gate for 16-bit integer.
+- `Or16` - `Or` gate for 16-bit integer.
+- `Mux16` - `Mux` gate for 16-bit integer.
+- `Or8Way` - `Or` gate for 8-bit integer.
+- `Mux4Way16` - `Mux` gate for 16-bit integer with 4 inputs instead of 2.
+- `Mux8Way16` - `Mux` gate for 16-bit integer with 8 inputs instead of 2.
+- `DMux4Way` - `DMux` gate with 4 outputs instead of 2.
+- `DMux8Way` - `DMux` gate with 8 outputs instead of 2.
 
 Note that all of these gates were built either from the primitive `Nand` gate or from previously built gates.
 
@@ -87,11 +87,11 @@ Note that all of these gates were built either from the primitive `Nand` gate or
 
 In this part, logic gates were implemented to create the Hack computer's Arithmetic Logic Unit (ALU):
 
-+ `HalfAdder.hdl` - Sums two input bits and outputs the sum and the carry bit.
-+ `FullAdder.hdl` - Sums two input bits and one carry bit and outputs the sum and the carry bit.
-+ `Add16.hdl` - Adds two 16-bit integers in Two's complement.
-+ `Inc16.hdl` - Adds 1 to 16-bit integers.
-+ `ALU.hdl` - Arithmetic Logic Unit, used to compute various operations, according to the following table:
+- `HalfAdder.hdl` - Sums two input bits and outputs the sum and the carry bit.
+- `FullAdder.hdl` - Sums two input bits and one carry bit and outputs the sum and the carry bit.
+- `Add16.hdl` - Adds two 16-bit integers in Two's complement.
+- `Inc16.hdl` - Adds 1 to 16-bit integers.
+- `ALU.hdl` - Arithmetic Logic Unit, used to compute various operations, according to the following table:
 
 <p align="center">
   <img src="https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/ALU_truth_table.png?raw=true"/>
@@ -101,54 +101,55 @@ In this part, logic gates were implemented to create the Hack computer's Arithme
 
 In this part, from the abstraction of the Data Flip-Flop gate (DFF), the memory chips of the Hack computer were created:
 
-+ `Bit.hdl` - 1-bit Register.
-+ `Register.hdl` - 16-bit Register.
-+ `RAM8.hdl` - 16-bit RAM with 8 register of memory.
-+ `RAM64.hdl` - 16-bit RAM with 64 register of memory.
-+ `RAM512.hdl` - 16-bit RAM with 512 register of memory.
-+ `RAM4K.hdl` - 16-bit RAM with 4096 register of memory.
-+ `RAM16K.hdl` - 16-bit RAM with 16384 register of memory.
-+ `PC.hdl` - 16-bit program counter.
+- `Bit.hdl` - 1-bit Register.
+- `Register.hdl` - 16-bit Register.
+- `RAM8.hdl` - 16-bit RAM with 8 register of memory.
+- `RAM64.hdl` - 16-bit RAM with 64 register of memory.
+- `RAM512.hdl` - 16-bit RAM with 512 register of memory.
+- `RAM4K.hdl` - 16-bit RAM with 4096 register of memory.
+- `RAM16K.hdl` - 16-bit RAM with 16384 register of memory.
+- `PC.hdl` - 16-bit program counter.
 
 ## 4 - Machine language programs
 
 In this part, two programs that will eventually run on the Hack computer were created, in order to start learning the Hack Assembly language:
 
-+ `Mult.asm` - Multiplies `RAM[0]` and `RAM[1]` and stores the result in `RAM[2]`.
-+ `Fill.asm` - Runs an infinite loop that listens to the keyboard input. When a key is pressed (any key), the program blackens the screen and should remain fully black as long as the key is pressed. When no key is pressed, the program clears the screen. The screen should remain fully clear as long as no key is pressed.
+- `Mult.asm` - Multiplies `RAM[0]` and `RAM[1]` and stores the result in `RAM[2]`.
+- `Fill.asm` - Runs an infinite loop that listens to the keyboard input. When a key is pressed (any key), the program blackens the screen and should remain fully black as long as the key is pressed. When no key is pressed, the program clears the screen. The screen should remain fully clear as long as no key is pressed.
 
 ## 5 - Computer architecture
 
 In this part, the Hack computer architecture is finalized through the following chips:
 
-+ `Memory.hdl` - Entire RAM address space for the computer (`RAM16K`, Keyboard and Screen).
-+ `CPU.hdl` - The Hack CPU.
-+ `Computer.hdl` - The Hack computer platform.
+- `Memory.hdl` - Entire RAM address space for the computer (`RAM16K`, Keyboard and Screen).
+- `CPU.hdl` - The Hack CPU.
+- `Computer.hdl` - The Hack computer platform.
 
 Additionally, the followig programs were used to test the Hack computer:
 
-+ `Add.hack` - Adds up the two constants 2 and 3 and writes the result in `RAM[0]`.
-+ `Max.hack` - Computes the maximum of `RAM[0]` and `RAM[1]` and writes the result in `RAM[2]`.
-+ `Rect.hack` - Draws a rectangle of width 16 pixels and length `RAM[0]` at the top left of the screen.
+- `Add.hack` - Adds up the two constants 2 and 3 and writes the result in `RAM[0]`.
+- `Max.hack` - Computes the maximum of `RAM[0]` and `RAM[1]` and writes the result in `RAM[2]`.
+- `Rect.hack` - Draws a rectangle of width 16 pixels and length `RAM[0]` at the top left of the screen.
 
 ## 6 - Hack assembler
 
 In this part, an assembler needed to be built to translate `.asm` files into `.hack` files. All `.hack` instructions are a single 16-bit integer that can be translated according to:
 
-+ A-instructions - Used for addressing, where `@value` sets the A register to `value` and consequently, the `RAM[value]` register becomes selected. To translate A-instructions, we use a 0 plus the binary form of `value`.
+- A-instructions - Used for addressing, where `@value` sets the A register to `value` and consequently, the `RAM[value]` register becomes selected. To translate A-instructions, we use a 0 plus the binary form of `value`.
 
-    `0000000000010101` = `@21`
-+ C-intructions - Used for calculation. To translate C-instructions, we use a 111, plus a selector bit (to choose between using A or M), plus six computation bits, plus 3 destination bits (where to save the computation) and 3 jump bits (go to instruction in the A register if the jump condition is met by the computation):
+  `0000000000010101` = `@21`
 
-    `1 1 1 a c1 c2 c3 c4 c5 c6 d1 d2 d3 j1 j2 j3` = `destination = computation; jump`
+- C-intructions - Used for calculation. To translate C-instructions, we use a 111, plus a selector bit (to choose between using A or M), plus six computation bits, plus 3 destination bits (where to save the computation) and 3 jump bits (go to instruction in the A register if the jump condition is met by the computation):
 
-|![ALU truth table](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Computation_bits.png?raw=true)|![ALU truth table](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Destination_bits.png?raw=true)|![ALU truth table](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Jump_bits.png?raw=true)|
-|-|-|-|
+  `1 1 1 a c1 c2 c3 c4 c5 c6 d1 d2 d3 j1 j2 j3` = `destination = computation; jump`
+
+| ![ALU truth table](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Computation_bits.png?raw=true) | ![ALU truth table](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Destination_bits.png?raw=true) | ![ALU truth table](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Jump_bits.png?raw=true) |
+| ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 
 Additionally, the followig programs were used to test the assembler:
 
-+ Programs without labels and symbols: `AddL.asm`, `MaxL.asm`, `RectL.asm`.
-+ Programs with labels and symbols: `Add.asm`, `Max.asm`, `Rect.asm` and `Pong.asm`.
+- Programs without labels and symbols: `AddL.asm`, `MaxL.asm`, `RectL.asm`.
+- Programs with labels and symbols: `Add.asm`, `Max.asm`, `Rect.asm` and `Pong.asm`.
 
 ## 7 - VM Translator (partial)
 
@@ -158,56 +159,56 @@ In this part, a translator needed to be built to translate VM code into Hack ass
 
 The `.vm` files are translated into `.asm` files and placed in the same directory. At this stage, the translator was supposed to be able to handle a total of 9 arithmetic and logic operations:
 
-+ `add` - Does `x + y`
-+ `sub` - Does `x - y`.
-+ `neg` - Does `-y`.
-+ `eq` - Does `x == y`.
-+ `or` - Does `x | y`.
-+ `gt` - Does `x > y`.
-+ `lt` - Does `x < y`.
-+ `and` - Does `x & y`.
-+ `not` - Does `!x`.
+- `add` - Does `x + y`
+- `sub` - Does `x - y`.
+- `neg` - Does `-y`.
+- `eq` - Does `x == y`.
+- `or` - Does `x | y`.
+- `gt` - Does `x > y`.
+- `lt` - Does `x < y`.
+- `and` - Does `x & y`.
+- `not` - Does `!x`.
 
 With `y` being the top-most element in the VM Stack. Additionally, the translator also need to be ale to translate `push` and `pop` commands to the VM Stack and to 8 distinct memory segments. The mapping for the VM translator is:
 
-+ VM Stack or `SP` - Base address in `RAM[0]`. Located between `RAM[256]` and `RAM[2047]`.
-+ `local` - Base address in `RAM[1]`.
-+ `argument` - Base address in `RAM[2]`.
-+ `this` - Base address in `RAM[3]`.
-+ `that` - Base address in `RAM[4]`.
-+ `temp` - Located between `RAM[5]` and `RAM[12]`, used for temporary storage.
-+ General purpose registers - Located between `RAM[13]` and `RAM[15]`.
-+ `static` - Located between `RAM[16]` and `RAM[255]`. Maps global variables. Each `static i` reference in a `Foo.vm` file is translated to Hack as `@Foo.i`.
-+ `pointer` - Used for accessing `this` and `that` (`pointer 0` = `this`).
-+ `constant` - Virtual segment for supplying constant values.
+- VM Stack or `SP` - Base address in `RAM[0]`. Located between `RAM[256]` and `RAM[2047]`.
+- `local` - Base address in `RAM[1]`.
+- `argument` - Base address in `RAM[2]`.
+- `this` - Base address in `RAM[3]`.
+- `that` - Base address in `RAM[4]`.
+- `temp` - Located between `RAM[5]` and `RAM[12]`, used for temporary storage.
+- General purpose registers - Located between `RAM[13]` and `RAM[15]`.
+- `static` - Located between `RAM[16]` and `RAM[255]`. Maps global variables. Each `static i` reference in a `Foo.vm` file is translated to Hack as `@Foo.i`.
+- `pointer` - Used for accessing `this` and `that` (`pointer 0` = `this`).
+- `constant` - Virtual segment for supplying constant values.
 
 To test this project, the Python translator was used in the `.vm` files to translate them to `.asm`, then the CPU emulator was used to check if it was a correct translation. The tests were done in the following order:
 
-+ `SimpleAdd.vm` - Tests `push` and `add`.
-+ `BasicTest.vm` - Tests the basic virtual memory segments.
-+ `StackTest.vm` - Tests Stack arithmetic and logic operations.
-+ `PointerTest.vm` - Tests the `pointer`, `this` and `that` memory segments.
-+ `StaticTest.vm` - Tests the `static` memory segment.
+- `SimpleAdd.vm` - Tests `push` and `add`.
+- `BasicTest.vm` - Tests the basic virtual memory segments.
+- `StackTest.vm` - Tests Stack arithmetic and logic operations.
+- `PointerTest.vm` - Tests the `pointer`, `this` and `that` memory segments.
+- `StaticTest.vm` - Tests the `static` memory segment.
 
 ## 8 - VM Translator (complete)
 
 Part 8 complements the VM translator in part 7 by adding the following functionality:
 
-+ Support for `function` and `return` translation.
-+ Support for function calling using `call`.
-+ Support for `goto` and `if-goto` commands.
-+ Directory translation: `python VMTranslator.py NestedCall`, the endfile will be named after the directory and all files in the directory will be translated into this one file.
-+ Multi-argument translation: `python VMTranslator.py NestedCall StackTest BasicTest\BasicTest.vm`.
-+ Bootstrap code in case there is a `Sys.vm` file in the directory (Resets Stack top and calls `Sys.init`).
+- Support for `function` and `return` translation.
+- Support for function calling using `call`.
+- Support for `goto` and `if-goto` commands.
+- Directory translation: `python VMTranslator.py NestedCall`, the endfile will be named after the directory and all files in the directory will be translated into this one file.
+- Multi-argument translation: `python VMTranslator.py NestedCall StackTest BasicTest\BasicTest.vm`.
+- Bootstrap code in case there is a `Sys.vm` file in the directory (Resets Stack top and calls `Sys.init`).
 
 Besides the test available in part 7, part 8 offers 6 more test files for the new features:
 
-+ `BasicLoop.vm` - Tests a basic branching scenario using `if-goto`.
-+ `FibonacciSeries.vm` - Tests a more complex branching scenario using `goto` and `if-goto`.
-+ `SimpleFunction.vm` - Tests `function` and `return`.
-+ `NestedCall.vm` - Tests a more complex scenario of the function calling protocol and bootstrap code.
-+ `FibonacciElement.vm` - Tests function calling, bootstrap code and multi-file directory handling.
-+ `StaticsTest.vm` - Tests the per-file nature of the Static memory segment.
+- `BasicLoop.vm` - Tests a basic branching scenario using `if-goto`.
+- `FibonacciSeries.vm` - Tests a more complex branching scenario using `goto` and `if-goto`.
+- `SimpleFunction.vm` - Tests `function` and `return`.
+- `NestedCall.vm` - Tests a more complex scenario of the function calling protocol and bootstrap code.
+- `FibonacciElement.vm` - Tests function calling, bootstrap code and multi-file directory handling.
+- `StaticsTest.vm` - Tests the per-file nature of the Static memory segment.
 
 The biggest challenge of this part was correctly implementing the global Stack changes of the function protocols, which was essentially:
 
@@ -220,16 +221,16 @@ Additionally, there were 4 special symbols that needed to be properly translated
 1. `fileName.i` - Used for each static variable `i` from a given file `fileName.vm`. Each time a new static variable in that file is found, `i` is incremented by 1.
 2. `fileName.functionName$label` - Used to translate `goto label` and `if-goto label` used inside of a function `funtionName` and file `fileName.vm`.
 3. `functionName.fileName` - Used to translate a function `functionName`'s label when inside file `fileName.vm`.
-4. `functionName$ret.i` - Used to translate the return address for `call functionName` when used inside of a  file `fileName.vm`. Each time a function is called, the variable `i` is incremented by 1 (made for unique return addresses).
+4. `functionName$ret.i` - Used to translate the return address for `call functionName` when used inside of a file `fileName.vm`. Each time a function is called, the variable `i` is incremented by 1 (made for unique return addresses).
 
 ## 9 - Jack program
 
 Part 9 intoduces the Jack language, a simple Java-like OOP language. The goal of this part is to get used to the language before implementing a Jack compiler in parts 10 and 11. To do that, a creative and well designed Jack program must me made. To create the program, the following features were used:
 
-+ A bitmap editor - The `BitmapEditor.html` file is a useful tool to quickly convert sprite bitmaps into Jack code.
-+ The Jack language's OS - Offers a few built in functions to facilitite the coding process:
-    |![Jack OS API](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Jack_OS_API_1.png?raw=true)|![Jack OS API](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Jack_OS_API_2.png?raw=true)|![Jack OS API](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Jack_OS_API_3.png?raw=true)|
-    |-|-|-|
+- A bitmap editor - The `BitmapEditor.html` file is a useful tool to quickly convert sprite bitmaps into Jack code.
+- The Jack language's OS - Offers a few built in functions to facilitite the coding process:
+  |![Jack OS API](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Jack_OS_API_1.png?raw=true)|![Jack OS API](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Jack_OS_API_2.png?raw=true)|![Jack OS API](https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Jack_OS_API_3.png?raw=true)|
+  |-|-|-|
 
 The theme for this project was a simple restaurant. The challenges of this project included:
 
@@ -238,13 +239,29 @@ The theme for this project was a simple restaurant. The challenges of this proje
 3. Handling the overall lack of high-level features that programmers are often used to.
 
 Here is a picture of how the game turned out:
+
 <p align="center">
   <img src="https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/RokoboKitchenPreview.png?raw=true"/>
 </p>
 
 ## 10 -
 
-In progress...
+Part 9 is the first part of a Jack to VM compiler. In this part, the program `JackTokenizer.py` translates Jack code into a XML parse tree. Challenges for this project included:
+
+1. Tokenizing a Jack file.
+2. Understanding the Jack grammar rules.
+3. Identifying language constructs.
+4. Translating language constructs to a XML parse tree.
+
+The way the translator worked was by enclosing terminal tokens in one of 5 categories and those categories inside other non-terminal tokens (the top-most token being `<class>`). Here are the grammar rules for the Jack language:
+
+  |<img src="https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Lexical_elements.png?raw=true"/>|<img src="https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Program_structure.png?raw=true"/>|
+  |-|-|
+
+  |<img src="https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Statements.png?raw=true"/>|<img src="https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/Expressions.png?raw=true"/>|
+  |-|-|
+
+The files in project 10 were design to test the Tokenizer. Files like `Main.jack` are the files that will be translated, `Main.xml` are the translated files, `MainT.xml` are the files that have no non-terminal tags or indentation and `MainO.xml` are what the translated files are supposed to look like.
 
 ## 11 -
 
