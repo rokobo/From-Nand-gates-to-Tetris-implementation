@@ -267,7 +267,7 @@ The files in project 10 were design to test the Tokenizer. Files like `Main.jack
 
 ## 11 - Jack Compiler
 
-Part 11 is the second of two parts of a Jack to VM compiler. In this part, the program `JackCompiler.py` translates Jack code into VM code. Challenges for this project included:
+Part 11 is the second of two parts of a Jack to VM compiler. In this part, the program `JackCompiler.py` was built by modifying the `JackAnalyzer.py` program from part 10, making Jack files compile directly to VM code. Challenges for this project included:
 
 1. Compiling procedural code.
 2. Compiling the construction and manipulation of arrays and objects.
