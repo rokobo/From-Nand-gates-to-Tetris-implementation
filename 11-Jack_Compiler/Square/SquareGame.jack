@@ -1,10 +1,3 @@
-// This file is part of www.nand2tetris.org
-// and the book "The Elements of Computing Systems"
-// by Nisan and Schocken, MIT Press.
-// File name: projects/11/Square/SquareGame.jack
-
-// (same as projects/09/Square/SquareGame.jack)
-
 /**
  * Implements the Square Dance game.
  * This simple game allows the user to move a black square around
@@ -37,16 +30,6 @@ class SquareGame {
       return;
    }
 
-   /** Moves the square in the current direction. */
-   method void moveSquare() {
-      if (direction = 1) { do square.moveUp(); }
-      if (direction = 2) { do square.moveDown(); }
-      if (direction = 3) { do square.moveLeft(); }
-      if (direction = 4) { do square.moveRight(); }
-      do Sys.wait(5);  // delays the next movement
-      return;
-   }
-
    /** Runs the game: handles the user's inputs and moves the square accordingly */
    method void run() {
       var char key;  // the key currently pressed by the user
@@ -66,14 +49,24 @@ class SquareGame {
          if (key = 133) { let direction = 2; }   // down arrow
          if (key = 130) { let direction = 3; }   // left arrow
          if (key = 132) { let direction = 4; }   // right arrow
-
+         
          // waits for the key to be released
          while (~(key = 0)) {
             let key = Keyboard.keyPressed();
             do moveSquare();
          }
-     } // while
-     return;
+      } // while
+      return;
+   }
+
+   /** Moves the square in the current direction. */
+   method void moveSquare() {
+      if (direction = 1) { do square.moveUp(); }
+      if (direction = 2) { do square.moveDown(); }
+      if (direction = 3) { do square.moveLeft(); }
+      if (direction = 4) { do square.moveRight(); }
+      do Sys.wait(5);  // delays the next movement
+      return;
    }
 }
 

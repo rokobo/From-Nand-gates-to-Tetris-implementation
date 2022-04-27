@@ -1,8 +1,3 @@
-// This file is part of www.nand2tetris.org
-// and the book "The Elements of Computing Systems"
-// by Nisan and Schocken, MIT Press.
-// File name: projects/11/Pong/Ball.jack
-
 /**
  * A graphical ball. Characterized by a screen location and distance of 
  * last destination. Has methods for drawing, erasing and moving on the screen.
@@ -105,7 +100,6 @@ class Ball {
      * 1 (left wall), 2 (right wall), 3 (top wall), 4 (bottom wall).
      */
     method int move() {
-
 	    do hide();
 
         if (d < 0) { let d = d + straightD; }

@@ -237,6 +237,8 @@ The theme for this project was a simple restaurant. The challenges of this proje
 1. Learning a new programming language.
 2. Correctly manipulating screen elements with the primitive libraries available to the language.
 3. Handling the overall lack of high-level features that programmers are often used to.
+4. Optimizing low-level graphics.
+5. Developing interactive applications.
 
 Here is a picture of how the game turned out:
 
@@ -244,14 +246,14 @@ Here is a picture of how the game turned out:
   <img src="https://github.com/rokobo/From-Nand-gates-to-Tetris-implementation/blob/main/images/RokoboKitchenPreview.png?raw=true"/>
 </p>
 
-## 10 - Jack Tokenizer
+## 10 - Jack Analyzer
 
 Part 10 is the first of two parts of a Jack to VM compiler. In this part, the program `JackTokenizer.py` translates Jack code into a XML parse tree. Challenges for this project included:
 
 1. Tokenizing a Jack file.
 2. Understanding the Jack grammar rules.
 3. Identifying language constructs.
-4. Translating language constructs to a XML parse tree.
+4. Parsing language constructs to a XML parse tree.
 
 The way the translator worked was by enclosing terminal tokens in one of 5 categories and those categories inside other non-terminal tokens (the top-most token being `<class>`). Here are the grammar rules for the Jack language:
 
@@ -263,9 +265,25 @@ The way the translator worked was by enclosing terminal tokens in one of 5 categ
 
 The files in project 10 were design to test the Tokenizer. Files like `Main.jack` are the files that will be translated, `Main.xml` are the translated files, `MainT.xml` are the files that have no non-terminal tags or indentation and `MainO.xml` are what the translated files are supposed to look like.
 
-## 11 -
+## 11 - Jack Compiler
 
-In progress...
+Part 11 is the second of two parts of a Jack to VM compiler. In this part, the program `JackCompiler.py` translates Jack code into VM code. Challenges for this project included:
+
+1. Compiling procedural code.
+2. Compiling the construction and manipulation of arrays and objects.
+3. Code generation techniques.
+4. Recursive compilation engine.
+5. Symbol tables.
+6. Memory management.
+
+The files in project 11 were designed to test different functionalities of the compiler:
+
+1. `Seven` → Arithmetic expressions with constants only, `do` statement and `return` statement.
+2. `ConvertToBin` → Expressions (no arrays or method calls) and procedural constructs (`if`, `while`, `do`, `let`, `return`).
+3. `Square` → Constructors, methods and expressions that include method calls.
+4. `Average` → Arrays and strings.
+5. `Pong` → Object handling and static variables.
+6. `ComplexArrays` → Array manipulation with index expressions and other complex array references.
 
 ## 12 -
 
