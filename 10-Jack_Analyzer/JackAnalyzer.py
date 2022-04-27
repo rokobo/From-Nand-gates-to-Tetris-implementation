@@ -47,10 +47,21 @@ class JackAnalyzer:
         self.xml_file.write("<class>\n")
         self.tokens = []
         texts = []
+        comment = False
         for line in self.jack_file:
             # Delete comments
             raw = line.split("//", 1)[0]
-            raw = raw.split("/**", 1)[0]
+
+            if "*/" in raw:  # For multi-line comments
+                raw = raw.split("*/", 1)[-1]
+                comment = False
+            if comment:  # For multi-line comments
+                continue
+
+            if "/**" in raw:  # For multi-line comments
+                raw = raw.split("/**", 1)[0]
+                comment = True
+
             if '"' in raw:  # Fixes string parsing
                 texts.append(raw.split('"')[1].rstrip())
             # Separate tokens
