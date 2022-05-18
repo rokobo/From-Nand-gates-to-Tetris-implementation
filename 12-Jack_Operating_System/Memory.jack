@@ -1,0 +1,117 @@
+/**
+ * This library provides two services: direct access to the computer's main
+ * memory (RAM), and allocation and recycling of memory blocks. The Hack RAM
+ * consists of 32,768 words, each holding a 16-bit binary number.
+ */ 
+class Memory {
+    static Array ram;
+    static Array heap;
+    static int firstFreeBlock;
+    static int lastFreeBlock;
+    
+    /** Initializes the class. */
+    function void init() {
+        let ram = 0; // Can now be used as let ram[address] = value;
+        let heap = 2048; // Can now be used as let heap[address] = value;
+        
+        // Free blocks point to other free blocks that contain the 
+        // next block's address, as well as it's size.
+        let firstFreeBlock = 0; // Indicates the first heap address with free space
+        let lastFreeBlock = 0;
+        let heap[0] = null; // Indicates the next free block (same as address if last)
+        // heap is from 2048 to 16383
+        let heap[1] = 16383 - 2048 - 1; // Indicates the size of free space in this free block
+        return;
+    }
+
+    /** Returns the RAM value at the given address. */
+    function int peek(int address) {
+        return ram[address];
+    }
+
+    /** Sets the RAM value at the given address to the given value. */
+    function void poke(int address, int value) {
+        let ram[address] = value;
+        return;
+    }
+
+    /** Finds an available RAM block of the given size and returns
+     *  a reference to its base address. */
+    function int alloc(int size) {
+        // Find memory block in heap using best-fit heuristics
+        var boolean notFinished, foundBlock, triedDefrag, firstBlock;
+        var int currentBlock, bestFit, currentSize, allocatedAddress, bestSize;
+        let notFinished = true;
+        let foundBlock = false;
+        let triedDefrag = false;
+        let currentBlock = firstFreeBlock;
+        let bestSize = heap[currentBlock + 1] + 1;
+
+        // Find a free block to allocate to
+        while (notFinished) {
+            // Check current block's size and determine if best fit currently
+            let currentSize = heap[currentBlock + 1];
+            if (currentSize < size + 2) {
+                if (currentSize < bestSize) {
+                    let bestFit = currentBlock;
+                    let foundBlock = true;
+                    let bestSize = currentSize;
+                    if (currentBlock = firstFreeBlock) {let firstBlock = true;}
+                    else {let firstBlock = false;}
+                }
+            }
+
+            /** If the currentBlock's next value is null
+                then we know there are no more blocks to search. */
+            if (heap[currentBlock] = null) {
+                let notFinished = false;
+                // Check if a block has been found
+                if (~(foundBlock)) {
+                    // Try to defragment the heap to find a block
+                    //if (~(triedDefrag)) {
+                        // do Memory.deFragment();
+                    //    let currentBlock = firstFreeBlock;
+                    //}
+                    // If heap was defrag'd and no block found, throw error
+                    //else {
+                        do Sys.error(6);
+                    //}
+                }
+            }
+            else {
+                // Advance to the next block for checking best fit
+                let currentBlock = heap[currentBlock];
+            }
+        }
+
+        // Having found a block, begin the process of allocating
+        // If it's the first block, we update this variable
+        if (firstBlock) {let firstFreeBlock = heap[bestFit];}
+
+        // Change the size of the current free block
+        let currentSize = heap[bestFit + 1];
+        let heap[bestFit + 1] = currentSize - size - 2;
+
+        // Find the bottom of the free block and allocated it
+        let allocatedAddress = bestFit + currentSize - size + 1;
+
+        // Set allocated block as 
+        // 1. null, 2. block size, 
+        // 3. empty space of size words (actual allocated space)
+        let heap[allocatedAddress] = null;
+        let heap[allocatedAddress + 1] = size;
+
+        // Return the allocated block address
+        return allocatedAddress + 2;
+    }
+
+    /** De-allocates the given object (cast as an array) by making
+     *  it available for future allocations. */
+    function void deAlloc(int object) {
+        // Set the reference to this block as the last free block's next
+        let heap[lastFreeBlock] = object - 2;
+        // Set the last free block to the deallocated block
+        let lastFreeBlock = object - 2;
+        return;
+    }    
+}

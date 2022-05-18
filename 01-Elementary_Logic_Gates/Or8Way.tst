@@ -1,8 +1,3 @@
-// This file is part of www.nand2tetris.org
-// and the book "The Elements of Computing Systems"
-// by Nisan and Schocken, MIT Press.
-// File name: projects/01/Or8Way.tst
-
 load Or8Way.hdl,
 output-file Or8Way.out,
 compare-to Or8Way.cmp,

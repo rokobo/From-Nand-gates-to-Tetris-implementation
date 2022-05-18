@@ -1,8 +1,3 @@
-// This file is part of www.nand2tetris.org
-// and the book "The Elements of Computing Systems"
-// by Nisan and Schocken, MIT Press.
-// File name: tools/builtIn/ARegister.hdl
-
 /**
  * A 16-Bit register called "A Register". 
  * If load[t-1]=1 then out[t] = in[t-1]

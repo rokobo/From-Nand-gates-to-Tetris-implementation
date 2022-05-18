@@ -1,8 +1,3 @@
-// This file is part of www.nand2tetris.org
-// and the book "The Elements of Computing Systems"
-// by Nisan and Schocken, MIT Press.
-// File name: projects/04/fill/FillAutomatic
-
 // This script can be used to test the Fill program automatically, 
 // rather than interactively. Specifically, the script sets the keyboard
 // memory map (RAM[24576]) to 0, 1, and then again to 0. This simulates the 

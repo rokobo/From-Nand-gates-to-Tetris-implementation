@@ -1,8 +1,3 @@
-// This file is part of www.nand2tetris.org
-// and the book "The Elements of Computing Systems"
-// by Nisan and Schocken, MIT Press.
-// File name: tools/builtIn/ROM32K.hdl
-
 /**
  * Read-Only memory (ROM) of 16K registers, each 16-bit wide.
  * The chip is designed to facilitate data read, as follows:

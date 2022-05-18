@@ -1,0 +1,233 @@
+/**
+ * A library of functions for displaying graphics on the screen.
+ * The Hack physical screen consists of 256 rows (indexed 0..255, top to bottom)
+ * of 512 pixels each (indexed 0..511, left to right). The top left pixel on 
+ * the screen is indexed (0,0).
+ */
+class Screen {
+    static boolean color;
+    static Array twoToThe;
+
+    /** Initializes the Screen. */
+    function void init() {
+        var int i;
+        let color = true;
+        let twoToThe = Array.new(16);
+        let twoToThe[0] = 1;
+        let i = 1;
+        while (i < 16) {
+            let twoToThe[i] = twoToThe[i-1] + twoToThe[i-1];
+            let i = i + 1;
+        }
+        return;
+    }
+
+    /** Erases the entire screen. */
+    function void clearScreen() {
+        return;
+    }
+
+    /** Sets the current color, to be used for all subsequent drawXXX commands.
+     *  Black is represented by true, white by false. */
+    function void setColor(boolean b) {
+        let color = ~color;
+        return;
+    }
+
+    /** Draws the (x,y) pixel, using the current color. */
+    function void drawPixel(int x, int  y) {
+        var int address, value, setValue;
+        // First determine the address of the pixel
+        let address = (32 * y) + (x / 16);
+
+        // We need to work in chunks of 16 bits and be prepared for non-zero chunks
+        let value = Memory.peek(16384 + address);
+
+        // set (x % 16)th bit of value to the current color
+        if (color) {let setValue = value | twoToThe[x - ((x / 16) * 16)];}
+        else {let setValue = value & (~twoToThe[x - ((x / 16) * 16)]);}
+        do Memory.poke(16384 + address, setValue);
+        return;
+    }
+
+    /** Draws a line from pixel (x1,y1) to pixel (x2,y2), using the current color. */
+    function void drawLine(int x1, int y1, int x2, int y2) {
+        var int a, b, diff, dx, dy, x, y;
+        var int currentY, currentX, max; 
+        var int lineChunkStart, startChunkRelativeDist;
+        var int lineChunkEnd, endChunkRelativeDist;
+        var int chunksBetween, startValue, currentChunk, middleValue, endValue;
+        var int startBit, endBit, bit;
+        var int address, value;
+        var boolean leftPointCloserToOrigin;
+        var int testing;
+
+        // First we start with simple cases
+        if (x1 = x2) { // Vertical line
+            let currentY = Math.min(y1, y2);
+            let max = Math.max(y1, y2);
+            while (currentY < max) {
+                do Screen.drawPixel(x1, currentY);
+                let currentY = currentY + 1;
+            }
+            return;
+        }
+
+        if (y1 = y2) { // Horizontal line
+            let currentX = Math.min(x1, x2);
+            let max = Math.max(x1, x2);
+
+            // Optimize 16-bit chunk coloring by working with an entire chunk
+            // Line chunk = Which chunk the start or end is in
+            // Chunk relative distance = Offset from chunk start to line start or end
+            let lineChunkStart  = currentX / 16; 
+            let startChunkRelativeDist = currentX - (lineChunkStart * 16); 
+            let lineChunkEnd = max / 16; 
+            let endChunkRelativeDist = ((lineChunkEnd + 1) * 16) - max; 
+
+            let chunksBetween = lineChunkEnd - lineChunkStart;
+
+            // Determine start and end of chunk
+            let endBit = 16 - endChunkRelativeDist;
+            let bit = startChunkRelativeDist;
+            let startValue = 0;
+            let endValue = 0;
+
+            if (chunksBetween = 0) { // Entire line in same chunk
+                // Sum the values of 2^i for every bit between start and end
+                while (bit < endBit) {
+                    let startValue = startValue + twoToThe[bit];
+                    let bit = bit + 1;
+                }
+            }
+
+            if (chunksBetween > 0) { // Line crosses at least one chunk border
+                // Sum the values of 2^i for every bit between start and chunk border
+                while (bit < 16) {
+                    let startValue = startValue + twoToThe[bit];
+                    let bit = bit + 1;
+                }
+
+                let bit = 0;
+                // Sum the values of 2^i for every bit between chunk border and end
+                while (bit < endBit) {
+                    let endValue = endValue + twoToThe[bit];
+                    let bit = bit + 1;
+                }
+
+                // Do the full chunks
+                let chunksBetween = chunksBetween - 1;
+                let currentChunk = lineChunkStart + 1;
+            }
+
+            // Now draw with the information calculated above
+            if (~(startValue = 0)) {
+                let address = 16384 + (32 * y1) + lineChunkStart;
+                let value = Memory.peek(address);
+                if (color) {let startValue = value | startValue;}
+                else {let startValue = value & (~startValue);}
+                do Memory.poke(address, startValue);
+            }
+
+            if (~(endValue = 0)) {
+                let address = 16384 + (32 * y1) + lineChunkEnd;
+                let value = Memory.peek(address);
+                if (color) {let endValue = value | endValue;}
+                else {let endValue = value & (~endValue);}
+                do Memory.poke(address, endValue);
+            }
+
+            while (~(chunksBetween = 0)) {
+                let middleValue = -1;
+                let address = 16384 + (32 * y1) + currentChunk;
+                let value = Memory.peek(address);
+                if (color) {let middleValue = value | middleValue;}
+                else {let middleValue = value & (~middleValue);}
+                do Memory.poke(address, middleValue);
+                let currentChunk = currentChunk + 1;
+                let chunksBetween = chunksBetween - 1;
+            }
+            return;
+        }
+
+        // Complex case
+        if (x2 < x1) { // Line goes right to left
+            let x = x2;
+            let dx = x1 - x2;
+            let y = y2;
+            if (y2 > y1) { // Line goes downwards
+                let dy = y2 - y1; 
+                let leftPointCloserToOrigin = false;
+            }
+            else { // Line goes upwards DONE
+                let dy = y1 - y2;
+                let leftPointCloserToOrigin = true;
+            }
+        }
+        else { // Line goes left to right
+            let x = x1;
+            let dx = x2 - x1;
+            let y = y1;
+            if (y2 > y1) { // Line goes downwards
+                let dy = y2 - y1;
+                let leftPointCloserToOrigin = true;
+            }
+            else { // Line goes upwards
+                let dy = y1 - y2;
+                let leftPointCloserToOrigin = false;
+            }
+        }
+
+        let a = 0;
+        let b = 0;
+        let diff = 0;
+
+        while ((a < (dx + 1)) & (b < (dy + 1))) {
+            if (leftPointCloserToOrigin) {
+                do Screen.drawPixel(x + a, y + b);
+            }
+            else {
+                do Screen.drawPixel(x + a, y - b);
+            }
+
+            // Decide which direction to go
+            if (diff < 0){ 
+                let a = a + 1; // Go right
+                let diff = diff + dy;
+            }
+            else{
+                let b = b + 1; // Go down
+                let diff = diff - dx;
+            }
+        }
+        return;
+    }
+
+    /** Draws a filled rectangle whose top left corner is (x1, y1)
+     * and bottom right corner is (x2,y2), using the current color. */
+    function void drawRectangle(int x1, int y1, int x2, int y2) {
+        var int currentY, maxY;
+        let currentY = Math.min(y1, y2);
+        let maxY = Math.max(y1, y2) + 1;
+
+        // Draw one line for each row for filled rectangle
+        while (currentY < maxY) {
+            do Screen.drawLine(x1, currentY, x2, currentY); 
+            let currentY = currentY + 1;
+        }
+        return;
+    }
+
+    /** Draws a filled circle of radius r<=181 around (x,y), using the current color. */
+    function void drawCircle(int x, int y, int r) {
+        var int dy, x1, x2, dx, rSquared;
+        let dy = -r;
+        let rSquared = r * r;
+        while (dy < (r + 1)) {
+            let dx = Math.sqrt(rSquared - (dy * dy));
+            do Screen.drawLine(x-dx, y+dy, x+dx, y+dy);
+            let dy = dy + 1;
+        }
+        return;
+    }
+}

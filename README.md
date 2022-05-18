@@ -1,3 +1,5 @@
+[![Open Source Society University - Computer Science](https://img.shields.io/badge/OSSU-computer--science-blue.svg)](https://github.com/ossu/computer-science)
+
 # From Nand gates to Tetris implementation
 
 This project's goal is to go from a `Nand` gates abstraction, all the way to a fully working computer that is capable os playing Tetris. This project was done in 13 subprojects, each in their respective folder. Since this project is focused on Computer Science, the physical hardware part was hidden behind various abstractions and emulation tools. This project is aimed at dealing with the software-side of the computer (including the theoretical hardware design).

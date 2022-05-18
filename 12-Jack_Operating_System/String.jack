@@ -1,0 +1,148 @@
+/**
+ * Represents character strings. In addition for constructing and disposing
+ * strings, the class features methods for getting and setting individual
+ * characters of the string, for erasing the string's last character,
+ * for appending a character to the string's end, and more typical
+ * string-oriented operations.
+ */
+class String {
+    field Array string;
+    field int stringLength, stringMaxLength;
+    field boolean firstCallDone;
+
+    /** constructs a new empty string with a maximum length of maxLength
+     *  and initial length of 0. */
+    constructor String new(int maxLength) {
+        if (maxLength = 0) {let maxLength = 1;}
+        let string = Array.new(maxLength);
+        let stringMaxLength = maxLength;
+        let stringLength = 0;
+        let firstCallDone = false;
+        return this;
+    }
+
+    /** Disposes this string. */
+    method void dispose() {
+        do string.dispose();
+        return;
+    }
+
+    /** Returns the current length of this string. */
+    method int length() {
+        return stringLength;
+    }
+
+    /** Returns the character at the j-th location of this string. */
+    method char charAt(int j) {
+        return string[j];
+    }
+
+    /** Sets the character at the j-th location of this string to c. */
+    method void setCharAt(int j, char c) {
+        let string[j] = c;
+
+        // In case of not setting a char at the next free location
+        if (j + 1 > stringLength) {let stringLength = j + 1;}
+        return;
+    }
+
+    /** Appends c to this string's end and returns this string. */
+    method String appendChar(char c) {
+        // Guard clause checks if append operation can be done
+        if (~(stringLength < stringMaxLength)) {return this;}
+
+        // Adjust the valid string size and add c to the last position
+        let string[stringLength] = c;
+        let stringLength = stringLength + 1;
+        return this;
+    }
+
+    /** Erases the last character from this string. */
+    method void eraseLastChar() {
+        // Guard clause checks if erase operation can be done
+        if (~(stringLength > 0)) {return;}
+
+        // Ignore the last character 
+        let stringLength = stringLength - 1;
+        return;
+    }
+
+    /** Returns the integer value of this string, 
+     *  until a non-digit character is detected. */
+    method int intValue() {
+        var int value, digit, index;
+        var boolean negativeNumber;
+
+        let value = 0;
+
+        // Check for negative integer (starts with -)
+        if (charAt(0) = 45) {
+            let index = 1;
+            let negativeNumber = true;
+        }
+        else {
+            let index = 0;
+            let negativeNumber = false;
+        }
+
+        // Compute the value of the string
+        while (index < stringLength) {
+            let digit = charAt(index) - 48;
+            let value = (value * 10) + digit;
+            let index = index + 1;
+        }
+
+        // Make value negative if needed
+        if (negativeNumber) {let value = -value;}
+        return value;
+    }
+
+    /** Sets this string to hold a representation of the given value. */
+    method void setInt(int val) {
+        // Every power of 10 is associated with a digit as 10^x * c
+        // We keep doing modulo 10 on the number to extract all c's
+        var int valOverTen, lastDigit, character;
+
+        // Track if another setInt call was made
+        if (~firstCallDone) {
+            let stringLength = 0;
+            let firstCallDone = true;
+        }
+
+        // In case of negative numbers
+        if (val < 0) {
+            do appendChar(45);
+            let val = -val;
+        }
+
+        let valOverTen = val / 10;
+        let lastDigit = val - (valOverTen * 10);  // Modulo 10
+        let character = lastDigit + 48; 
+
+        // Check if current value is a base case (not product of 10)
+        if (val < 10) {
+            do appendChar(character);
+            let firstCallDone = false;
+        }
+        else {
+            do setInt(valOverTen);
+            do appendChar(character);
+        }
+        return;
+    }
+
+    /** Returns the new line character. */
+    function char newLine() {
+        return 128;
+    }
+
+    /** Returns the backspace character. */
+    function char backSpace() {
+        return 129;
+    }
+
+    /** Returns the double quote (") character. */
+    function char doubleQuote() {
+        return 34;
+    }
+}

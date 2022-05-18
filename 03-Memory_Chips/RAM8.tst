@@ -1,8 +1,3 @@
-// This file is part of www.nand2tetris.org
-// and the book "The Elements of Computing Systems"
-// by Nisan and Schocken, MIT Press.
-// File name: projects/03/a/RAM8.tst
-
 load RAM8.hdl,
 output-file RAM8.out,
 compare-to RAM8.cmp,
