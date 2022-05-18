@@ -39,11 +39,10 @@ class Memory {
      *  a reference to its base address. */
     function int alloc(int size) {
         // Find memory block in heap using best-fit heuristics
-        var boolean notFinished, foundBlock, triedDefrag, firstBlock;
+        var boolean notFinished, foundBlock, firstBlock;
         var int currentBlock, bestFit, currentSize, allocatedAddress, bestSize;
         let notFinished = true;
         let foundBlock = false;
-        let triedDefrag = false;
         let currentBlock = firstFreeBlock;
         let bestSize = heap[currentBlock + 1] + 1;
 
@@ -67,15 +66,7 @@ class Memory {
                 let notFinished = false;
                 // Check if a block has been found
                 if (~(foundBlock)) {
-                    // Try to defragment the heap to find a block
-                    //if (~(triedDefrag)) {
-                        // do Memory.deFragment();
-                    //    let currentBlock = firstFreeBlock;
-                    //}
-                    // If heap was defrag'd and no block found, throw error
-                    //else {
                         do Sys.error(6);
-                    //}
                 }
             }
             else {

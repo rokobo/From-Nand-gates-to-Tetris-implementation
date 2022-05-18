@@ -287,10 +287,31 @@ The files in project 11 were designed to test different functionalities of the c
 5. `Pong` → Object handling and static variables.
 6. `ComplexArrays` → Array manipulation with index expressions and other complex array references.
 
-## 12 -
+## 12 - Jack OS
 
-In progress...
+Part 12 was comprised of 8 Jack classes that make up the Jack OS:
 
-## 13 -
+1. `Array` → Provides support for `Arrays`.
+2. `Keyboard` → Handles user input.
+3. `Math` → Implements useful mathematical operations.
+4. `Memory` → Provides `RAM` access functionality, as well as memory allocation for objects.
+5. `Output` → Enables writing text on the screen.
+6. `Screen` → Enables drawing graphics on the screen.
+7. `String` → Provides support for `Strings`.
+8. `Sys` → Implements program execution services.
 
-In progress...
+Challenges for this project include:
+
+1. Running-time analysis and optimization.
+2. Resource allocation and deallocation.
+3. Heap management.
+4. Input handling.
+5. Vector graphics, fonts and textual outputs.
+6. Type conversions and string processing.
+7. Booting process and OS implementation issues.
+
+Noteworthy sections of this project include:
+
+1. `multiply()` and `divide()` in `Math.jack`.
+2. `drawLine()` in `Screen.jack`.
+3. `alloc()` in `Memory.jack`.
